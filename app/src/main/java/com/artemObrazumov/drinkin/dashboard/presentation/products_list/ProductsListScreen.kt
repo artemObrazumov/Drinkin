@@ -1,6 +1,12 @@
 package com.artemObrazumov.drinkin.dashboard.presentation.products_list
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,15 +31,19 @@ import com.artemObrazumov.drinkin.dashboard.presentation.models.toProductUi
 import com.artemObrazumov.drinkin.dashboard.presentation.products_list.components.ProductIndicator
 import com.artemObrazumov.drinkin.ui.theme.DrinkinTheme
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun DrinksListScreen(
-    drinks: List<ProductUi>,
-    modifier: Modifier = Modifier
+fun SharedTransitionScope.ProductsListScreen(
+    products: List<ProductUi>,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    modifier: Modifier = Modifier,
+    onProductClick: (product: ProductUi) -> Unit = {},
 ) {
-    val pagerState = rememberPagerState(pageCount = { drinks.size })
+    val pagerState = rememberPagerState(pageCount = { products.size })
 
-    Column(modifier = modifier) {
+    Column(modifier = modifier
+        .clickable { onProductClick(PRODUCTS[0]) }
+    ) {
         Spacer(modifier = Modifier.weight(1f))
         Box {
             ProductsPager(
@@ -43,10 +53,11 @@ fun DrinksListScreen(
                 backgroundColor = MaterialTheme.colorScheme.primary,
                 itemsPaddingDp = 164,
                 drinkItem = { page ->
-                    drinks[page]
-                }
+                    products[page]
+                },
+                animatedVisibilityScope = animatedVisibilityScope
             )
-            val currentDrink = drinks[pagerState.currentPage]
+            val currentDrink = products[pagerState.currentPage]
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
@@ -63,7 +74,7 @@ fun DrinksListScreen(
                     modifier = Modifier.height(36.dp)
                 )
                 ProductIndicator(
-                    totalItems = drinks.size,
+                    totalItems = products.size,
                     currentItem = pagerState.currentPage,
                     modifier = Modifier
                         .fillMaxWidth(0.65f)
@@ -76,14 +87,24 @@ fun DrinksListScreen(
     }
 }
 
+@SuppressLint("UnusedContentLambdaTargetStateParameter")
+@OptIn(ExperimentalSharedTransitionApi::class)
 @PreviewLightDark
 @Composable
 fun DrinksListScreenPreview() {
     DrinkinTheme {
         Surface {
-            DrinksListScreen(
-                drinks = PRODUCTS
-            )
+            SharedTransitionLayout {
+                AnimatedContent(
+                    targetState = true,
+                    label = "DrinksListScreenPreview"
+                ) {
+                    ProductsListScreen(
+                        products = PRODUCTS,
+                        animatedVisibilityScope = this@AnimatedContent
+                    )
+                }
+            }
         }
     }
 }

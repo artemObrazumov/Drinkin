@@ -1,5 +1,8 @@
 package com.artemObrazumov.drinkin.dashboard.presentation.products_list.components
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -26,13 +29,14 @@ import kotlin.math.PI
 import kotlin.math.absoluteValue
 import kotlin.math.sin
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun ProductsPager(
+fun SharedTransitionScope.ProductsPager(
     pagerState: PagerState,
     backgroundColor: Color,
     itemsPaddingDp: Int,
     drinkItem: (page: Int) -> ProductUi,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier
 ) {
     val localDensity = LocalDensity.current
@@ -77,9 +81,9 @@ fun ProductsPager(
             modifier = Modifier
                 .padding(
                     top = (itemsPaddingDp - sinY * itemsPaddingDp).dp
-                )
-            ,
-            imageYOffset = yOffset.value
+                ),
+            imageYOffset = yOffset.value,
+            animatedVisibilityScope = animatedVisibilityScope
         )
     }
 }
