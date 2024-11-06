@@ -15,9 +15,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.artemObrazumov.drinkin.core.presentation.components.curveCanvasBackground
@@ -33,6 +38,12 @@ fun ProductsPager(
     backgroundColor: Color,
     itemsPaddingDp: Int,
     drinkItem: (page: Int) -> ProductUi,
+    onClick: (
+        center: Offset,
+        image: ImageBitmap,
+        imageSize: IntSize,
+        imagePosition: IntOffset
+    ) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val localDensity = LocalDensity.current
@@ -77,9 +88,9 @@ fun ProductsPager(
             modifier = Modifier
                 .padding(
                     top = (itemsPaddingDp - sinY * itemsPaddingDp).dp
-                )
-            ,
-            imageYOffset = yOffset.value
+                ),
+            imageYOffset = yOffset.value,
+            onClick = onClick
         )
     }
 }
