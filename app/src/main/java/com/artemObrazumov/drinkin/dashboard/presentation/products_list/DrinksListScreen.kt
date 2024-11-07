@@ -12,20 +12,22 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.artemObrazumov.drinkin.R
+import com.artemObrazumov.drinkin.core.presentation.rememberIntOffsetSaver
+import com.artemObrazumov.drinkin.core.presentation.rememberIntSizeSaver
+import com.artemObrazumov.drinkin.core.presentation.rememberOffsetSaver
 import com.artemObrazumov.drinkin.dashboard.domain.models.Product
 import com.artemObrazumov.drinkin.dashboard.presentation.models.ProductUi
 import com.artemObrazumov.drinkin.dashboard.presentation.models.toProductUi
@@ -36,6 +38,10 @@ import com.artemObrazumov.drinkin.dashboard.presentation.products_list.component
 import com.artemObrazumov.drinkin.dashboard.presentation.products_list.components.TransitionImage
 import com.artemObrazumov.drinkin.ui.theme.DrinkinTheme
 
+internal enum class TransitionState {
+    IDLE, TRANSITION, REVERSE
+}
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DrinksListScreen(
@@ -43,21 +49,35 @@ fun DrinksListScreen(
     modifier: Modifier = Modifier,
     onDetailsScreen: () -> Unit = {}
 ) {
-    val pagerState = rememberPagerState(pageCount = { drinks.size })
-    var isTransitioning by remember {
-        mutableStateOf(false)
+    val pagerState = rememberPagerState(
+        pageCount = { drinks.size }
+    )
+    var transitionState by rememberSaveable {
+        mutableStateOf(TransitionState.IDLE)
     }
-    var transitionCenter by remember {
+    var transitionCenter by rememberSaveable(
+        saver = rememberOffsetSaver()
+    ) {
         mutableStateOf(Offset.Zero)
     }
-    var transitionImage by remember {
-        mutableStateOf<ImageBitmap?>(null)
+    var transitionImageRes by rememberSaveable {
+        mutableStateOf<Int?>(null)
     }
-    var transitionImageSize by remember {
+    var transitionImageSize by rememberSaveable(
+        saver = rememberIntSizeSaver()
+    ) {
         mutableStateOf(IntSize.Zero)
     }
-    var transitionImagePosition by remember {
+    var transitionImagePosition by rememberSaveable(
+        saver = rememberIntOffsetSaver()
+    ) {
         mutableStateOf(IntOffset.Zero)
+    }
+
+    LaunchedEffect(true) {
+        if (transitionState == TransitionState.TRANSITION) {
+            transitionState = TransitionState.REVERSE
+        }
     }
 
     Box(
@@ -72,12 +92,12 @@ fun DrinksListScreen(
                     pagerState = pagerState,
                     backgroundColor = MaterialTheme.colorScheme.primary,
                     itemsPaddingDp = 164,
-                    onClick = { center, image, imageSize, imagePosition ->
+                    onClick = { center, imageRes, imageSize, imagePosition ->
                         transitionCenter = center
-                        transitionImage = image
+                        transitionImageRes = imageRes
                         transitionImageSize = imageSize
                         transitionImagePosition = imagePosition
-                        isTransitioning = true
+                        transitionState = TransitionState.TRANSITION
                     },
                     drinkItem = { page ->
                         drinks[page]
@@ -113,15 +133,24 @@ fun DrinksListScreen(
         }
         TransitionCircle(
             center = transitionCenter,
-            isActive = isTransitioning,
-            onTransitionEnd = onDetailsScreen
+            isActive = transitionState == TransitionState.TRANSITION,
+            onTransitionEnd = {
+                when (transitionState) {
+                    TransitionState.TRANSITION -> { onDetailsScreen() }
+                    TransitionState.REVERSE -> {
+                        transitionImageRes = null
+                        transitionState = TransitionState.IDLE
+                    }
+                    else -> {}
+                }
+            }
         )
-        if (transitionImage != null) {
+        if (transitionImageRes != null) {
             TransitionImage(
-                image = transitionImage!!,
+                imageRes = transitionImageRes!!,
                 imageSize = transitionImageSize,
                 imagePosition = transitionImagePosition,
-                moveToTop = isTransitioning
+                moveToTop = transitionState == TransitionState.TRANSITION
             )
         }
     }

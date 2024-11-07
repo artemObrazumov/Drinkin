@@ -1,9 +1,7 @@
 package com.artemObrazumov.drinkin.dashboard.presentation.products_list.components
 
-import androidx.compose.animation.core.EaseInElastic
-import androidx.compose.animation.core.EaseInOutElastic
-import androidx.compose.animation.core.EaseOut
-import androidx.compose.animation.core.EaseOutElastic
+import android.graphics.BitmapFactory
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
@@ -17,6 +15,7 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -24,9 +23,11 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.round
@@ -39,18 +40,24 @@ fun TransitionCircle(
     onTransitionEnd: () -> Unit,
     color: Color = MaterialTheme.colorScheme.primary
 ) {
-    var maxRadius by remember {
+    var maxRadius by rememberSaveable {
         mutableFloatStateOf(0f)
     }
-    val radius by animateFloatAsState(
-        targetValue = if (isActive) {
+    var radius by rememberSaveable {
+        mutableFloatStateOf(0f)
+    }
+    LaunchedEffect(isActive) {
+        radius = if (isActive) {
             maxRadius
         } else {
             0f
-        },
+        }
+    }
+    val radiusAnimated by animateFloatAsState(
+        targetValue = radius,
         label = "Transition circle",
         animationSpec = tween(
-            durationMillis = 600
+            durationMillis = 700
         ),
         finishedListener = { onTransitionEnd() }
     )
@@ -64,35 +71,41 @@ fun TransitionCircle(
         drawCircle(
             color = color,
             center = center,
-            radius = radius
+            radius = radiusAnimated
         )
     }
 }
 
 @Composable
 fun TransitionImage(
-    image: ImageBitmap,
+    @DrawableRes
+    imageRes: Int,
     imageSize: IntSize,
     imagePosition: IntOffset,
     moveToTop: Boolean,
     modifier: Modifier = Modifier,
     outlineWidthPx: Float = 8f,
 ) {
+    val context = LocalContext.current
     var imageGlobalPosition by remember {
         mutableStateOf(IntOffset.Zero)
     }
-
-    var yOffsetValue by remember {
+    var yOffsetValue by rememberSaveable {
         mutableIntStateOf(0)
     }
-
     val yOffset by animateIntAsState(
         targetValue = yOffsetValue,
         label = "Transition image",
-        animationSpec = tween(
-            durationMillis = 550,
-            delayMillis = 50
-        )
+        animationSpec = if (moveToTop) {
+            tween(
+                durationMillis = 550,
+                delayMillis = 100
+            )
+        } else {
+            tween(
+                durationMillis = 400
+            )
+        }
     )
 
     LaunchedEffect(moveToTop) {
@@ -101,6 +114,14 @@ fun TransitionImage(
         } else {
             0
         }
+    }
+
+    val image by remember {
+        mutableStateOf(
+            BitmapFactory
+                .decodeResource(context.resources, imageRes)
+                .asImageBitmap()
+        )
     }
 
     Canvas(
@@ -138,13 +159,13 @@ fun TransitionImage(
             )
         }
         clipPath(circlePath) {
-            drawImage(
-                image = image,
-                dstOffset = imageGlobalPosition.copy(
-                    y = imageGlobalPosition.y + yOffset
-                ),
-                dstSize = imageSize
-            )
+                drawImage(
+                    image = image,
+                    dstOffset = imageGlobalPosition.copy(
+                        y = imageGlobalPosition.y + yOffset
+                    ),
+                    dstSize = imageSize
+                )
         }
     }
 }

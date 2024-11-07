@@ -40,7 +40,7 @@ fun ProductsPager(
     drinkItem: (page: Int) -> ProductUi,
     onClick: (
         center: Offset,
-        image: ImageBitmap,
+        imageRes: Int,
         imageSize: IntSize,
         imagePosition: IntOffset
     ) -> Unit,

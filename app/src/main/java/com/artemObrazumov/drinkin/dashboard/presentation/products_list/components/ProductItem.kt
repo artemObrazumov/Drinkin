@@ -2,6 +2,7 @@ package com.artemObrazumov.drinkin.dashboard.presentation.products_list.componen
 
 import android.graphics.BitmapFactory
 import android.graphics.BlurMaskFilter
+import androidx.annotation.DrawableRes
 import androidx.annotation.FloatRange
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
@@ -48,7 +49,7 @@ fun ProductItem(
     modifier: Modifier = Modifier,
     onClick: (
         center: Offset,
-        image: ImageBitmap,
+        imageRes: Int,
         imageSize: IntSize,
         imagePosition: IntOffset
     ) -> Unit,
@@ -109,7 +110,7 @@ fun ProductItem(
                 },
                 indication = null
             ) {
-                onClick(circleCenter, image, imageSize, globalPosition.round())
+                onClick(circleCenter, productUi.imageRes, imageSize, globalPosition.round())
             }
             .clip(
                 RoundedCornerShape(
@@ -123,11 +124,6 @@ fun ProductItem(
             x = size.width / 2,
             y = size.height - radius
         )
-//        drawRect(
-//            Color.Red,
-//            topLeft = Offset.Zero,
-//            size = size
-//        )
         circleCenter = globalPosition + center
         drawCircle(
             color = background,
