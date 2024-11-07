@@ -4,14 +4,10 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.EaseOutCubic
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -23,22 +19,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.artemObrazumov.drinkin.R
+import com.artemObrazumov.drinkin.dashboard.domain.models.CustomizableParameter
+import com.artemObrazumov.drinkin.dashboard.domain.models.CustomizableParameterOption
+import com.artemObrazumov.drinkin.dashboard.domain.models.ProductDetails
+import com.artemObrazumov.drinkin.dashboard.presentation.models.ProductDetailsUi
 import com.artemObrazumov.drinkin.dashboard.presentation.models.ProductUi
+import com.artemObrazumov.drinkin.dashboard.presentation.models.toProductDetailsUi
+import com.artemObrazumov.drinkin.dashboard.presentation.product_details.components.ProductCard
+import com.artemObrazumov.drinkin.dashboard.presentation.product_details.components.ProductImage
 import com.artemObrazumov.drinkin.dashboard.presentation.products_list.PRODUCTS
 import com.artemObrazumov.drinkin.ui.theme.DrinkinTheme
 
 @Composable
 fun ProductDetailsScreen(
-    productUi: ProductUi,
+    productDetailsUi: ProductDetailsUi,
     modifier: Modifier = Modifier,
     onGoBack: () -> Unit = {}
 ) {
@@ -66,7 +64,6 @@ fun ProductDetailsScreen(
             }
         }
     )
-
     var imageXOffset by remember {
         mutableStateOf(configuration.screenWidthDp.dp)
     }
@@ -103,37 +100,24 @@ fun ProductDetailsScreen(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primary)
-            .drawBehind {
-                drawCircle(
-                    color = Color.White,
-                    radius = circleRadiusAnimated.toPx(),
-                    center = Offset(
-                        x = (configuration.screenWidthDp + 8).dp.toPx(),
-                        y = 0f
-                    )
-                )
-            }
     ) {
         item {
-            Row {
-                Spacer(
-                    modifier = Modifier.weight(1f)
-                )
-                Image(
-                    painter = painterResource(id = productUi.imageRes),
-                    contentDescription = productUi.name,
-                    contentScale = ContentScale.FillWidth,
-                    modifier = Modifier
-                        .fillMaxWidth(0.7f)
-                        .offset {
-                            IntOffset(
-                                x = imageXOffsetAnimated.roundToPx(),
-                                y = 0
-                            )
-                        }
-                        .padding(top = 48.dp)
-                )
-            }
+            ProductImage(
+                imageRes = productDetailsUi.imageRes,
+                circleRadius = circleRadiusAnimated,
+                circleXOffset = (configuration.screenWidthDp + 8).dp,
+                imageXOffset = imageXOffsetAnimated,
+                name = productDetailsUi.name
+            )
+        }
+        item {
+            ProductCard(
+                name = productDetailsUi.name,
+                description = productDetailsUi.description,
+                price = productDetailsUi.price,
+                salePrice = productDetailsUi.salePrice,
+                customizableParameters = productDetailsUi.customizableParams
+            )
         }
     }
 
@@ -148,8 +132,45 @@ fun ProductDetailsScreenPreview() {
     DrinkinTheme {
         Surface {
             ProductDetailsScreen(
-                productUi = PRODUCTS.first()
+                productDetailsUi = PRODUCT_DETAILS
             )
         }
     }
 }
+
+internal val PRODUCT_DETAILS = ProductDetails(
+    id = 1,
+    name = "Caramel Frappucino",
+    price = 30f,
+    salePrice = null,
+    category = "AAA",
+    imageRes = R.drawable.cup,
+    description = "test description ".repeat(10),
+    customizableParams = listOf(
+        CustomizableParameter(
+            name = "Size options",
+            options = listOf(
+                CustomizableParameterOption(
+                    name = "Tall",
+                    detail = "12 Fl Oz",
+                    imageRes = R.drawable.cup_icon
+                ),
+                CustomizableParameterOption(
+                    name = "Grande",
+                    detail = "16 Fl Oz",
+                    imageRes = R.drawable.cup_icon
+                ),
+                CustomizableParameterOption(
+                    name = "Venti",
+                    detail = "24 Fl Oz",
+                    imageRes = R.drawable.cup_icon
+                ),
+                CustomizableParameterOption(
+                    name = "Huge",
+                    detail = "28 Fl Oz",
+                    imageRes = R.drawable.cup_icon
+                )
+            )
+        )
+    )
+).toProductDetailsUi("$")

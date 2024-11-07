@@ -12,7 +12,7 @@ class DrinksMockDataSource: DrinksDataSource {
     }
 
     override suspend fun getProductDetails(): ProductDetails {
-        return ProductDetails.first()
+        return PRODUCT_DETAILS.first()
     }
 }
 
@@ -27,13 +27,15 @@ internal val Products = listOf(
     )
 )
 
-internal val ProductDetails = listOf(
+internal val PRODUCT_DETAILS = listOf(
     ProductDetails(
         id = 1,
         name = "Test drink",
         price = 30f,
         salePrice = null,
         category = "AAA",
-        imageRes = R.drawable.cup
+        imageRes = R.drawable.cup,
+        description = "test description ".repeat(10),
+        customizableParams = listOf()
     )
 )

@@ -4,7 +4,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -44,7 +43,7 @@ internal enum class TransitionState {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DrinksListScreen(
+fun ProductListScreen(
     drinks: List<ProductUi>,
     modifier: Modifier = Modifier,
     onDetailsScreen: () -> Unit = {}
@@ -88,7 +87,7 @@ fun DrinksListScreen(
             Box {
                 ProductsPager(
                     modifier = Modifier
-                        .fillMaxHeight(0.65f),
+                        .height(508.dp),
                     pagerState = pagerState,
                     backgroundColor = MaterialTheme.colorScheme.primary,
                     itemsPaddingDp = 164,
@@ -117,7 +116,7 @@ fun DrinksListScreen(
                         salePrice = currentDrink.salePrice
                     )
                     Spacer(
-                        modifier = Modifier.height(36.dp)
+                        modifier = Modifier.height(28.dp)
                     )
                     ProductIndicator(
                         totalItems = drinks.size,
@@ -126,7 +125,7 @@ fun DrinksListScreen(
                             .fillMaxWidth(0.65f)
                     )
                     Spacer(
-                        modifier = Modifier.height(16.dp)
+                        modifier = Modifier.height(36.dp)
                     )
                 }
             }
@@ -161,7 +160,7 @@ fun DrinksListScreen(
 fun DrinksListScreenPreview() {
     DrinkinTheme {
         Surface {
-            DrinksListScreen(
+            ProductListScreen(
                 drinks = PRODUCTS
             )
         }

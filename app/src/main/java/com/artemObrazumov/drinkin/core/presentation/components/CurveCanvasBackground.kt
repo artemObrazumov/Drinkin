@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 
 fun DrawScope.curveCanvasBackground(
     color: Color,
-    extraWidth: Float,
+    extraWidth: Float = 56f,
     offsetY: Float = 0f
 ) {
     val height = size.height / 2

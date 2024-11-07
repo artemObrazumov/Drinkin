@@ -20,6 +20,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
@@ -57,14 +58,13 @@ fun ProductsPager(
             .drawBehind {
                 curveCanvasBackground(
                     color = backgroundColor,
-                    extraWidth = 56f,
                     offsetY = 24.dp.toPx()
                 )
             }
             .onGloballyPositioned { coordinates ->
                 pagerWidth = with(localDensity) { coordinates.size.width.toDp() }
             },
-        contentPadding = PaddingValues(horizontal = pagerWidth / 5),
+        contentPadding = PaddingValues(horizontal = pagerWidth * 0.23f),
         pageSpacing = 16.dp,
         verticalAlignment = Alignment.Top
     ) { page ->

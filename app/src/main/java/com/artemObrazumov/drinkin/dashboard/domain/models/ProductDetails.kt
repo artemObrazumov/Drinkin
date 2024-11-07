@@ -6,5 +6,7 @@ data class ProductDetails(
     val price: Float,
     val salePrice: Float?,
     val category: String?,
-    val imageRes: Int
+    val imageRes: Int,
+    val description: String,
+    val customizableParams: List<CustomizableParameter>
 )

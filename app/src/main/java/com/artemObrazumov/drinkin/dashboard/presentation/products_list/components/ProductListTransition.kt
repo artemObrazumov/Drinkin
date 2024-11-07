@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.clipPath
@@ -110,7 +109,7 @@ fun TransitionImage(
 
     LaunchedEffect(moveToTop) {
         yOffsetValue = if (moveToTop) {
-            imageSize.height * (-2)
+            (imagePosition.y + imageSize.height) * (-1)
         } else {
             0
         }
