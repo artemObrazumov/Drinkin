@@ -51,7 +51,9 @@ class MainActivity : ComponentActivity() {
                                 productDetailsUi = PRODUCT_DETAILS,
                                 onGoBack = {
                                     navController.navigateUp()
-                                }
+                                },
+                                count = 0,
+                                selectedParameters = emptyMap()
                             )
                         }
                     }

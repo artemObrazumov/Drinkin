@@ -3,24 +3,17 @@ package com.artemObrazumov.drinkin.dashboard.presentation.product_details.compon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -32,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -43,7 +35,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.artemObrazumov.drinkin.R
 import com.artemObrazumov.drinkin.core.presentation.FormattedValue
 import com.artemObrazumov.drinkin.core.presentation.asFormattedPrice
 import com.artemObrazumov.drinkin.dashboard.presentation.models.CustomizableParameterOptionUi
@@ -58,6 +49,8 @@ fun ProductCard(
     price: FormattedValue<Float>,
     salePrice: FormattedValue<Float>?,
     customizableParameters: List<CustomizableParameterUi>,
+    selectedParameters: Map<String, Int?>,
+    onParameterSelect: (parameter: String, optionIndex: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -138,7 +131,9 @@ fun ProductCard(
                         .height(16.dp)
                 )
                 CustomizableParameter(
-                    parameter = parameter
+                    parameter = parameter,
+                    selectedParameters = selectedParameters,
+                    onParameterSelect = onParameterSelect
                 )
             }
         }
@@ -149,6 +144,8 @@ fun ProductCard(
 @Composable
 fun CustomizableParameter(
     parameter: CustomizableParameterUi,
+    selectedParameters: Map<String, Int?>,
+    onParameterSelect: (parameter: String, optionIndex: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     FlowRow(
@@ -157,10 +154,15 @@ fun CustomizableParameter(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         parameter.options.forEachIndexed { index, option ->
+            val isSelected = selectedParameters[parameter.name] == index
             CustomizableParameterOption(
                 option = option,
+                isActive = isSelected,
                 modifier = Modifier
-                    .fillMaxWidth(0.2f)
+                    .fillMaxWidth(0.2f),
+                onClick = {
+                    onParameterSelect(parameter.name, index)
+                }
             )
         }
     }
@@ -169,8 +171,8 @@ fun CustomizableParameter(
 @Composable
 fun CustomizableParameterOption(
     option: CustomizableParameterOptionUi,
+    isActive: Boolean,
     modifier: Modifier = Modifier,
-    isActive: Boolean = false,
     onClick: () -> Unit = {}
 ) {
     Column(
@@ -250,7 +252,11 @@ fun ProductCardPreview() {
                 description = product.description,
                 price = product.price,
                 salePrice = product.salePrice,
-                customizableParameters = product.customizableParams
+                customizableParameters = product.customizableParams,
+                selectedParameters = mapOf(
+                    "Size options" to 2
+                ),
+                onParameterSelect = { _,_ -> }
             )
         }
     }

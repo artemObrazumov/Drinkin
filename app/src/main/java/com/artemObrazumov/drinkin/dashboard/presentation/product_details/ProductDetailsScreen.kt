@@ -5,9 +5,10 @@ import androidx.compose.animation.core.EaseOutCubic
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.requiredHeight
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -18,6 +19,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -27,16 +29,17 @@ import com.artemObrazumov.drinkin.dashboard.domain.models.CustomizableParameter
 import com.artemObrazumov.drinkin.dashboard.domain.models.CustomizableParameterOption
 import com.artemObrazumov.drinkin.dashboard.domain.models.ProductDetails
 import com.artemObrazumov.drinkin.dashboard.presentation.models.ProductDetailsUi
-import com.artemObrazumov.drinkin.dashboard.presentation.models.ProductUi
 import com.artemObrazumov.drinkin.dashboard.presentation.models.toProductDetailsUi
 import com.artemObrazumov.drinkin.dashboard.presentation.product_details.components.ProductCard
 import com.artemObrazumov.drinkin.dashboard.presentation.product_details.components.ProductImage
-import com.artemObrazumov.drinkin.dashboard.presentation.products_list.PRODUCTS
+import com.artemObrazumov.drinkin.dashboard.presentation.product_details.components.ProductOrderCard
 import com.artemObrazumov.drinkin.ui.theme.DrinkinTheme
 
 @Composable
 fun ProductDetailsScreen(
     productDetailsUi: ProductDetailsUi,
+    count: Int,
+    selectedParameters: Map<String, Int?>,
     modifier: Modifier = Modifier,
     onGoBack: () -> Unit = {}
 ) {
@@ -96,33 +99,56 @@ fun ProductDetailsScreen(
         }
     }
 
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.primary)
-    ) {
-        item {
-            ProductImage(
-                imageRes = productDetailsUi.imageRes,
-                circleRadius = circleRadiusAnimated,
-                circleXOffset = (configuration.screenWidthDp + 8).dp,
-                imageXOffset = imageXOffsetAnimated,
-                name = productDetailsUi.name
-            )
-        }
-        item {
-            ProductCard(
-                name = productDetailsUi.name,
-                description = productDetailsUi.description,
-                price = productDetailsUi.price,
-                salePrice = productDetailsUi.salePrice,
-                customizableParameters = productDetailsUi.customizableParams
-            )
-        }
-    }
-
     BackHandler {
         appearing = false
+    }
+
+    val orderCardHeight = 100.dp
+
+    Box {
+        LazyColumn(
+            modifier = modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.primary)
+        ) {
+            item {
+                ProductImage(
+                    imageRes = productDetailsUi.imageRes,
+                    circleRadius = circleRadiusAnimated,
+                    circleXOffset = (configuration.screenWidthDp + 8).dp,
+                    imageXOffset = imageXOffsetAnimated,
+                    name = productDetailsUi.name
+                )
+            }
+            item {
+                ProductCard(
+                    name = productDetailsUi.name,
+                    description = productDetailsUi.description,
+                    price = productDetailsUi.price,
+                    salePrice = productDetailsUi.salePrice,
+                    customizableParameters = productDetailsUi.customizableParams,
+                    selectedParameters = selectedParameters,
+                    onParameterSelect = { parameter, option ->
+                    }
+                )
+            }
+            item {
+                Spacer(
+                    modifier = Modifier
+                        .height(orderCardHeight)
+                )
+            }
+        }
+
+        ProductOrderCard(
+            height = orderCardHeight,
+            count = count,
+            onSubtract = {},
+            onAdd = {},
+            onAddToOrder = {},
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+        )
     }
 }
 
@@ -132,7 +158,9 @@ fun ProductDetailsScreenPreview() {
     DrinkinTheme {
         Surface {
             ProductDetailsScreen(
-                productDetailsUi = PRODUCT_DETAILS
+                productDetailsUi = PRODUCT_DETAILS,
+                count = 10,
+                selectedParameters = emptyMap()
             )
         }
     }
