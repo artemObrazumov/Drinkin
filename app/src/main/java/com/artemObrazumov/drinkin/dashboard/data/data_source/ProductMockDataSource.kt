@@ -8,7 +8,7 @@ import com.artemObrazumov.drinkin.dashboard.domain.models.Category
 import com.artemObrazumov.drinkin.dashboard.domain.models.Product
 import com.artemObrazumov.drinkin.dashboard.domain.models.ProductDetails
 
-class ProductMockDataSource: ProductDataSource {
+class ProductMockDataSource : ProductDataSource {
 
     override suspend fun getProducts(): Result<List<Product>, NetworkError> {
         return Result.Success(Products)
@@ -26,6 +26,70 @@ class ProductMockDataSource: ProductDataSource {
 internal val Products = listOf(
     Product(
         id = 1,
+        name = "Test drink",
+        price = 30f,
+        salePrice = null,
+        category = "AAA",
+        imageRes = R.drawable.cup
+    ),
+    Product(
+        id = 2,
+        name = "Test drink",
+        price = 30f,
+        salePrice = null,
+        category = "AAA",
+        imageRes = R.drawable.cup
+    ),
+    Product(
+        id = 3,
+        name = "Test drink",
+        price = 30f,
+        salePrice = null,
+        category = "AAA",
+        imageRes = R.drawable.cup
+    ),
+    Product(
+        id = 4,
+        name = "Test drink",
+        price = 30f,
+        salePrice = null,
+        category = "AAA",
+        imageRes = R.drawable.cup
+    ),
+    Product(
+        id = 5,
+        name = "Test drink",
+        price = 30f,
+        salePrice = null,
+        category = "AAA",
+        imageRes = R.drawable.cup
+    ),
+    Product(
+        id = 6,
+        name = "Test drink",
+        price = 30f,
+        salePrice = null,
+        category = "AAA",
+        imageRes = R.drawable.cup
+    ),
+    Product(
+        id = 7,
+        name = "Test drink",
+        price = 30f,
+        salePrice = null,
+        category = "AAA",
+        imageRes = R.drawable.cup
+    ),
+    Product(
+        id = 8,
+        name = "Test drink",
+        price = 30f,
+        salePrice = null,
+        category = "AAA",
+        imageRes = R.drawable.cup
+    ),
+    Product(
+        id = 9,
         name = "Test drink",
         price = 30f,
         salePrice = null,

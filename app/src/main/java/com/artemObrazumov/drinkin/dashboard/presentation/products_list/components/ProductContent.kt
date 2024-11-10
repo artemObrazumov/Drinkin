@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,7 +38,9 @@ fun ProductContent(
             fontWeight = FontWeight.Medium,
             fontSize = 26.sp,
             textAlign = TextAlign.Center,
-            letterSpacing = 3.sp
+            letterSpacing = 3.sp,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
         )
         Spacer(
             modifier = Modifier

@@ -115,7 +115,7 @@ fun ProductListScreenContent(
             Box {
                 ProductsPager(
                     modifier = Modifier
-                        .height(508.dp),
+                        .height(516.dp),
                     pagerState = pagerState,
                     backgroundColor = MaterialTheme.colorScheme.primary,
                     itemsPaddingDp = 164,
