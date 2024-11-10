@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,10 +25,12 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.artemObrazumov.drinkin.R
+import com.artemObrazumov.drinkin.core.presentation.LoadingScreenState
 import com.artemObrazumov.drinkin.core.presentation.rememberIntOffsetSaver
 import com.artemObrazumov.drinkin.core.presentation.rememberIntSizeSaver
 import com.artemObrazumov.drinkin.core.presentation.rememberOffsetSaver
 import com.artemObrazumov.drinkin.dashboard.domain.models.Product
+import com.artemObrazumov.drinkin.dashboard.presentation.models.CategoryUi
 import com.artemObrazumov.drinkin.dashboard.presentation.models.ProductUi
 import com.artemObrazumov.drinkin.dashboard.presentation.models.toProductUi
 import com.artemObrazumov.drinkin.dashboard.presentation.products_list.components.ProductContent
@@ -44,44 +47,69 @@ internal enum class TransitionState {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProductListScreen(
-    drinks: List<ProductUi>,
+    state: ProductListScreenState,
     modifier: Modifier = Modifier,
     onDetailsScreen: () -> Unit = {}
 ) {
-    val pagerState = rememberPagerState(
-        pageCount = { drinks.size }
-    )
-    var transitionState by rememberSaveable {
-        mutableStateOf(TransitionState.IDLE)
-    }
-    var transitionCenter by rememberSaveable(
-        saver = rememberOffsetSaver()
-    ) {
-        mutableStateOf(Offset.Zero)
-    }
-    var transitionImageRes by rememberSaveable {
-        mutableStateOf<Int?>(null)
-    }
-    var transitionImageSize by rememberSaveable(
-        saver = rememberIntSizeSaver()
-    ) {
-        mutableStateOf(IntSize.Zero)
-    }
-    var transitionImagePosition by rememberSaveable(
-        saver = rememberIntOffsetSaver()
-    ) {
-        mutableStateOf(IntOffset.Zero)
-    }
+    when(state) {
+        is ProductListScreenState.Loading -> {
+            LoadingScreenState()
+        }
+        is ProductListScreenState.Content -> {
+            ProductListScreenContent(
+                categories = state.categories,
+                products = state.products,
+                modifier = modifier,
+                onDetailsScreen = onDetailsScreen
+            )
+        }
+        is ProductListScreenState.Failure -> {
 
-    LaunchedEffect(true) {
-        if (transitionState == TransitionState.TRANSITION) {
-            transitionState = TransitionState.REVERSE
         }
     }
+}
 
+@Composable
+fun ProductListScreenContent(
+    categories: List<CategoryUi>,
+    products: List<ProductUi>,
+    modifier: Modifier = Modifier,
+    onDetailsScreen: () -> Unit = {}
+) {
     Box(
         modifier = modifier
+            .fillMaxSize()
     ) {
+        val pagerState = rememberPagerState(
+            pageCount = { products.size }
+        )
+        var transitionState by rememberSaveable {
+            mutableStateOf(TransitionState.IDLE)
+        }
+        var transitionCenter by rememberSaveable(
+            saver = rememberOffsetSaver()
+        ) {
+            mutableStateOf(Offset.Zero)
+        }
+        var transitionImageRes by rememberSaveable {
+            mutableStateOf<Int?>(null)
+        }
+        var transitionImageSize by rememberSaveable(
+            saver = rememberIntSizeSaver()
+        ) {
+            mutableStateOf(IntSize.Zero)
+        }
+        var transitionImagePosition by rememberSaveable(
+            saver = rememberIntOffsetSaver()
+        ) {
+            mutableStateOf(IntOffset.Zero)
+        }
+
+        LaunchedEffect(true) {
+            if (transitionState == TransitionState.TRANSITION) {
+                transitionState = TransitionState.REVERSE
+            }
+        }
         Column {
             Spacer(modifier = Modifier.weight(1f))
             Box {
@@ -99,10 +127,10 @@ fun ProductListScreen(
                         transitionState = TransitionState.TRANSITION
                     },
                     drinkItem = { page ->
-                        drinks[page]
+                        products[page]
                     }
                 )
-                val currentDrink = drinks[pagerState.currentPage]
+                val currentDrink = products[pagerState.currentPage]
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
@@ -119,7 +147,7 @@ fun ProductListScreen(
                         modifier = Modifier.height(28.dp)
                     )
                     ProductIndicator(
-                        totalItems = drinks.size,
+                        totalItems = products.size,
                         currentItem = pagerState.currentPage,
                         modifier = Modifier
                             .fillMaxWidth(0.65f)
@@ -160,8 +188,9 @@ fun ProductListScreen(
 fun DrinksListScreenPreview() {
     DrinkinTheme {
         Surface {
-            ProductListScreen(
-                drinks = PRODUCTS
+            ProductListScreenContent(
+                categories = emptyList(),
+                products = PRODUCTS
             )
         }
     }
