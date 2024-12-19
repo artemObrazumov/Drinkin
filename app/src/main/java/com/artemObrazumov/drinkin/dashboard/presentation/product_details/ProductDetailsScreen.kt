@@ -37,10 +37,49 @@ import com.artemObrazumov.drinkin.ui.theme.DrinkinTheme
 
 @Composable
 fun ProductDetailsScreen(
+    state: ProductDetailsScreenState,
+    modifier: Modifier = Modifier,
+    incrementCount: () -> Unit = {},
+    decrementCount: () -> Unit = {},
+    addToCart: () -> Unit = {},
+    onParameterSelect: (parameter: String, optionIndex: Int) -> Unit = { _, _ -> },
+    onGoBack: () -> Unit = {}
+) {
+    when(state) {
+        ProductDetailsScreenState.Loading -> {
+            Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.primary))
+        }
+        is ProductDetailsScreenState.Content -> {
+            ProductDetailsScreenContent(
+                productDetailsUi = state.productDetailsUi,
+                count = state.count,
+                selectedParameters = state.selectedParameters,
+                addingToCart = state.addingToCart,
+                modifier = modifier,
+                incrementCount = incrementCount,
+                decrementCount = decrementCount,
+                addToCart = addToCart,
+                onParameterSelect = onParameterSelect,
+                onGoBack = onGoBack
+            )
+        }
+        is ProductDetailsScreenState.Failure -> {
+
+        }
+    }
+}
+
+@Composable
+fun ProductDetailsScreenContent(
     productDetailsUi: ProductDetailsUi,
     count: Int,
     selectedParameters: Map<String, Int?>,
+    addingToCart: Boolean,
     modifier: Modifier = Modifier,
+    incrementCount: () -> Unit = {},
+    decrementCount: () -> Unit = {},
+    addToCart: () -> Unit = {},
+    onParameterSelect: (parameter: String, optionIndex: Int) -> Unit = { _, _ -> },
     onGoBack: () -> Unit = {}
 ) {
     val configuration = LocalConfiguration.current
@@ -129,6 +168,7 @@ fun ProductDetailsScreen(
                     customizableParameters = productDetailsUi.customizableParams,
                     selectedParameters = selectedParameters,
                     onParameterSelect = { parameter, option ->
+                        onParameterSelect(parameter, option)
                     }
                 )
             }
@@ -143,9 +183,12 @@ fun ProductDetailsScreen(
         ProductOrderCard(
             height = orderCardHeight,
             count = count,
-            onSubtract = {},
-            onAdd = {},
-            onAddToOrder = {},
+            buttonEnabled = (selectedParameters.size == productDetailsUi.customizableParams.size &&
+                    count > 0),
+            loading = addingToCart,
+            onSubtract = { decrementCount() },
+            onAdd = { incrementCount() },
+            onAddToCart = { addToCart() },
             modifier = Modifier
                 .align(Alignment.BottomCenter)
         )
@@ -157,10 +200,11 @@ fun ProductDetailsScreen(
 fun ProductDetailsScreenPreview() {
     DrinkinTheme {
         Surface {
-            ProductDetailsScreen(
+            ProductDetailsScreenContent(
                 productDetailsUi = PRODUCT_DETAILS,
                 count = 10,
-                selectedParameters = emptyMap()
+                selectedParameters = emptyMap(),
+                addingToCart = false
             )
         }
     }

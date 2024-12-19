@@ -1,8 +1,7 @@
 package com.artemObrazumov.drinkin.dashboard.domain.usecase
 
 import com.artemObrazumov.drinkin.core.domain.util.Error
-import com.artemObrazumov.drinkin.core.domain.util.onError
-import com.artemObrazumov.drinkin.core.domain.util.onSuccess
+import com.artemObrazumov.drinkin.core.domain.util.Result
 import com.artemObrazumov.drinkin.dashboard.domain.data_source.ProductDataSource
 import com.artemObrazumov.drinkin.dashboard.domain.models.Category
 import com.artemObrazumov.drinkin.dashboard.domain.models.Product
@@ -26,23 +25,25 @@ class GetDashboardUseCase(
             delay(1000)
             listOf(
                 launch {
-                    dataSource.getCategories()
-                        .onSuccess { data ->
-                            categories = data
+                    when(val result = dataSource.getCategories()) {
+                        is Result.Success -> {
+                            categories = result.data
                         }
-                        .onError { error ->
-                            GetDashboardUseCaseResult.Failure(error)
+                        is Result.Error -> {
+                            GetDashboardUseCaseResult.Failure(result.error)
                         }
+                    }
                 },
 
                 launch {
-                    dataSource.getProducts()
-                        .onSuccess { data ->
-                            products = data
+                    when(val result = dataSource.getProducts()) {
+                        is Result.Success -> {
+                            products = result.data
                         }
-                        .onError { error ->
-                            GetDashboardUseCaseResult.Failure(error)
+                        is Result.Error -> {
+                            GetDashboardUseCaseResult.Failure(result.error)
                         }
+                    }
                 }
             ).joinAll()
 

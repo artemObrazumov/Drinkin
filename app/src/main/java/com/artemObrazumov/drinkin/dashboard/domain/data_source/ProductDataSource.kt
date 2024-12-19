@@ -9,5 +9,11 @@ import com.artemObrazumov.drinkin.dashboard.domain.models.ProductDetails
 interface ProductDataSource {
     suspend fun getProducts(): Result<List<Product>, NetworkError>
     suspend fun getCategories(): Result<List<Category>, NetworkError>
-    suspend fun getProductDetails(): Result<ProductDetails, NetworkError>
+    suspend fun getProductDetails(productId: Int): Result<ProductDetails, NetworkError>
+    suspend fun addProductsToCart(
+        productId: Int,
+        count: Int,
+        selectedParameters: Map<String, Int>
+    ): Result<Int, NetworkError>
+
 }

@@ -23,7 +23,7 @@ class ProductListViewModel(
         .onStart { loadDashboard() }
         .stateIn(
             viewModelScope,
-            SharingStarted.WhileSubscribed(5000L),
+            SharingStarted.Eagerly,
             ProductListScreenState.Loading
         )
 
@@ -33,6 +33,13 @@ class ProductListViewModel(
                 ProductListScreenState.Loading
             }
             when(val getDashboardResult = getDashboardUseCase.invoke()) {
+                is GetDashboardUseCaseResult.Failure -> {
+                    _state.update {
+                        ProductListScreenState.Failure(
+                            error = getDashboardResult.error
+                        )
+                    }
+                }
                 is GetDashboardUseCaseResult.Success -> {
                     _state.update {
                         ProductListScreenState.Content(
@@ -40,13 +47,6 @@ class ProductListViewModel(
                                 .map { it.toCategoryUi() },
                             products = getDashboardResult.products
                                 .map { it.toProductUi("$") }
-                        )
-                    }
-                }
-                is GetDashboardUseCaseResult.Failure -> {
-                    _state.update {
-                        ProductListScreenState.Failure(
-                            error = getDashboardResult.error
                         )
                     }
                 }
