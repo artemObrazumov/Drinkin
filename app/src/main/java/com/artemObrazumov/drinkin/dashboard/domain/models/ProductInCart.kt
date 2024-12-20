@@ -1,8 +1,10 @@
 package com.artemObrazumov.drinkin.dashboard.domain.models
 
-data class CartProduct(
+data class ProductInCart(
     val id: Int,
     val name: String,
     val price: Float,
-    val imageRes: Int
+    val quantity: Int,
+    val imageRes: Int,
+    val parameters: Map<String, String>
 )

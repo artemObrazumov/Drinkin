@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.artemObrazumov.drinkin.R
+import com.artemObrazumov.drinkin.dashboard.presentation.product_details.ButtonState
 import com.artemObrazumov.drinkin.ui.theme.DrinkinTheme
 
 @Composable
@@ -44,7 +45,7 @@ fun ProductOrderCard(
     height: Dp,
     count: Int,
     buttonEnabled: Boolean,
-    loading: Boolean,
+    buttonState: ButtonState,
     onSubtract: () -> Unit,
     onAdd: () -> Unit,
     onAddToCart: () -> Unit,
@@ -132,30 +133,44 @@ fun ProductOrderCard(
                         ambientColor = MaterialTheme.colorScheme.primary,
                         shape = CircleShape
                     ),
-                enabled = (buttonEnabled && !loading)
+                enabled = (buttonEnabled && buttonState != ButtonState.Loading ||
+                        buttonState == ButtonState.Success || buttonState == ButtonState.Failure)
             ) {
                 Box(
                     contentAlignment = Alignment.Center
                 ){
-                    Text(
-                        text = "Add to Order",
-                        modifier = Modifier
-                            .alpha(
-                                if (loading) {
-                                    0f
-                                } else {
-                                    1f
-                                }
-                            )
-                    )
-                    if (loading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier
-                                .size(24.dp)
-                        )
-                    }
+                    ButtonContent(buttonState = buttonState)
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun ButtonContent(
+    buttonState: ButtonState
+) {
+    when(buttonState) {
+        ButtonState.Idle -> {
+            Text(
+                text = "Add to Order"
+            )
+        }
+        ButtonState.Loading -> {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .size(24.dp)
+            )
+        }
+        ButtonState.Success -> {
+            Text(
+                text = "Added to Order!"
+            )
+        }
+        ButtonState.Failure -> {
+            Text(
+                text = "Couldn't add"
+            )
         }
     }
 }
@@ -168,7 +183,7 @@ fun ProductOrderCardPreview() {
             ProductOrderCard(
                 height = 100.dp,
                 count = 1,
-                loading = true,
+                buttonState = ButtonState.Success,
                 buttonEnabled = true,
                 onSubtract = {},
                 onAdd = {},

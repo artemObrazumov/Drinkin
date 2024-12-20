@@ -7,7 +7,7 @@ import com.artemObrazumov.drinkin.dashboard.domain.models.ProductDetails
 data class ProductDetailsUi(
     val id: Int,
     val name: String,
-    val price: FormattedValue<Float>,
+    val basePrice: FormattedValue<Float>,
     val salePrice: FormattedValue<Float>?,
     val category: String?,
     val imageRes: Int,
@@ -19,7 +19,7 @@ fun ProductDetails.toProductDetailsUi(unit: String): ProductDetailsUi {
     return ProductDetailsUi(
         id = id,
         name = name,
-        price = price.asFormattedPrice(unit),
+        basePrice = basePrice.asFormattedPrice(unit),
         salePrice = salePrice?.asFormattedPrice(unit),
         category = category,
         imageRes = imageRes,

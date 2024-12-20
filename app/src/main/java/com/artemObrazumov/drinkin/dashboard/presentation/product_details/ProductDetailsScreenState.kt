@@ -12,9 +12,13 @@ sealed class ProductDetailsScreenState {
         val productDetailsUi: ProductDetailsUi,
         val count: Int,
         val selectedParameters: Map<String, Int>,
-        val addingToCart: Boolean = false
+        val buttonState: ButtonState = ButtonState.Idle
     ): ProductDetailsScreenState()
     data class Failure(
         val error: Error
     ): ProductDetailsScreenState()
+}
+
+enum class ButtonState {
+    Idle, Loading, Success, Failure
 }

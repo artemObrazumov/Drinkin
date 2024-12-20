@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.round
 import com.artemObrazumov.drinkin.R
+import com.artemObrazumov.drinkin.core.utils.Constants.PRICE_UNIT
 import com.artemObrazumov.drinkin.dashboard.domain.models.Product
 import com.artemObrazumov.drinkin.dashboard.presentation.models.ProductUi
 import com.artemObrazumov.drinkin.dashboard.presentation.models.toProductUi
@@ -194,4 +195,4 @@ internal val PRODUCT = Product(
     salePrice = null,
     category = "AAA",
     imageRes = R.drawable.cup
-).toProductUi("$")
+).toProductUi(PRICE_UNIT)

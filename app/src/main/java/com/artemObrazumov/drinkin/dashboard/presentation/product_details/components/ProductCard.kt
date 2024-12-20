@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.artemObrazumov.drinkin.core.presentation.FormattedValue
 import com.artemObrazumov.drinkin.core.presentation.asFormattedPrice
+import com.artemObrazumov.drinkin.core.utils.Constants.PRICE_UNIT
 import com.artemObrazumov.drinkin.dashboard.presentation.models.CustomizableParameterOptionUi
 import com.artemObrazumov.drinkin.dashboard.presentation.models.CustomizableParameterUi
 import com.artemObrazumov.drinkin.dashboard.presentation.product_details.PRODUCT_DETAILS
@@ -245,12 +246,12 @@ fun ProductCardPreview() {
         Surface {
             val product = PRODUCT_DETAILS
                 .copy(
-                    salePrice = 35f.asFormattedPrice("$")
+                    salePrice = 35f.asFormattedPrice(PRICE_UNIT)
                 )
             ProductCard(
                 name = product.name,
                 description = product.description,
-                price = product.price,
+                price = product.basePrice,
                 salePrice = product.salePrice,
                 customizableParameters = product.customizableParams,
                 selectedParameters = mapOf(

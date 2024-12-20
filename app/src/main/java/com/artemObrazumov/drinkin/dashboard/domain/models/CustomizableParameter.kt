@@ -8,5 +8,6 @@ data class CustomizableParameter(
 data class CustomizableParameterOption(
     val name: String,
     val detail: String,
+    val priceDifference: Float,
     val imageRes: Int
 )

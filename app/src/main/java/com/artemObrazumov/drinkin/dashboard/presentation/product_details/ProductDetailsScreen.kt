@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.artemObrazumov.drinkin.R
+import com.artemObrazumov.drinkin.core.utils.Constants.PRICE_UNIT
 import com.artemObrazumov.drinkin.dashboard.domain.models.CustomizableParameter
 import com.artemObrazumov.drinkin.dashboard.domain.models.CustomizableParameterOption
 import com.artemObrazumov.drinkin.dashboard.domain.models.ProductDetails
@@ -54,11 +55,11 @@ fun ProductDetailsScreen(
                 productDetailsUi = state.productDetailsUi,
                 count = state.count,
                 selectedParameters = state.selectedParameters,
-                addingToCart = state.addingToCart,
                 modifier = modifier,
                 incrementCount = incrementCount,
                 decrementCount = decrementCount,
                 addToCart = addToCart,
+                buttonState = state.buttonState,
                 onParameterSelect = onParameterSelect,
                 onGoBack = onGoBack
             )
@@ -74,7 +75,7 @@ fun ProductDetailsScreenContent(
     productDetailsUi: ProductDetailsUi,
     count: Int,
     selectedParameters: Map<String, Int?>,
-    addingToCart: Boolean,
+    buttonState: ButtonState,
     modifier: Modifier = Modifier,
     incrementCount: () -> Unit = {},
     decrementCount: () -> Unit = {},
@@ -163,7 +164,7 @@ fun ProductDetailsScreenContent(
                 ProductCard(
                     name = productDetailsUi.name,
                     description = productDetailsUi.description,
-                    price = productDetailsUi.price,
+                    price = productDetailsUi.basePrice,
                     salePrice = productDetailsUi.salePrice,
                     customizableParameters = productDetailsUi.customizableParams,
                     selectedParameters = selectedParameters,
@@ -185,10 +186,10 @@ fun ProductDetailsScreenContent(
             count = count,
             buttonEnabled = (selectedParameters.size == productDetailsUi.customizableParams.size &&
                     count > 0),
-            loading = addingToCart,
             onSubtract = { decrementCount() },
             onAdd = { incrementCount() },
             onAddToCart = { addToCart() },
+            buttonState = buttonState,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
         )
@@ -204,7 +205,7 @@ fun ProductDetailsScreenPreview() {
                 productDetailsUi = PRODUCT_DETAILS,
                 count = 10,
                 selectedParameters = emptyMap(),
-                addingToCart = false
+                buttonState = ButtonState.Idle
             )
         }
     }
@@ -213,7 +214,7 @@ fun ProductDetailsScreenPreview() {
 internal val PRODUCT_DETAILS = ProductDetails(
     id = 1,
     name = "Caramel Frappucino",
-    price = 30f,
+    basePrice = 30f,
     salePrice = null,
     category = "AAA",
     imageRes = R.drawable.cup,
@@ -225,24 +226,28 @@ internal val PRODUCT_DETAILS = ProductDetails(
                 CustomizableParameterOption(
                     name = "Tall",
                     detail = "12 Fl Oz",
-                    imageRes = R.drawable.cup_icon
+                    imageRes = R.drawable.cup_icon,
+                    priceDifference = 0f
                 ),
                 CustomizableParameterOption(
                     name = "Grande",
                     detail = "16 Fl Oz",
-                    imageRes = R.drawable.cup_icon
+                    imageRes = R.drawable.cup_icon,
+                    priceDifference = 3f
                 ),
                 CustomizableParameterOption(
                     name = "Venti",
                     detail = "24 Fl Oz",
-                    imageRes = R.drawable.cup_icon
+                    imageRes = R.drawable.cup_icon,
+                    priceDifference = 5.5f
                 ),
                 CustomizableParameterOption(
                     name = "Huge",
                     detail = "28 Fl Oz",
-                    imageRes = R.drawable.cup_icon
+                    imageRes = R.drawable.cup_icon,
+                    priceDifference = 8.9f
                 )
             )
         )
     )
-).toProductDetailsUi("$")
+).toProductDetailsUi(PRICE_UNIT)

@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.artemObrazumov.drinkin.core.presentation.FormattedValue
 import com.artemObrazumov.drinkin.core.presentation.asFormattedPrice
+import com.artemObrazumov.drinkin.core.utils.Constants.PRICE_UNIT
 import com.artemObrazumov.drinkin.ui.theme.DrinkinTheme
 
 @Composable
@@ -82,8 +83,8 @@ fun DrinkContentPreview() {
     DrinkinTheme {
         ProductContent(
             name = "Drink 1",
-            price = 30f.asFormattedPrice("$"),
-            salePrice = 35f.asFormattedPrice("$")
+            price = 30f.asFormattedPrice(PRICE_UNIT),
+            salePrice = 35f.asFormattedPrice(PRICE_UNIT)
         )
     }
 }

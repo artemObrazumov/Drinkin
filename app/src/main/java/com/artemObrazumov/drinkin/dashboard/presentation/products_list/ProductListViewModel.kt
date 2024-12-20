@@ -2,6 +2,7 @@ package com.artemObrazumov.drinkin.dashboard.presentation.products_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.artemObrazumov.drinkin.core.utils.Constants.PRICE_UNIT
 import com.artemObrazumov.drinkin.dashboard.domain.usecase.GetDashboardUseCase
 import com.artemObrazumov.drinkin.dashboard.domain.usecase.GetDashboardUseCaseResult
 import com.artemObrazumov.drinkin.dashboard.presentation.models.toCategoryUi
@@ -46,7 +47,7 @@ class ProductListViewModel(
                             categories = getDashboardResult.categories
                                 .map { it.toCategoryUi() },
                             products = getDashboardResult.products
-                                .map { it.toProductUi("$") }
+                                .map { it.toProductUi(PRICE_UNIT) }
                         )
                     }
                 }

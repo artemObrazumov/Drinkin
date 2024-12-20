@@ -29,6 +29,7 @@ import com.artemObrazumov.drinkin.core.presentation.LoadingScreenState
 import com.artemObrazumov.drinkin.core.presentation.rememberIntOffsetSaver
 import com.artemObrazumov.drinkin.core.presentation.rememberIntSizeSaver
 import com.artemObrazumov.drinkin.core.presentation.rememberOffsetSaver
+import com.artemObrazumov.drinkin.core.utils.Constants.PRICE_UNIT
 import com.artemObrazumov.drinkin.dashboard.domain.models.Product
 import com.artemObrazumov.drinkin.dashboard.presentation.models.CategoryUi
 import com.artemObrazumov.drinkin.dashboard.presentation.models.ProductUi
@@ -204,7 +205,7 @@ internal val PRODUCTS = listOf(
         salePrice = null,
         category = "AAA",
         imageRes = R.drawable.cup
-    ).toProductUi("$"),
+    ).toProductUi(PRICE_UNIT),
     Product(
         id = 1,
         name = "Test drink 2",
@@ -212,7 +213,7 @@ internal val PRODUCTS = listOf(
         salePrice = 35f,
         category = "AAA",
         imageRes = R.drawable.cup
-    ).toProductUi("$"),
+    ).toProductUi(PRICE_UNIT),
     Product(
         id = 1,
         name = "Test drink 3",
@@ -220,7 +221,7 @@ internal val PRODUCTS = listOf(
         salePrice = null,
         category = "AAA",
         imageRes = R.drawable.cup
-    ).toProductUi("$"),
+    ).toProductUi(PRICE_UNIT),
     Product(
         id = 1,
         name = "Test drink 4",
@@ -228,5 +229,5 @@ internal val PRODUCTS = listOf(
         salePrice = null,
         category = "AAA",
         imageRes = R.drawable.cup
-    ).toProductUi("$")
+    ).toProductUi(PRICE_UNIT)
 )
