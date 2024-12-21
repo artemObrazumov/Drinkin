@@ -3,6 +3,7 @@ package com.artemObrazumov.drinkin.dashboard.presentation.product_details
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.EaseOutCubic
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -15,12 +16,15 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -44,12 +48,19 @@ fun ProductDetailsScreen(
     decrementCount: () -> Unit = {},
     addToCart: () -> Unit = {},
     onParameterSelect: (parameter: String, optionIndex: Int) -> Unit = { _, _ -> },
-    onGoBack: () -> Unit = {}
+    onGoBack: () -> Unit = {},
+    menu: @Composable (onBackPress: () -> Unit) -> Unit = {}
 ) {
-    when(state) {
+    var onBackPress by remember {
+        mutableStateOf( onGoBack )
+    }
+    when (state) {
         ProductDetailsScreenState.Loading -> {
-            Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.primary))
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.primary))
         }
+
         is ProductDetailsScreenState.Content -> {
             ProductDetailsScreenContent(
                 productDetailsUi = state.productDetailsUi,
@@ -61,13 +72,18 @@ fun ProductDetailsScreen(
                 addToCart = addToCart,
                 buttonState = state.buttonState,
                 onParameterSelect = onParameterSelect,
-                onGoBack = onGoBack
+                onGoBack = onGoBack,
+                backPressHandler = { handler ->
+                    onBackPress = handler
+                }
             )
         }
+
         is ProductDetailsScreenState.Failure -> {
 
         }
     }
+    menu(onBackPress)
 }
 
 @Composable
@@ -81,8 +97,11 @@ fun ProductDetailsScreenContent(
     decrementCount: () -> Unit = {},
     addToCart: () -> Unit = {},
     onParameterSelect: (parameter: String, optionIndex: Int) -> Unit = { _, _ -> },
-    onGoBack: () -> Unit = {}
+    onGoBack: () -> Unit = {},
+    backPressHandler: (handler: () -> Unit) -> Unit = {}
 ) {
+    val orderCardHeight = 100.dp
+    val orderCardHeightPadding = 16.dp
     val configuration = LocalConfiguration.current
 
     var appearing by remember {
@@ -118,6 +137,39 @@ fun ProductDetailsScreenContent(
         ),
         label = ""
     )
+    var contentBlockAlpha by remember {
+        mutableFloatStateOf(0f)
+    }
+    val contentBlockAlphaAnimated by animateFloatAsState(
+        targetValue = contentBlockAlpha,
+        animationSpec = tween(
+            durationMillis = animationDuration,
+            easing = EaseOutCubic
+        ),
+        label = ""
+    )
+    var contentBlockTranslationY by remember {
+        mutableStateOf(12.dp)
+    }
+    val contentBlockTranslationYAnimated by animateDpAsState(
+        targetValue = contentBlockTranslationY,
+        animationSpec = tween(
+            durationMillis = animationDuration,
+            easing = EaseOutCubic
+        ),
+        label = ""
+    )
+    var orderCardTranslationY by remember {
+        mutableStateOf(orderCardHeight)
+    }
+    val orderCardTranslationYAnimated by animateDpAsState(
+        targetValue = orderCardTranslationY,
+        animationSpec = tween(
+            durationMillis = animationDuration,
+            easing = EaseOutCubic
+        ),
+        label = ""
+    )
 
     LaunchedEffect(appearing) {
         circleRadius = if (appearing) {
@@ -137,13 +189,32 @@ fun ProductDetailsScreenContent(
         } else {
             400
         }
+
+        contentBlockAlpha = if (appearing) {
+            1f
+        } else {
+            0f
+        }
+
+        contentBlockTranslationY = if (appearing) {
+            0.dp
+        } else {
+            36.dp
+        }
+
+        orderCardTranslationY = if (appearing) {
+            0.dp
+        } else {
+            orderCardHeight
+        }
     }
 
-    BackHandler {
+    val onBackPress = {
         appearing = false
     }
 
-    val orderCardHeight = 100.dp
+    BackHandler(onBack = onBackPress)
+    backPressHandler(onBackPress)
 
     Box {
         LazyColumn(
@@ -151,6 +222,11 @@ fun ProductDetailsScreenContent(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.primary)
         ) {
+            item {
+                Spacer(
+                    modifier = Modifier.height(36.dp)
+                )
+            }
             item {
                 ProductImage(
                     imageRes = productDetailsUi.imageRes,
@@ -170,7 +246,12 @@ fun ProductDetailsScreenContent(
                     selectedParameters = selectedParameters,
                     onParameterSelect = { parameter, option ->
                         onParameterSelect(parameter, option)
-                    }
+                    },
+                    modifier = Modifier
+                        .alpha(contentBlockAlphaAnimated)
+                        .graphicsLayer {
+                            translationY = contentBlockTranslationYAnimated.toPx()
+                        }
                 )
             }
             item {
@@ -183,6 +264,7 @@ fun ProductDetailsScreenContent(
 
         ProductOrderCard(
             height = orderCardHeight,
+            heightPadding = orderCardHeightPadding,
             count = count,
             buttonEnabled = (selectedParameters.size == productDetailsUi.customizableParams.size &&
                     count > 0),
@@ -192,6 +274,9 @@ fun ProductDetailsScreenContent(
             buttonState = buttonState,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
+                .graphicsLayer {
+                    translationY = orderCardTranslationYAnimated.toPx()
+                }
         )
     }
 }

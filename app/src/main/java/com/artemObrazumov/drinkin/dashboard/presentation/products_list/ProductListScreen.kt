@@ -45,12 +45,12 @@ internal enum class TransitionState {
     IDLE, TRANSITION, REVERSE
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProductListScreen(
     state: ProductListScreenState,
     modifier: Modifier = Modifier,
-    onDetailsScreen: () -> Unit = {}
+    onDetailsScreen: () -> Unit = {},
+    menu: @Composable () -> Unit = {}
 ) {
     when(state) {
         is ProductListScreenState.Loading -> {
@@ -61,7 +61,8 @@ fun ProductListScreen(
                 categories = state.categories,
                 products = state.products,
                 modifier = modifier,
-                onDetailsScreen = onDetailsScreen
+                onDetailsScreen = onDetailsScreen,
+                menu = menu
             )
         }
         is ProductListScreenState.Failure -> {
@@ -75,7 +76,8 @@ fun ProductListScreenContent(
     categories: List<CategoryUi>,
     products: List<ProductUi>,
     modifier: Modifier = Modifier,
-    onDetailsScreen: () -> Unit = {}
+    onDetailsScreen: () -> Unit = {},
+    menu: @Composable () -> Unit = {}
 ) {
     Box(
         modifier = modifier
@@ -181,6 +183,7 @@ fun ProductListScreenContent(
                 moveToTop = transitionState == TransitionState.TRANSITION
             )
         }
+        menu()
     }
 }
 

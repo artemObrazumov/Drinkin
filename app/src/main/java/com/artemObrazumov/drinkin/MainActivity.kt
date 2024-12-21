@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,10 +16,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.artemObrazumov.drinkin.dashboard.presentation.product_details.PRODUCT_DETAILS
+import com.artemObrazumov.drinkin.core.presentation.components.menu.DashboardMenu
+import com.artemObrazumov.drinkin.core.presentation.components.menu.Menu
 import com.artemObrazumov.drinkin.dashboard.presentation.product_details.ProductDetailsScreen
 import com.artemObrazumov.drinkin.dashboard.presentation.product_details.ProductDetailsViewModel
-import com.artemObrazumov.drinkin.dashboard.presentation.products_list.PRODUCTS
 import com.artemObrazumov.drinkin.dashboard.presentation.products_list.ProductListScreen
 import com.artemObrazumov.drinkin.dashboard.presentation.products_list.ProductListViewModel
 import com.artemObrazumov.drinkin.ui.theme.DrinkinTheme
@@ -35,8 +34,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             DrinkinTheme {
                 enableEdgeToEdge()
-                Scaffold(modifier = Modifier.fillMaxSize()) {
-                    val navController = rememberNavController()
+                val navController = rememberNavController()
+                Scaffold(
+                    modifier = Modifier.fillMaxSize()
+                ) {
                     NavHost(
                         navController = navController,
                         startDestination = DashBoard,
@@ -46,6 +47,7 @@ class MainActivity : ComponentActivity() {
                         composable<DashBoard> {
                             val viewModel: ProductListViewModel = koinViewModel()
                             val state by viewModel.state.collectAsState()
+
                             ProductListScreen(
                                 state = state,
                                 modifier = Modifier,
@@ -54,6 +56,12 @@ class MainActivity : ComponentActivity() {
                                         launchSingleTop = true
                                         restoreState = true
                                     }
+                                },
+                                menu = {
+                                    DashboardMenu(
+                                        onProfileIconClicked = {},
+                                        onCartIconClicked = { navController.navigate(Address) }
+                                    )
                                 }
                             )
                         }
@@ -61,9 +69,11 @@ class MainActivity : ComponentActivity() {
                         composable<Details> { backStackEntry ->
                             val details = backStackEntry.toRoute<Details>()
                             val viewModel: ProductDetailsViewModel = koinViewModel(
-                                parameters = { ParametersHolder(
-                                    mutableListOf(details.productId)
-                                ) }
+                                parameters = {
+                                    ParametersHolder(
+                                        mutableListOf(details.productId)
+                                    )
+                                }
                             )
                             val state by viewModel.state.collectAsState()
                             ProductDetailsScreen(
@@ -74,7 +84,14 @@ class MainActivity : ComponentActivity() {
                                 incrementCount = viewModel::incrementCount,
                                 decrementCount = viewModel::decrementCount,
                                 onParameterSelect = viewModel::onParameterSelect,
-                                addToCart = viewModel::addToCart
+                                addToCart = viewModel::addToCart,
+                                menu = { onBackPress ->
+                                    Menu(
+                                        title = "Details",
+                                        onBackButtonClicked = onBackPress,
+                                        onCartIconClicked = { navController.navigate(Cart) }
+                                    )
+                                }
                             )
                         }
                     }
@@ -91,3 +108,9 @@ data object DashBoard
 data class Details(
     val productId: Int
 )
+
+@Serializable
+data object Cart
+
+@Serializable
+data object Address

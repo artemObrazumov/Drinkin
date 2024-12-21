@@ -11,13 +11,22 @@ import com.artemObrazumov.drinkin.dashboard.domain.models.CustomizableParameterO
 import com.artemObrazumov.drinkin.dashboard.domain.models.Product
 import com.artemObrazumov.drinkin.dashboard.domain.models.ProductDetails
 import com.artemObrazumov.drinkin.dashboard.domain.models.ProductInCart
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 
 class ProductMockDataSource : ProductDataSource {
 
     private val productsInCart: MutableList<ProductInCart> = mutableListOf()
+    private val _productsChannel = MutableSharedFlow<List<ProductInCart>>(
+        replay = 1
+    )
+    override val productsChannel = _productsChannel.asSharedFlow()
 
     override suspend fun getProducts(): Result<List<Product>, NetworkError> {
+        delay(1000)
         return Result.Success(Products)
     }
 
@@ -26,6 +35,7 @@ class ProductMockDataSource : ProductDataSource {
     }
 
     override suspend fun getProductDetails(productId: Int): Result<ProductDetails, NetworkError> {
+        delay(1500)
         return Result.Success(PRODUCT_DETAILS.first())
     }
 
@@ -53,8 +63,11 @@ class ProductMockDataSource : ProductDataSource {
         )
         productsInCart.add(productInCart)
         delay(800)
+        _productsChannel.emit(productsInCart)
         return Result.Success(200)
     }
+
+    override suspend fun fetchCart() {}
 }
 
 internal val Products = listOf(

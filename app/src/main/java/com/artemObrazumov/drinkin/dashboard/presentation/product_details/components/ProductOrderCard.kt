@@ -1,5 +1,6 @@
 package com.artemObrazumov.drinkin.dashboard.presentation.product_details.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -29,6 +31,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -39,10 +44,12 @@ import androidx.compose.ui.unit.sp
 import com.artemObrazumov.drinkin.R
 import com.artemObrazumov.drinkin.dashboard.presentation.product_details.ButtonState
 import com.artemObrazumov.drinkin.ui.theme.DrinkinTheme
+import com.artemObrazumov.drinkin.ui.theme.darkTextColor
 
 @Composable
 fun ProductOrderCard(
     height: Dp,
+    heightPadding: Dp,
     count: Int,
     buttonEnabled: Boolean,
     buttonState: ButtonState,
@@ -54,16 +61,24 @@ fun ProductOrderCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(height)
-            .padding(top = 4.dp)
-            .padding(bottom = 32.dp)
+            .height(height + heightPadding)
+            .background(
+                Brush.linearGradient(
+                    0f to Color.Transparent,
+                    0.4f to MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
+                    start = Offset.Zero,
+                    end = Offset(
+                        x = 0f,
+                        y = Float.POSITIVE_INFINITY
+                    )
+                )
+            )
+            .padding(top = 4.dp + heightPadding)
+            .padding(bottom = 28.dp)
             .padding(horizontal = 16.dp),
         shape = RoundedCornerShape(36.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 16.dp
         )
     ) {
         Row(
@@ -123,6 +138,8 @@ fun ProductOrderCard(
                 modifier = Modifier
                     .weight(1f)
             )
+            val isEnabled = buttonEnabled && buttonState != ButtonState.Loading ||
+                    buttonState == ButtonState.Success || buttonState == ButtonState.Failure
             Button(
                 onClick = { onAddToCart() },
                 modifier = Modifier
@@ -133,13 +150,15 @@ fun ProductOrderCard(
                         ambientColor = MaterialTheme.colorScheme.primary,
                         shape = CircleShape
                     ),
-                enabled = (buttonEnabled && buttonState != ButtonState.Loading ||
-                        buttonState == ButtonState.Success || buttonState == ButtonState.Failure)
+                enabled = isEnabled
             ) {
                 Box(
                     contentAlignment = Alignment.Center
-                ){
-                    ButtonContent(buttonState = buttonState)
+                ) {
+                    ButtonContent(
+                        buttonState = buttonState,
+                        enabled = isEnabled
+                    )
                 }
             }
         }
@@ -148,28 +167,40 @@ fun ProductOrderCard(
 
 @Composable
 fun ButtonContent(
-    buttonState: ButtonState
+    buttonState: ButtonState,
+    enabled: Boolean
 ) {
-    when(buttonState) {
+    val textColor = if (enabled) {
+        Color.White
+    } else {
+        darkTextColor
+    }
+    when (buttonState) {
         ButtonState.Idle -> {
             Text(
-                text = "Add to Order"
+                text = "Add to Order",
+                color = textColor
             )
         }
+
         ButtonState.Loading -> {
             CircularProgressIndicator(
                 modifier = Modifier
                     .size(24.dp)
             )
         }
+
         ButtonState.Success -> {
             Text(
-                text = "Added to Order!"
+                text = "Added to Order!",
+                color = textColor
             )
         }
+
         ButtonState.Failure -> {
             Text(
-                text = "Couldn't add"
+                text = "Couldn't add",
+                color = textColor
             )
         }
     }
@@ -182,6 +213,7 @@ fun ProductOrderCardPreview() {
         Surface {
             ProductOrderCard(
                 height = 100.dp,
+                heightPadding = 16.dp,
                 count = 1,
                 buttonState = ButtonState.Success,
                 buttonEnabled = true,
