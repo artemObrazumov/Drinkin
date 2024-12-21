@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.artemObrazumov.drinkin.ui.theme.darkTextColor
 
 @Composable
 fun DashboardMenu(
@@ -54,7 +55,8 @@ fun DashboardMenu(
                 style = TextStyle(
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp
-                )
+                ),
+                color = darkTextColor
             )
         }
         Spacer(

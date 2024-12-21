@@ -1,6 +1,5 @@
 package com.artemObrazumov.drinkin.dashboard.presentation.products_list
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,11 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
@@ -34,12 +35,14 @@ import com.artemObrazumov.drinkin.dashboard.domain.models.Product
 import com.artemObrazumov.drinkin.dashboard.presentation.models.CategoryUi
 import com.artemObrazumov.drinkin.dashboard.presentation.models.ProductUi
 import com.artemObrazumov.drinkin.dashboard.presentation.models.toProductUi
+import com.artemObrazumov.drinkin.dashboard.presentation.products_list.components.CategoriesList
 import com.artemObrazumov.drinkin.dashboard.presentation.products_list.components.ProductContent
 import com.artemObrazumov.drinkin.dashboard.presentation.products_list.components.ProductIndicator
 import com.artemObrazumov.drinkin.dashboard.presentation.products_list.components.ProductsPager
 import com.artemObrazumov.drinkin.dashboard.presentation.products_list.components.TransitionCircle
 import com.artemObrazumov.drinkin.dashboard.presentation.products_list.components.TransitionImage
 import com.artemObrazumov.drinkin.ui.theme.DrinkinTheme
+import kotlinx.coroutines.launch
 
 internal enum class TransitionState {
     IDLE, TRANSITION, REVERSE
@@ -50,21 +53,26 @@ fun ProductListScreen(
     state: ProductListScreenState,
     modifier: Modifier = Modifier,
     onDetailsScreen: () -> Unit = {},
+    onCategoryClicked: (category: CategoryUi) -> Unit = {},
     menu: @Composable () -> Unit = {}
 ) {
-    when(state) {
+    when (state) {
         is ProductListScreenState.Loading -> {
             LoadingScreenState()
         }
+
         is ProductListScreenState.Content -> {
             ProductListScreenContent(
                 categories = state.categories,
-                products = state.products,
+                products = state.productsInList,
+                selectedCategoryName = state.selectedCategoryName,
                 modifier = modifier,
                 onDetailsScreen = onDetailsScreen,
+                onCategoryClicked = onCategoryClicked,
                 menu = menu
             )
         }
+
         is ProductListScreenState.Failure -> {
 
         }
@@ -75,14 +83,17 @@ fun ProductListScreen(
 fun ProductListScreenContent(
     categories: List<CategoryUi>,
     products: List<ProductUi>,
+    selectedCategoryName: String,
     modifier: Modifier = Modifier,
     onDetailsScreen: () -> Unit = {},
+    onCategoryClicked: (category: CategoryUi) -> Unit = {},
     menu: @Composable () -> Unit = {}
 ) {
     Box(
         modifier = modifier
             .fillMaxSize()
     ) {
+        val scope = rememberCoroutineScope()
         val pagerState = rememberPagerState(
             pageCount = { products.size }
         )
@@ -116,9 +127,43 @@ fun ProductListScreenContent(
         Column {
             Spacer(modifier = Modifier.weight(1f))
             Box {
+                val selectedCategoryIndex = categories
+                    .indexOfFirst { it.name == selectedCategoryName }
+
+                CategoriesList(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(
+                            when (categories.size) {
+                                4 -> 678.dp
+                                else -> 728.dp
+                            }
+                        )
+                        .align(Alignment.BottomCenter)
+                        .graphicsLayer {
+                            translationY = 0.dp.toPx()
+                        },
+                    categories = categories,
+                    itemOffsetDp = when (categories.size) {
+                        2 -> 56
+                        3 -> 52
+                        4 -> 48
+                        else -> 56
+                    },
+                    backgroundColor = MaterialTheme.colorScheme.secondary,
+                    indicatorColor = MaterialTheme.colorScheme.tertiary,
+                    selectedCategoryIndex = selectedCategoryIndex,
+                    onCategoryClicked = {
+                        scope.launch {
+                            pagerState.scrollToPage(0)
+                        }
+                        onCategoryClicked(it)
+                    }
+                )
                 ProductsPager(
                     modifier = Modifier
-                        .height(516.dp),
+                        .height(516.dp)
+                        .align(Alignment.BottomCenter),
                     pagerState = pagerState,
                     backgroundColor = MaterialTheme.colorScheme.primary,
                     itemsPaddingDp = 164,
@@ -166,11 +211,15 @@ fun ProductListScreenContent(
             isActive = transitionState == TransitionState.TRANSITION,
             onTransitionEnd = {
                 when (transitionState) {
-                    TransitionState.TRANSITION -> { onDetailsScreen() }
+                    TransitionState.TRANSITION -> {
+                        onDetailsScreen()
+                    }
+
                     TransitionState.REVERSE -> {
                         transitionImageRes = null
                         transitionState = TransitionState.IDLE
                     }
+
                     else -> {}
                 }
             }
@@ -194,7 +243,8 @@ fun DrinksListScreenPreview() {
         Surface {
             ProductListScreenContent(
                 categories = emptyList(),
-                products = PRODUCTS
+                products = PRODUCTS,
+                selectedCategoryName = ""
             )
         }
     }

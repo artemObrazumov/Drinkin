@@ -26,7 +26,7 @@ class ProductMockDataSource : ProductDataSource {
     override val productsChannel = _productsChannel.asSharedFlow()
 
     override suspend fun getProducts(): Result<List<Product>, NetworkError> {
-        delay(1000)
+        //delay(1000)
         return Result.Success(Products)
     }
 
@@ -73,83 +73,98 @@ class ProductMockDataSource : ProductDataSource {
 internal val Products = listOf(
     Product(
         id = 1,
-        name = "Test drink",
+        name = "Test coffee 1",
         price = 30f,
         salePrice = null,
-        category = "AAA",
+        category = "coffee",
         imageRes = R.drawable.cup
     ),
     Product(
         id = 2,
-        name = "Test drink",
+        name = "Test coffee 2",
         price = 30f,
         salePrice = null,
-        category = "AAA",
+        category = "coffee",
         imageRes = R.drawable.cup
     ),
     Product(
         id = 3,
-        name = "Test drink",
+        name = "Test drink 1",
         price = 30f,
         salePrice = null,
-        category = "AAA",
+        category = "drinks",
         imageRes = R.drawable.cup
     ),
     Product(
         id = 4,
-        name = "Test drink",
+        name = "Test drink 2",
         price = 30f,
         salePrice = null,
-        category = "AAA",
+        category = "drinks",
         imageRes = R.drawable.cup
     ),
     Product(
         id = 5,
-        name = "Test drink",
+        name = "Test tea 1",
         price = 30f,
         salePrice = null,
-        category = "AAA",
+        category = "teas",
         imageRes = R.drawable.cup
     ),
     Product(
         id = 6,
-        name = "Test drink",
+        name = "Test tea 2",
         price = 30f,
         salePrice = null,
-        category = "AAA",
+        category = "teas",
         imageRes = R.drawable.cup
     ),
     Product(
         id = 7,
-        name = "Test drink",
+        name = "Test bakery 1",
         price = 30f,
         salePrice = null,
-        category = "AAA",
+        category = "bakery",
         imageRes = R.drawable.cup
     ),
     Product(
         id = 8,
-        name = "Test drink",
+        name = "Test bakery 2",
         price = 30f,
         salePrice = null,
-        category = "AAA",
+        category = "bakery",
         imageRes = R.drawable.cup
     ),
     Product(
         id = 9,
-        name = "Test drink",
+        name = "Test bakery 3",
         price = 30f,
         salePrice = null,
-        category = "AAA",
+        category = "bakery",
         imageRes = R.drawable.cup
     )
 )
 
 internal val CATEGORIES = listOf(
     Category(
-        name = "test",
-        title = "Test",
-        imageRes = R.drawable.cup
+        name = "coffee",
+        title = "Hot coffee",
+        imageRes = R.drawable.coffee_icon
+    ),
+    Category(
+        name = "drinks",
+        title = "Drinks",
+        imageRes = R.drawable.drinks_icon
+    ),
+    Category(
+        name = "teas",
+        title = "Hot teas",
+        imageRes = R.drawable.tea_icon
+    ),
+    Category(
+        name = "bakery",
+        title = "Bakery",
+        imageRes = R.drawable.bakery_icon
     )
 )
 
@@ -159,7 +174,7 @@ internal val PRODUCT_DETAILS = listOf(
         name = "Caramel Frappucino",
         basePrice = 30f,
         salePrice = null,
-        category = "AAA",
+        category = "coffee",
         imageRes = R.drawable.cup,
         description = "test description ".repeat(10),
         customizableParams = listOf(

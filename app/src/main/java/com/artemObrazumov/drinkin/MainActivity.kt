@@ -16,6 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.artemObrazumov.drinkin.core.presentation.components.BeansBackground
 import com.artemObrazumov.drinkin.core.presentation.components.menu.DashboardMenu
 import com.artemObrazumov.drinkin.core.presentation.components.menu.Menu
 import com.artemObrazumov.drinkin.dashboard.presentation.product_details.ProductDetailsScreen
@@ -38,6 +39,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
                 ) {
+                    BeansBackground()
                     NavHost(
                         navController = navController,
                         startDestination = DashBoard,
@@ -57,6 +59,7 @@ class MainActivity : ComponentActivity() {
                                         restoreState = true
                                     }
                                 },
+                                onCategoryClicked = viewModel::changeCategory,
                                 menu = {
                                     DashboardMenu(
                                         onProfileIconClicked = {},

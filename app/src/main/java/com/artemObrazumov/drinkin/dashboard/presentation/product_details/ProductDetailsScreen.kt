@@ -24,11 +24,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.artemObrazumov.drinkin.R
+import com.artemObrazumov.drinkin.core.presentation.LoadingScreenState
 import com.artemObrazumov.drinkin.core.utils.Constants.PRICE_UNIT
 import com.artemObrazumov.drinkin.dashboard.domain.models.CustomizableParameter
 import com.artemObrazumov.drinkin.dashboard.domain.models.CustomizableParameterOption
@@ -56,9 +58,11 @@ fun ProductDetailsScreen(
     }
     when (state) {
         ProductDetailsScreenState.Loading -> {
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.primary))
+            LoadingScreenState(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.primary),
+                trackColor = Color.White
+            )
         }
 
         is ProductDetailsScreenState.Content -> {

@@ -32,7 +32,6 @@ import kotlin.math.PI
 import kotlin.math.absoluteValue
 import kotlin.math.sin
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProductsPager(
     pagerState: PagerState,

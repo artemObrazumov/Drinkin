@@ -11,7 +11,9 @@ sealed class ProductListScreenState {
     data object Loading: ProductListScreenState()
     data class Content(
         val categories: List<CategoryUi> = emptyList(),
-        val products: List<ProductUi> = emptyList()
+        val allProducts: List<ProductUi> = emptyList(),
+        val productsInList: List<ProductUi> = emptyList(),
+        val selectedCategoryName: String = ""
     ): ProductListScreenState()
     data class Failure(
         val error: Error

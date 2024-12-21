@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.artemObrazumov.drinkin.core.utils.Constants.PRICE_UNIT
 import com.artemObrazumov.drinkin.dashboard.domain.usecase.GetDashboardUseCase
 import com.artemObrazumov.drinkin.dashboard.domain.usecase.GetDashboardUseCaseResult
+import com.artemObrazumov.drinkin.dashboard.presentation.models.CategoryUi
 import com.artemObrazumov.drinkin.dashboard.presentation.models.toCategoryUi
 import com.artemObrazumov.drinkin.dashboard.presentation.models.toProductUi
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +18,7 @@ import kotlinx.coroutines.launch
 
 class ProductListViewModel(
     private val getDashboardUseCase: GetDashboardUseCase
-): ViewModel() {
+) : ViewModel() {
 
     private val _state = MutableStateFlow<ProductListScreenState>(ProductListScreenState.Loading)
     val state = _state
@@ -33,7 +34,7 @@ class ProductListViewModel(
             _state.update {
                 ProductListScreenState.Loading
             }
-            when(val getDashboardResult = getDashboardUseCase.invoke()) {
+            when (val getDashboardResult = getDashboardUseCase.invoke()) {
                 is GetDashboardUseCaseResult.Failure -> {
                     _state.update {
                         ProductListScreenState.Failure(
@@ -41,16 +42,37 @@ class ProductListViewModel(
                         )
                     }
                 }
+
                 is GetDashboardUseCaseResult.Success -> {
+                    val categories = getDashboardResult.categories
+                        .map { it.toCategoryUi() }.take(4)
                     _state.update {
                         ProductListScreenState.Content(
-                            categories = getDashboardResult.categories
-                                .map { it.toCategoryUi() },
-                            products = getDashboardResult.products
-                                .map { it.toProductUi(PRICE_UNIT) }
+                            categories = categories,
+                            allProducts = getDashboardResult.products
+                                .map { it.toProductUi(PRICE_UNIT) },
                         )
                     }
+                    changeCategory(categories.first())
                 }
+            }
+        }
+    }
+
+    fun changeCategory(categoryUi: CategoryUi) {
+        val state = _state.value as ProductListScreenState.Content
+        viewModelScope.launch(Dispatchers.IO) {
+            _state.update {
+                val productsInList = state.allProducts.filter {
+                    it.category == categoryUi.name
+                }
+                if (productsInList.isEmpty()) {
+                    throw IllegalStateException("Can't display category with 0 elements")
+                }
+                state.copy(
+                    selectedCategoryName = categoryUi.name,
+                    productsInList = productsInList
+                )
             }
         }
     }
