@@ -5,6 +5,9 @@ import com.artemObrazumov.drinkin.dashboard.domain.data_source.ProductDataSource
 import com.artemObrazumov.drinkin.dashboard.domain.usecase.AddProductsToCartUseCase
 import com.artemObrazumov.drinkin.dashboard.domain.usecase.GetDashboardUseCase
 import com.artemObrazumov.drinkin.dashboard.domain.usecase.GetProductDetailUseCase
+import com.artemObrazumov.drinkin.dashboard.domain.usecase.GetProductsInCartFlowUseCase
+import com.artemObrazumov.drinkin.dashboard.domain.usecase.GetProductsInCartUseCase
+import com.artemObrazumov.drinkin.dashboard.presentation.cart.CartScreenViewModel
 import com.artemObrazumov.drinkin.dashboard.presentation.product_details.ProductDetailsViewModel
 import com.artemObrazumov.drinkin.dashboard.presentation.products_list.ProductListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
@@ -17,7 +20,10 @@ val appModule = module {
     singleOf(::GetDashboardUseCase)
     singleOf(::GetProductDetailUseCase)
     singleOf(::AddProductsToCartUseCase)
+    singleOf(::GetProductsInCartUseCase)
+    singleOf(::GetProductsInCartFlowUseCase)
 
     viewModelOf(::ProductListViewModel)
     viewModelOf(::ProductDetailsViewModel)
+    viewModelOf(::CartScreenViewModel)
 }

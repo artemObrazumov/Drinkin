@@ -2,16 +2,14 @@ package com.artemObrazumov.drinkin.core.presentation.components.menu
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Place
-import androidx.compose.material.icons.outlined.Place
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -19,16 +17,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.artemObrazumov.drinkin.ui.theme.darkTextColor
 
 @Composable
-fun DashboardMenu(
+fun MenuWithCart(
     modifier: Modifier = Modifier,
-    onAddressIconClicked: () -> Unit,
-    onProfileIconClicked: () -> Unit,
+    title: String,
+    onBackButtonClicked: () -> Unit,
     onCartIconClicked: () -> Unit,
 ) {
     Row(
@@ -38,41 +36,31 @@ fun DashboardMenu(
             .padding(vertical = 32.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
+        Box(
             modifier = Modifier
-                .fillMaxWidth(0.6f)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null
-                ) { onAddressIconClicked() },
-            verticalAlignment = Alignment.CenterVertically
+                ) { onBackButtonClicked() }
+                .size(40.dp),
+            contentAlignment = Alignment.Center
         ) {
             Icon(
-                Icons.Outlined.Place,
-                contentDescription = "address",
-                tint = MaterialTheme.colorScheme.tertiaryContainer
-            )
-            Spacer(
-                modifier = Modifier.width(8.dp)
-            )
-            Text(
-                text = "Lorem ipsum ".repeat(10),
-                minLines = 2,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                style = TextStyle(
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 16.sp
-                ),
-                color = darkTextColor
+                Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Back",
+                tint = darkTextColor
             )
         }
-        Spacer(
-            modifier = Modifier.weight(1f)
+        Text(
+            modifier = Modifier
+                .weight(1f),
+            text = title,
+            style = TextStyle(
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp
+            ),
+            textAlign = TextAlign.Center
         )
-        MenuProfileIcon {
-            onProfileIconClicked()
-        }
         MenuBasketIcon {
             onCartIconClicked()
         }

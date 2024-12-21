@@ -18,7 +18,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.artemObrazumov.drinkin.core.presentation.components.BeansBackground
 import com.artemObrazumov.drinkin.core.presentation.components.menu.DashboardMenu
-import com.artemObrazumov.drinkin.core.presentation.components.menu.Menu
+import com.artemObrazumov.drinkin.core.presentation.components.menu.MenuWithCart
+import com.artemObrazumov.drinkin.core.presentation.components.menu.MenuWithProfile
+import com.artemObrazumov.drinkin.dashboard.presentation.cart.CartScreen
+import com.artemObrazumov.drinkin.dashboard.presentation.cart.CartScreenViewModel
 import com.artemObrazumov.drinkin.dashboard.presentation.product_details.ProductDetailsScreen
 import com.artemObrazumov.drinkin.dashboard.presentation.product_details.ProductDetailsViewModel
 import com.artemObrazumov.drinkin.dashboard.presentation.products_list.ProductListScreen
@@ -42,7 +45,8 @@ class MainActivity : ComponentActivity() {
                     BeansBackground()
                     NavHost(
                         navController = navController,
-                        startDestination = DashBoard,
+                        startDestination = Cart,
+                        //startDestination = DashBoard,
                         enterTransition = { EnterTransition.None },
                         exitTransition = { ExitTransition.None }
                     ) {
@@ -62,8 +66,9 @@ class MainActivity : ComponentActivity() {
                                 onCategoryClicked = viewModel::changeCategory,
                                 menu = {
                                     DashboardMenu(
+                                        onAddressIconClicked = {},
                                         onProfileIconClicked = {},
-                                        onCartIconClicked = { navController.navigate(Address) }
+                                        onCartIconClicked = { navController.navigate(Cart) }
                                     )
                                 }
                             )
@@ -89,10 +94,25 @@ class MainActivity : ComponentActivity() {
                                 onParameterSelect = viewModel::onParameterSelect,
                                 addToCart = viewModel::addToCart,
                                 menu = { onBackPress ->
-                                    Menu(
+                                    MenuWithCart(
                                         title = "Details",
                                         onBackButtonClicked = onBackPress,
                                         onCartIconClicked = { navController.navigate(Cart) }
+                                    )
+                                }
+                            )
+                        }
+
+                        composable<Cart> {
+                            val viewModel: CartScreenViewModel = koinViewModel()
+                            val state by viewModel.state.collectAsState()
+                            CartScreen(
+                                state = state,
+                                menu = {
+                                    MenuWithProfile(
+                                        title = "Cart",
+                                        onBackButtonClicked = { navController.navigateUp() },
+                                        onProfileIconClicked = {  }
                                     )
                                 }
                             )

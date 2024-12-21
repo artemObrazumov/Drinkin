@@ -11,19 +11,21 @@ import com.artemObrazumov.drinkin.dashboard.domain.models.CustomizableParameterO
 import com.artemObrazumov.drinkin.dashboard.domain.models.Product
 import com.artemObrazumov.drinkin.dashboard.domain.models.ProductDetails
 import com.artemObrazumov.drinkin.dashboard.domain.models.ProductInCart
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.runBlocking
+import kotlin.random.Random
 
 class ProductMockDataSource : ProductDataSource {
 
     private val productsInCart: MutableList<ProductInCart> = mutableListOf()
-    private val _productsChannel = MutableSharedFlow<List<ProductInCart>>(
-        replay = 1
+    private val _productsInCart = MutableSharedFlow<List<ProductInCart>>(
+        replay = 1,
+        extraBufferCapacity = 1
     )
-    override val productsChannel = _productsChannel.asSharedFlow()
+    override val productsInCartFlow = _productsInCart.asSharedFlow()
 
     override suspend fun getProducts(): Result<List<Product>, NetworkError> {
         //delay(1000)
@@ -35,7 +37,7 @@ class ProductMockDataSource : ProductDataSource {
     }
 
     override suspend fun getProductDetails(productId: Int): Result<ProductDetails, NetworkError> {
-        delay(1500)
+        delay(500)
         return Result.Success(PRODUCT_DETAILS.first())
     }
 
@@ -50,11 +52,14 @@ class ProductMockDataSource : ProductDataSource {
         var price = productDetails.basePrice
         val parameters = mutableMapOf<String, String>()
         selectedParameters.forEach { (parameter, option) ->
-            parameters[parameter] = productDetails.customizableParams.first { it.name == parameter }
-                .options[option].name
+            val parameterOption = productDetails.customizableParams.first { it.name == parameter }
+                .options[option]
+            parameters[parameter] = parameterOption.name
+            price += parameterOption.priceDifference
         }
         val productInCart = ProductInCart(
-            id = productId,
+            id = Random(System.currentTimeMillis()).nextInt(),
+            productId = productId,
             name = productDetails.name,
             price = price,
             quantity = count,
@@ -62,12 +67,9 @@ class ProductMockDataSource : ProductDataSource {
             parameters = parameters
         )
         productsInCart.add(productInCart)
-        delay(800)
-        _productsChannel.emit(productsInCart)
+        _productsInCart.emit(productsInCart)
         return Result.Success(200)
     }
-
-    override suspend fun fetchCart() {}
 }
 
 internal val Products = listOf(

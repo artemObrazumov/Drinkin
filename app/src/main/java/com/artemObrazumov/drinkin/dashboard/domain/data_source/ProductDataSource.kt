@@ -6,11 +6,10 @@ import com.artemObrazumov.drinkin.dashboard.domain.models.Category
 import com.artemObrazumov.drinkin.dashboard.domain.models.Product
 import com.artemObrazumov.drinkin.dashboard.domain.models.ProductDetails
 import com.artemObrazumov.drinkin.dashboard.domain.models.ProductInCart
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 
 interface ProductDataSource {
-    val productsChannel: SharedFlow<List<ProductInCart>>
+    val productsInCartFlow: SharedFlow<List<ProductInCart>>
 
     suspend fun getProducts(): Result<List<Product>, NetworkError>
     suspend fun getCategories(): Result<List<Category>, NetworkError>
@@ -20,5 +19,4 @@ interface ProductDataSource {
         count: Int,
         selectedParameters: Map<String, Int>
     ): Result<Int, NetworkError>
-    suspend fun fetchCart()
 }
