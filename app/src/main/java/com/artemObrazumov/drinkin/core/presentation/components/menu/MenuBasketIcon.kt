@@ -42,17 +42,18 @@ fun MenuBasketIcon(
             tint = MaterialTheme.colorScheme.tertiaryContainer,
             contentDescription = null
         )
-        Box(
-            modifier = Modifier
-                .graphicsLayer {
-                    translationX = -6.dp.toPx()
-                    translationY = 4.dp.toPx()
-                }
-                .size(16.dp)
-                .align(Alignment.TopEnd)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary, CircleShape)
-                .border(2.dp, Color.White, CircleShape)
-        )
-    }
+        if (hasElements) {
+            Box(
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -6.dp.toPx()
+                        translationY = 4.dp.toPx()
+                    }
+                    .size(16.dp)
+                    .align(Alignment.TopEnd)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primary, CircleShape)
+                    .border(2.dp, Color.White, CircleShape)
+            )
+        }    }
 }

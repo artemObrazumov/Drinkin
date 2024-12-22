@@ -33,7 +33,7 @@ fun MenuWithProfile(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
-            .padding(vertical = 32.dp),
+            .padding(vertical = 48.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(

@@ -23,8 +23,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -141,33 +141,22 @@ fun ProductDetailsScreenContent(
         ),
         label = ""
     )
-    var contentBlockAlpha by remember {
+    var contentBlockScale by remember {
         mutableFloatStateOf(0f)
     }
-    val contentBlockAlphaAnimated by animateFloatAsState(
-        targetValue = contentBlockAlpha,
+    val contentBlockScaleAnimated by animateFloatAsState(
+        targetValue = contentBlockScale,
         animationSpec = tween(
             durationMillis = animationDuration,
             easing = EaseOutCubic
         ),
         label = ""
     )
-    var contentBlockTranslationY by remember {
-        mutableStateOf(12.dp)
+    var orderCardScale by remember {
+        mutableFloatStateOf(0f)
     }
-    val contentBlockTranslationYAnimated by animateDpAsState(
-        targetValue = contentBlockTranslationY,
-        animationSpec = tween(
-            durationMillis = animationDuration,
-            easing = EaseOutCubic
-        ),
-        label = ""
-    )
-    var orderCardTranslationY by remember {
-        mutableStateOf(orderCardHeight)
-    }
-    val orderCardTranslationYAnimated by animateDpAsState(
-        targetValue = orderCardTranslationY,
+    val orderCardScaleAnimated by animateFloatAsState(
+        targetValue = orderCardScale,
         animationSpec = tween(
             durationMillis = animationDuration,
             easing = EaseOutCubic
@@ -194,22 +183,16 @@ fun ProductDetailsScreenContent(
             400
         }
 
-        contentBlockAlpha = if (appearing) {
+        contentBlockScale = if (appearing) {
             1f
         } else {
             0f
         }
 
-        contentBlockTranslationY = if (appearing) {
-            0.dp
+        orderCardScale = if (appearing) {
+            1f
         } else {
-            36.dp
-        }
-
-        orderCardTranslationY = if (appearing) {
-            0.dp
-        } else {
-            orderCardHeight
+            0f
         }
     }
 
@@ -228,7 +211,7 @@ fun ProductDetailsScreenContent(
         ) {
             item {
                 Spacer(
-                    modifier = Modifier.height(36.dp)
+                    modifier = Modifier.height(52.dp)
                 )
             }
             item {
@@ -252,9 +235,10 @@ fun ProductDetailsScreenContent(
                         onParameterSelect(parameter, option)
                     },
                     modifier = Modifier
-                        .alpha(contentBlockAlphaAnimated)
                         .graphicsLayer {
-                            translationY = contentBlockTranslationYAnimated.toPx()
+                            transformOrigin = TransformOrigin(0.5f, 0f)
+                            scaleX = contentBlockScaleAnimated
+                            scaleY = contentBlockScaleAnimated
                         }
                 )
             }
@@ -279,7 +263,9 @@ fun ProductDetailsScreenContent(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .graphicsLayer {
-                    translationY = orderCardTranslationYAnimated.toPx()
+                    transformOrigin = TransformOrigin(0.5f, 1f)
+                    scaleX = orderCardScaleAnimated
+                    scaleY = orderCardScaleAnimated
                 }
         )
     }

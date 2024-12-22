@@ -61,7 +61,7 @@ class ProductMockDataSource : ProductDataSource {
             id = Random(System.currentTimeMillis()).nextInt(),
             productId = productId,
             name = productDetails.name,
-            price = price,
+            price = price * count,
             quantity = count,
             imageRes = productDetails.imageRes,
             parameters = parameters
@@ -69,6 +69,40 @@ class ProductMockDataSource : ProductDataSource {
         productsInCart.add(productInCart)
         _productsInCart.emit(productsInCart)
         return Result.Success(200)
+    }
+
+    override suspend fun incrementProductInCart(productId: Int) {
+        val productIndex = productsInCart.indexOfFirst { it.id == productId }
+        val productInCart = productsInCart.first { it.id == productId }
+        val newQuantity = productInCart.quantity + 1
+        val newPrice = (productInCart.price / productInCart.quantity) * newQuantity
+        productsInCart[productIndex] = productInCart.copy(
+            quantity = newQuantity,
+            price = newPrice
+        )
+        _productsInCart.emit(productsInCart)
+    }
+
+    override suspend fun decrementProductInCart(productId: Int) {
+        val productIndex = productsInCart.indexOfFirst { it.id == productId }
+        val productInCart = productsInCart.first { it.id == productId }
+        if (productInCart.quantity <= 1) {
+            removeProductFromCart(productId)
+            return
+        }
+        val newQuantity = productInCart.quantity - 1
+        val newPrice = (productInCart.price / productInCart.quantity) * newQuantity
+        productsInCart[productIndex] = productInCart.copy(
+            quantity = newQuantity,
+            price = newPrice
+        )
+        _productsInCart.emit(productsInCart)
+    }
+
+    override suspend fun removeProductFromCart(productId: Int) {
+        val index = productsInCart.indexOfFirst { it.id == productId }
+        productsInCart.removeAt(index)
+        _productsInCart.emit(productsInCart)
     }
 }
 

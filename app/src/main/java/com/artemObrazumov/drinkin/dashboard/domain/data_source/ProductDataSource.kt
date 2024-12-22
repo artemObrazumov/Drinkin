@@ -19,4 +19,7 @@ interface ProductDataSource {
         count: Int,
         selectedParameters: Map<String, Int>
     ): Result<Int, NetworkError>
+    suspend fun incrementProductInCart(productId: Int)
+    suspend fun decrementProductInCart(productId: Int)
+    suspend fun removeProductFromCart(productId: Int)
 }

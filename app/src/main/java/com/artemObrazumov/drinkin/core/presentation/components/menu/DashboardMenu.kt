@@ -27,6 +27,7 @@ import com.artemObrazumov.drinkin.ui.theme.darkTextColor
 @Composable
 fun DashboardMenu(
     modifier: Modifier = Modifier,
+    basketHasElements: Boolean = false,
     onAddressIconClicked: () -> Unit,
     onProfileIconClicked: () -> Unit,
     onCartIconClicked: () -> Unit,
@@ -35,7 +36,7 @@ fun DashboardMenu(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
-            .padding(vertical = 32.dp),
+            .padding(vertical = 48.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
@@ -73,7 +74,9 @@ fun DashboardMenu(
         MenuProfileIcon {
             onProfileIconClicked()
         }
-        MenuBasketIcon {
+        MenuBasketIcon(
+            hasElements = basketHasElements
+        ) {
             onCartIconClicked()
         }
     }

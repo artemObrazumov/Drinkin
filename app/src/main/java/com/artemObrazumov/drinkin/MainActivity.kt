@@ -20,6 +20,7 @@ import com.artemObrazumov.drinkin.core.presentation.components.BeansBackground
 import com.artemObrazumov.drinkin.core.presentation.components.menu.DashboardMenu
 import com.artemObrazumov.drinkin.core.presentation.components.menu.MenuWithCart
 import com.artemObrazumov.drinkin.core.presentation.components.menu.MenuWithProfile
+import com.artemObrazumov.drinkin.core.presentation.menu.MenuViewModel
 import com.artemObrazumov.drinkin.dashboard.presentation.cart.CartScreen
 import com.artemObrazumov.drinkin.dashboard.presentation.cart.CartScreenViewModel
 import com.artemObrazumov.drinkin.dashboard.presentation.product_details.ProductDetailsScreen
@@ -39,14 +40,16 @@ class MainActivity : ComponentActivity() {
             DrinkinTheme {
                 enableEdgeToEdge()
                 val navController = rememberNavController()
+                val menuViewModel: MenuViewModel = koinViewModel()
+                val menuState by menuViewModel.state.collectAsState()
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     BeansBackground()
                     NavHost(
                         navController = navController,
-                        startDestination = Cart,
-                        //startDestination = DashBoard,
+                        //startDestination = Cart,
+                        startDestination = DashBoard,
                         enterTransition = { EnterTransition.None },
                         exitTransition = { ExitTransition.None }
                     ) {
@@ -66,6 +69,7 @@ class MainActivity : ComponentActivity() {
                                 onCategoryClicked = viewModel::changeCategory,
                                 menu = {
                                     DashboardMenu(
+                                        basketHasElements = menuState.basketHasElements,
                                         onAddressIconClicked = {},
                                         onProfileIconClicked = {},
                                         onCartIconClicked = { navController.navigate(Cart) }
@@ -96,6 +100,7 @@ class MainActivity : ComponentActivity() {
                                 menu = { onBackPress ->
                                     MenuWithCart(
                                         title = "Details",
+                                        basketHasElements = menuState.basketHasElements,
                                         onBackButtonClicked = onBackPress,
                                         onCartIconClicked = { navController.navigate(Cart) }
                                     )
@@ -114,7 +119,12 @@ class MainActivity : ComponentActivity() {
                                         onBackButtonClicked = { navController.navigateUp() },
                                         onProfileIconClicked = {  }
                                     )
-                                }
+                                },
+                                onIncrementProduct = viewModel::incrementProduct,
+                                onDecrementProduct = viewModel::decrementProduct,
+                                onRemoveProduct = viewModel::removeProduct,
+                                onViewProductDetails = viewModel::showProductDetails,
+                                onHideDetails = viewModel::hideProductDetails
                             )
                         }
                     }

@@ -4,9 +4,8 @@ import androidx.compose.runtime.Immutable
 import com.artemObrazumov.drinkin.dashboard.domain.models.ProductInCart
 
 @Immutable
-sealed class CartScreenState {
-    data object Loading: CartScreenState()
-    data class Content(
-        val products: List<ProductInCart> = emptyList()
-    ): CartScreenState()
-}
+data class CartScreenState (
+    val products: List<ProductInCart> = emptyList(),
+    val showProductDetails: Boolean = false,
+    val productDetails: List<String> = emptyList()
+)
