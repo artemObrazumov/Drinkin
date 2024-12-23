@@ -9,7 +9,7 @@ class GetProductsInCartUseCase(
 
     operator fun invoke(): List<ProductInCart> {
         return try {
-            dataSource.productsInCartFlow.replayCache.first()
+            dataSource.getProductsInCartFlow().replayCache.first()
         } catch (e: Exception) {
             emptyList()
         }

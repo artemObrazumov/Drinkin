@@ -9,6 +9,6 @@ class GetProductsInCartFlowUseCase(
 ) {
 
     operator fun invoke(): Flow<List<ProductInCart>> {
-        return dataSource.productsInCartFlow
+        return dataSource.getProductsInCartFlow()
     }
 }
