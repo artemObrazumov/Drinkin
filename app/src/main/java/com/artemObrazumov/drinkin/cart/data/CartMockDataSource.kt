@@ -5,18 +5,27 @@ import com.artemObrazumov.drinkin.cart.domain.models.ProductInCart
 import com.artemObrazumov.drinkin.core.domain.util.NetworkError
 import com.artemObrazumov.drinkin.core.domain.util.Result
 import com.artemObrazumov.drinkin.product.domain.models.ProductDetails
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class CartMockDataSource: CartDataSource {
+
+    private val cartScope = CoroutineScope(SupervisorJob())
 
     private val productsInCart: MutableList<ProductInCart> = mutableListOf()
     private val _productsInCart = MutableSharedFlow<List<ProductInCart>>(
         replay = 1,
         extraBufferCapacity = 1
-    )
+    ).also { flow ->
+        cartScope.launch {
+            flow.emit(emptyList())
+        }
+    }
     private val productsInCartFlow = _productsInCart.asSharedFlow()
 
     override suspend fun addProductToCart(

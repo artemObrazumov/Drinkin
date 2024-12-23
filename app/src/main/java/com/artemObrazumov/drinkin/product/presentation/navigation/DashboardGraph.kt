@@ -20,7 +20,7 @@ import org.koin.core.parameter.ParametersHolder
 
 fun NavGraphBuilder.dashboardGraph(
     navController: NavController,
-    menuState: MenuState,
+    menuState: () -> MenuState,
     cartDestination: () -> @Serializable Any
 ) {
     composable<DashBoard> {
@@ -39,10 +39,10 @@ fun NavGraphBuilder.dashboardGraph(
             onCategoryClicked = viewModel::changeCategory,
             menu = {
                 DashboardMenu(
-                    basketHasElements = menuState.basketHasElements,
+                    basketHasElements = menuState().basketHasElements,
                     onAddressIconClicked = {},
                     onProfileIconClicked = {},
-                    onCartIconClicked = { navController.navigate(cartDestination) }
+                    onCartIconClicked = { navController.navigate(cartDestination()) }
                 )
             }
         )
@@ -70,7 +70,7 @@ fun NavGraphBuilder.dashboardGraph(
             menu = { onBackPress ->
                 MenuWithCart(
                     title = "Details",
-                    basketHasElements = menuState.basketHasElements,
+                    basketHasElements = menuState().basketHasElements,
                     onBackButtonClicked = onBackPress,
                     onCartIconClicked = { navController.navigate(cartDestination()) }
                 )

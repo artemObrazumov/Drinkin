@@ -180,6 +180,9 @@ fun ProductListScreenContent(
                         products[page]
                     }
                 )
+                if (products.isEmpty()) {
+                    return
+                }
                 val currentDrink = products[pagerState.currentPage]
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,

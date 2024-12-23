@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 
 class CartScreenViewModel(
     private val getProductsInCartFlowUseCase: GetProductsInCartFlowUseCase,
-    private val addProductsToCartUseCase: AddProductsToCartUseCase,
     private val incrementProductInCartUseCase: IncrementProductInCartUseCase,
     private val decrementProductInCartUseCase: DecrementProductInCartUseCase,
     private val removeProductFromCartUseCase: RemoveProductFromCartUseCase
@@ -33,10 +32,9 @@ class CartScreenViewModel(
 
     private fun loadCart() {
         viewModelScope.launch {
-            addProductsToCartUseCase.invoke(1, 2, mapOf())
             getProductsInCartFlowUseCase.invoke().collect { productsInCart ->
                 _state.update {
-                    state.value.copy(
+                    _state.value.copy(
                         isLoading = false,
                         products = productsInCart.toList()
                     )

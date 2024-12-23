@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
                         builder = {
                             dashboardGraph(
                                 navController = navController,
-                                menuState = menuState,
+                                menuState = { menuState },
                                 cartDestination = { Cart }
                             )
                             cartGraph(
