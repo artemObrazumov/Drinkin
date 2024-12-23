@@ -26,7 +26,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.artemObrazumov.drinkin.R
-import com.artemObrazumov.drinkin.core.presentation.LoadingScreenState
+import com.artemObrazumov.drinkin.core.presentation.LoadingScreen
+import com.artemObrazumov.drinkin.core.presentation.components.BeansBackground
 import com.artemObrazumov.drinkin.core.presentation.rememberIntOffsetSaver
 import com.artemObrazumov.drinkin.core.presentation.rememberIntSizeSaver
 import com.artemObrazumov.drinkin.core.presentation.rememberOffsetSaver
@@ -56,9 +57,10 @@ fun ProductListScreen(
     onCategoryClicked: (category: CategoryUi) -> Unit = {},
     menu: @Composable () -> Unit = {}
 ) {
+    BeansBackground()
     when (state) {
         is ProductListScreenState.Loading -> {
-            LoadingScreenState()
+            LoadingScreen()
         }
 
         is ProductListScreenState.Content -> {

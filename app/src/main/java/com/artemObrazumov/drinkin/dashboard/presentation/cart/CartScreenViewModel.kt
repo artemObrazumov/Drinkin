@@ -39,6 +39,7 @@ class CartScreenViewModel(
             getProductsInCartFlowUseCase.invoke().collect { productsInCart ->
                 _state.update {
                     state.value.copy(
+                        isLoading = false,
                         products = productsInCart.toList()
                     )
                 }

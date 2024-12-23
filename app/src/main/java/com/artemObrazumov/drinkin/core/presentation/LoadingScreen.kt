@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun LoadingScreenState(
+fun LoadingScreen(
     modifier: Modifier = Modifier,
     trackColor: Color = ProgressIndicatorDefaults.circularTrackColor
 ) {

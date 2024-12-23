@@ -48,7 +48,7 @@ fun ProductsPager(
 ) {
     val localDensity = LocalDensity.current
     var pagerWidth by remember {
-        mutableStateOf(0.dp)
+        mutableStateOf(9999.dp)
     }
 
     HorizontalPager(

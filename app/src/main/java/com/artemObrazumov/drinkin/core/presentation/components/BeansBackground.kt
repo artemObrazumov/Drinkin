@@ -26,7 +26,8 @@ fun BeansBackground(
 ) {
     Box(
         modifier = modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.TopStart
     ) {
         Image(

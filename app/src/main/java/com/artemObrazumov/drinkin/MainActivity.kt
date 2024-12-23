@@ -7,6 +7,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.collectAsState
@@ -45,10 +51,8 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    BeansBackground()
                     NavHost(
                         navController = navController,
-                        //startDestination = Cart,
                         startDestination = DashBoard,
                         enterTransition = { EnterTransition.None },
                         exitTransition = { ExitTransition.None }
@@ -108,7 +112,10 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        composable<Cart> {
+                        composable<Cart>(
+                            enterTransition = { scaleIn(initialScale = 0.95f) + fadeIn() },
+                            exitTransition = { scaleOut(targetScale = 0.95f) + fadeOut() }
+                        ) {
                             val viewModel: CartScreenViewModel = koinViewModel()
                             val state by viewModel.state.collectAsState()
                             CartScreen(

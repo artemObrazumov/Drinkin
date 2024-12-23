@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.EaseOutCubic
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,6 +21,7 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +32,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.artemObrazumov.drinkin.R
-import com.artemObrazumov.drinkin.core.presentation.LoadingScreenState
+import com.artemObrazumov.drinkin.core.presentation.LoadingScreen
 import com.artemObrazumov.drinkin.core.utils.Constants.PRICE_UNIT
 import com.artemObrazumov.drinkin.dashboard.domain.models.CustomizableParameter
 import com.artemObrazumov.drinkin.dashboard.domain.models.CustomizableParameterOption
@@ -58,7 +60,7 @@ fun ProductDetailsScreen(
     }
     when (state) {
         ProductDetailsScreenState.Loading -> {
-            LoadingScreenState(
+            LoadingScreen(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.primary),
                 trackColor = Color.White
@@ -114,11 +116,11 @@ fun ProductDetailsScreenContent(
     var animationDuration by remember {
         mutableIntStateOf(1000)
     }
-    var circleRadius by remember {
-        mutableStateOf(0.dp)
+    var circleRadiusDp by rememberSaveable {
+        mutableFloatStateOf(0f)
     }
-    val circleRadiusAnimated by animateDpAsState(
-        targetValue = circleRadius,
+    val circleRadiusAnimated by animateFloatAsState(
+        targetValue = circleRadiusDp,
         animationSpec = tween(
             durationMillis = animationDuration,
             easing = EaseOutCubic
@@ -130,18 +132,18 @@ fun ProductDetailsScreenContent(
             }
         }
     )
-    var imageXOffset by remember {
-        mutableStateOf(configuration.screenWidthDp.dp)
+    var imageXOffsetDp by rememberSaveable {
+        mutableIntStateOf(configuration.screenWidthDp)
     }
-    val imageXOffsetAnimated by animateDpAsState(
-        targetValue = imageXOffset,
+    val imageXOffsetAnimated by animateIntAsState(
+        targetValue = imageXOffsetDp,
         animationSpec = tween(
             durationMillis = animationDuration,
             easing = EaseOutCubic
         ),
         label = ""
     )
-    var contentBlockScale by remember {
+    var contentBlockScale by rememberSaveable {
         mutableFloatStateOf(0f)
     }
     val contentBlockScaleAnimated by animateFloatAsState(
@@ -152,7 +154,7 @@ fun ProductDetailsScreenContent(
         ),
         label = ""
     )
-    var orderCardScale by remember {
+    var orderCardScale by rememberSaveable {
         mutableFloatStateOf(0f)
     }
     val orderCardScaleAnimated by animateFloatAsState(
@@ -165,16 +167,16 @@ fun ProductDetailsScreenContent(
     )
 
     LaunchedEffect(appearing) {
-        circleRadius = if (appearing) {
-            configuration.screenWidthDp.dp
+        circleRadiusDp = if (appearing) {
+            configuration.screenWidthDp.toFloat()
         } else {
-            0.dp
+            0f
         }
 
-        imageXOffset = if (appearing) {
-            0.dp
+        imageXOffsetDp = if (appearing) {
+            0
         } else {
-            configuration.screenWidthDp.dp
+            configuration.screenWidthDp
         }
 
         animationDuration = if (appearing) {
@@ -217,9 +219,9 @@ fun ProductDetailsScreenContent(
             item {
                 ProductImage(
                     imageRes = productDetailsUi.imageRes,
-                    circleRadius = circleRadiusAnimated,
+                    circleRadius = circleRadiusAnimated.dp,
                     circleXOffset = (configuration.screenWidthDp + 8).dp,
-                    imageXOffset = imageXOffsetAnimated,
+                    imageXOffset = imageXOffsetAnimated.dp,
                     name = productDetailsUi.name
                 )
             }
