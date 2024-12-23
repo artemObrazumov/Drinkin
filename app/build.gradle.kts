@@ -1,8 +1,12 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     kotlin("plugin.serialization") version "1.9.0"
 }
+
+val mapsApiKey: String = gradleLocalProperties(rootDir, providers).getProperty("MAPS_API_KEY")
 
 android {
     namespace = "com.artemObrazumov.drinkin"
@@ -10,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "com.artemObrazumov.drinkin"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -20,9 +24,12 @@ android {
             useSupportLibrary = true
         }
     }
-
+    buildFeatures {
+        buildConfig = true
+    }
     buildTypes {
-        release {
+        debug {
+            buildConfigField("String", "MAPS_API_KEY", "\"${mapsApiKey}\"")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -64,6 +71,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.bundles.koin)
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation ("com.yandex.android:maps.mobile:4.8.0-lite")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

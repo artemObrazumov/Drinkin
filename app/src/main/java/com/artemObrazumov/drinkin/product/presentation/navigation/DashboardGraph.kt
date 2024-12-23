@@ -21,7 +21,8 @@ import org.koin.core.parameter.ParametersHolder
 fun NavGraphBuilder.dashboardGraph(
     navController: NavController,
     menuState: () -> MenuState,
-    cartDestination: () -> @Serializable Any
+    cartDestination: () -> @Serializable Any,
+    addressDestination: () -> @Serializable Any
 ) {
     composable<DashBoard> {
         val viewModel: ProductListViewModel = koinViewModel()
@@ -40,7 +41,7 @@ fun NavGraphBuilder.dashboardGraph(
             menu = {
                 DashboardMenu(
                     basketHasElements = menuState().basketHasElements,
-                    onAddressIconClicked = {},
+                    onAddressIconClicked = { navController.navigate(addressDestination()) },
                     onProfileIconClicked = {},
                     onCartIconClicked = { navController.navigate(cartDestination()) }
                 )

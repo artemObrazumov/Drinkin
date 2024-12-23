@@ -14,6 +14,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.artemObrazumov.drinkin.address.presentation.navigation.AddressSelect
+import com.artemObrazumov.drinkin.address.presentation.navigation.addressGraph
 import com.artemObrazumov.drinkin.cart.presentation.navigation.Cart
 import com.artemObrazumov.drinkin.cart.presentation.navigation.cartGraph
 import com.artemObrazumov.drinkin.core.presentation.menu.MenuViewModel
@@ -44,9 +46,13 @@ class MainActivity : ComponentActivity() {
                             dashboardGraph(
                                 navController = navController,
                                 menuState = { menuState },
-                                cartDestination = { Cart }
+                                cartDestination = { Cart },
+                                addressDestination = { AddressSelect }
                             )
                             cartGraph(
+                                navController = navController
+                            )
+                            addressGraph(
                                 navController = navController
                             )
                         }
