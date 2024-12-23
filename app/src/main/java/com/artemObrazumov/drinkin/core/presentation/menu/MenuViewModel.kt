@@ -2,7 +2,7 @@ package com.artemObrazumov.drinkin.core.presentation.menu
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.artemObrazumov.drinkin.dashboard.domain.usecase.cart.GetProductsInCartFlowUseCase
+import com.artemObrazumov.drinkin.cart.domain.usecase.GetProductsInCartFlowUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
