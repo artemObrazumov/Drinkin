@@ -53,7 +53,8 @@ class MainActivity : ComponentActivity() {
                                 navController = navController
                             )
                             addressGraph(
-                                navController = navController
+                                navController = navController,
+                                cartDestination = { Cart },
                             )
                         }
                     )

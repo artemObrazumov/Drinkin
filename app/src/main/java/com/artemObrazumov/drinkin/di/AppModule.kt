@@ -1,5 +1,10 @@
 package com.artemObrazumov.drinkin.di
 
+import com.artemObrazumov.drinkin.address.data.CafeAddressMockDataSource
+import com.artemObrazumov.drinkin.address.domain.data_source.CafeAddressDataSource
+import com.artemObrazumov.drinkin.address.domain.usecase.GetAddressFlowUseCase
+import com.artemObrazumov.drinkin.address.domain.usecase.GetCafesUseCase
+import com.artemObrazumov.drinkin.address.presentation.addressSelect.AddressSelectViewModel
 import com.artemObrazumov.drinkin.cart.data.CartMockDataSource
 import com.artemObrazumov.drinkin.cart.domain.data_source.CartDataSource
 import com.artemObrazumov.drinkin.core.presentation.menu.MenuViewModel
@@ -23,18 +28,24 @@ import org.koin.dsl.module
 
 val appModule = module {
     singleOf(::ProductMockDataSource).bind<ProductDataSource>()
-    singleOf(::CartMockDataSource).bind<CartDataSource>()
     singleOf(::GetDashboardUseCase)
     singleOf(::GetProductDetailUseCase)
+    viewModelOf(::ProductListViewModel)
+    viewModelOf(::ProductDetailsViewModel)
+
+    singleOf(::CartMockDataSource).bind<CartDataSource>()
     singleOf(::AddProductsToCartUseCase)
     singleOf(::GetProductsInCartUseCase)
     singleOf(::GetProductsInCartFlowUseCase)
     singleOf(::IncrementProductInCartUseCase)
     singleOf(::DecrementProductInCartUseCase)
     singleOf(::RemoveProductFromCartUseCase)
-
-    viewModelOf(::ProductListViewModel)
-    viewModelOf(::ProductDetailsViewModel)
     viewModelOf(::CartScreenViewModel)
+
+    singleOf(::CafeAddressMockDataSource).bind<CafeAddressDataSource>()
+    singleOf(::GetAddressFlowUseCase)
+    singleOf(::GetCafesUseCase)
+    viewModelOf(::AddressSelectViewModel)
+
     viewModelOf(::MenuViewModel)
 }

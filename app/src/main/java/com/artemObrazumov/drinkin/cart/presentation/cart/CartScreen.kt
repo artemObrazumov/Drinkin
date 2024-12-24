@@ -30,7 +30,7 @@ fun CartScreen(
 ) {
     BeansBackground()
     if (state.isLoading) {
-        LoadingScreen()
+        LoadingScreen(modifier = modifier)
     } else {
         CartScreenContent(
             modifier = modifier,

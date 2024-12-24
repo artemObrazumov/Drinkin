@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.artemObrazumov.drinkin.ui.theme.darkTextColor
@@ -26,6 +27,7 @@ import com.artemObrazumov.drinkin.ui.theme.darkTextColor
 fun MenuWithCart(
     title: String,
     modifier: Modifier = Modifier,
+    bottomPadding: Dp = 14.dp,
     basketHasElements: Boolean = false,
     onBackButtonClicked: () -> Unit,
     onCartIconClicked: () -> Unit,
@@ -34,7 +36,8 @@ fun MenuWithCart(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
-            .padding(vertical = 48.dp),
+            .padding(top = 48.dp)
+            .padding(bottom = bottomPadding),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(

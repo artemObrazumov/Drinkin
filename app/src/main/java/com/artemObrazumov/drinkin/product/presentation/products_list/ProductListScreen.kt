@@ -60,7 +60,7 @@ fun ProductListScreen(
     BeansBackground()
     when (state) {
         is ProductListScreenState.Loading -> {
-            LoadingScreen()
+            LoadingScreen(modifier = modifier)
         }
 
         is ProductListScreenState.Content -> {

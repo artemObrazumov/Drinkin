@@ -23,7 +23,7 @@ class CartMockDataSource: CartDataSource {
         extraBufferCapacity = 1
     ).also { flow ->
         cartScope.launch {
-            flow.emit(emptyList())
+            flow.emit(productsInCart)
         }
     }
     private val productsInCartFlow = _productsInCart.asSharedFlow()
