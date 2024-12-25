@@ -4,19 +4,20 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -24,11 +25,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.artemObrazumov.drinkin.R
 import com.artemObrazumov.drinkin.address.presentation.models.CafeUi
-import com.artemObrazumov.drinkin.ui.theme.darkTextColor
+import com.artemObrazumov.drinkin.app.ui.theme.darkTextColor
 
 @Composable
 fun CafeDetailsScreen(
     cafe: CafeUi,
+    onCafeSelected: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -69,7 +71,6 @@ fun CafeDetailsScreen(
                 color = darkTextColor
             )
         }
-
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -88,6 +89,19 @@ fun CafeDetailsScreen(
                     fontSize = 16.sp
                 ),
                 color = darkTextColor
+            )
+        }
+        Spacer(
+            modifier = Modifier.height(4.dp)
+        )
+        Button(
+            modifier = Modifier
+                .fillMaxWidth(),
+            onClick = onCafeSelected
+        ) {
+            Text(
+                text = "Make order here",
+                color = Color.White
             )
         }
     }

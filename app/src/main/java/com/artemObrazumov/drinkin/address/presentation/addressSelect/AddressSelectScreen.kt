@@ -36,7 +36,8 @@ fun AddressSelectScreen(
     state: AddressSelectScreenState,
     modifier: Modifier = Modifier,
     menu: @Composable () -> Unit = {},
-    onCafeClicked: (cafe: CafeUi) -> Unit = {}
+    onCafeClicked: (cafe: CafeUi) -> Unit = {},
+    onCafeSelected: (cafe: CafeUi) -> Unit = {}
 ) {
     BeansBackground()
     when (state) {
@@ -49,7 +50,8 @@ fun AddressSelectScreen(
                 cafes = state.cafes,
                 selectedCafe = state.selectedCafe ?: state.cafes.first(),
                 modifier = modifier,
-                onCafeClicked = onCafeClicked
+                onCafeClicked = onCafeClicked,
+                onCafeSelected = onCafeSelected
             )
         }
 
@@ -64,7 +66,8 @@ fun AddressSelectScreenContent(
     cafes: List<CafeUi>,
     selectedCafe: CafeUi,
     modifier: Modifier = Modifier,
-    onCafeClicked: (cafe: CafeUi) -> Unit
+    onCafeClicked: (cafe: CafeUi) -> Unit,
+    onCafeSelected: (cafe: CafeUi) -> Unit
 ) {
     val context = LocalContext.current
     LaunchedEffect(null) {
@@ -93,12 +96,15 @@ fun AddressSelectScreenContent(
     }
     BottomSheetScaffold(
         sheetContent = {
-            CafeDetailsScreen(cafe = selectedCafe)
+            CafeDetailsScreen(
+                cafe = selectedCafe,
+                onCafeSelected = { onCafeSelected(selectedCafe) }
+            )
         },
         scaffoldState = bottomSheetState,
         sheetPeekHeight = 86.dp
     ) {
-        val markerColor = MaterialTheme.colorScheme.tertiaryContainer
+        val markerColor = MaterialTheme.colorScheme.primary
         var addedCafePointsToMap by remember {
             mutableStateOf(false)
         }

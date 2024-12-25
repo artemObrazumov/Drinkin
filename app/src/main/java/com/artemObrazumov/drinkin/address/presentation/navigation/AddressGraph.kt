@@ -18,13 +18,13 @@ import androidx.navigation.compose.composable
 import com.artemObrazumov.drinkin.address.presentation.addressSelect.AddressSelectScreen
 import com.artemObrazumov.drinkin.address.presentation.addressSelect.AddressSelectViewModel
 import com.artemObrazumov.drinkin.cart.presentation.cart.CartScreenViewModel
+import com.artemObrazumov.drinkin.core.presentation.components.menu.EmptyMenu
 import com.artemObrazumov.drinkin.core.presentation.components.menu.MenuWithCart
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.addressGraph(
-    navController: NavController,
-    cartDestination: () -> @Serializable Any
+    navController: NavController
 ) {
     composable<AddressSelect>(
         enterTransition = { scaleIn(initialScale = 0.95f) + fadeIn() },
@@ -35,15 +35,18 @@ fun NavGraphBuilder.addressGraph(
         AddressSelectScreen(
             state = state,
             menu = {
-                MenuWithCart(
+                EmptyMenu(
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.background),
                     title = "Select address",
-                    onBackButtonClicked = { navController.navigateUp() },
-                    onCartIconClicked = { navController.navigate(cartDestination()) }
+                    onBackButtonClicked = { navController.navigateUp() }
                 )
             },
-            onCafeClicked = viewModel::selectCafe
+            onCafeClicked = viewModel::selectCafe,
+            onCafeSelected = {
+                viewModel.updateAddress(it)
+                navController.navigateUp()
+            }
         )
     }
 }

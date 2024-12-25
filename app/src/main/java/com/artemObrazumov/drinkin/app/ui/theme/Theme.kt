@@ -1,4 +1,4 @@
-package com.artemObrazumov.drinkin.ui.theme
+package com.artemObrazumov.drinkin.app.ui.theme
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration

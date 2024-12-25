@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.artemObrazumov.drinkin.R
-import com.artemObrazumov.drinkin.ui.theme.darkTextColor
+import com.artemObrazumov.drinkin.app.ui.theme.darkTextColor
 
 @Composable
 fun EmptyCartMessage(

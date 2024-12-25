@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.outlined.Place
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -22,10 +21,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.artemObrazumov.drinkin.ui.theme.darkTextColor
+import com.artemObrazumov.drinkin.app.ui.theme.darkTextColor
 
 @Composable
 fun DashboardMenu(
+    address: String,
     modifier: Modifier = Modifier,
     basketHasElements: Boolean = false,
     onAddressIconClicked: () -> Unit,
@@ -57,8 +57,8 @@ fun DashboardMenu(
                 modifier = Modifier.width(8.dp)
             )
             Text(
-                text = "Lorem ipsum ".repeat(10),
-                minLines = 2,
+                text = address,
+                minLines = 1,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 style = TextStyle(

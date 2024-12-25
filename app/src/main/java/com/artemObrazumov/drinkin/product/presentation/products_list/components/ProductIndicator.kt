@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.artemObrazumov.drinkin.ui.theme.DrinkinTheme
+import com.artemObrazumov.drinkin.app.ui.theme.DrinkinTheme
 import kotlin.math.max
 import kotlin.math.min
 

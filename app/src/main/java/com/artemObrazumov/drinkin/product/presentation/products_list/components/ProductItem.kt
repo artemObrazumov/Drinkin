@@ -38,7 +38,7 @@ import com.artemObrazumov.drinkin.core.utils.Constants.PRICE_UNIT
 import com.artemObrazumov.drinkin.product.domain.models.Product
 import com.artemObrazumov.drinkin.product.presentation.models.ProductUi
 import com.artemObrazumov.drinkin.product.presentation.models.toProductUi
-import com.artemObrazumov.drinkin.ui.theme.DrinkinTheme
+import com.artemObrazumov.drinkin.app.ui.theme.DrinkinTheme
 
 @Composable
 fun ProductItem(

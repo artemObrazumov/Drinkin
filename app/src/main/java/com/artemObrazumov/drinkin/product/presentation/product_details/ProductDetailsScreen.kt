@@ -41,7 +41,7 @@ import com.artemObrazumov.drinkin.product.presentation.models.toProductDetailsUi
 import com.artemObrazumov.drinkin.product.presentation.product_details.components.ProductCard
 import com.artemObrazumov.drinkin.product.presentation.product_details.components.ProductImage
 import com.artemObrazumov.drinkin.product.presentation.product_details.components.ProductOrderCard
-import com.artemObrazumov.drinkin.ui.theme.DrinkinTheme
+import com.artemObrazumov.drinkin.app.ui.theme.DrinkinTheme
 
 @Composable
 fun ProductDetailsScreen(

@@ -42,7 +42,7 @@ import com.artemObrazumov.drinkin.product.presentation.products_list.components.
 import com.artemObrazumov.drinkin.product.presentation.products_list.components.ProductsPager
 import com.artemObrazumov.drinkin.product.presentation.products_list.components.TransitionCircle
 import com.artemObrazumov.drinkin.product.presentation.products_list.components.TransitionImage
-import com.artemObrazumov.drinkin.ui.theme.DrinkinTheme
+import com.artemObrazumov.drinkin.app.ui.theme.DrinkinTheme
 import kotlinx.coroutines.launch
 
 internal enum class TransitionState {

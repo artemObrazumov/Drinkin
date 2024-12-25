@@ -40,6 +40,7 @@ fun NavGraphBuilder.dashboardGraph(
             onCategoryClicked = viewModel::changeCategory,
             menu = {
                 DashboardMenu(
+                    address = menuState().address,
                     basketHasElements = menuState().basketHasElements,
                     onAddressIconClicked = { navController.navigate(addressDestination()) },
                     onProfileIconClicked = {},

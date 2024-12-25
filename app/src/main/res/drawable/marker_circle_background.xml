@@ -70,7 +70,7 @@
             <solid android:color="@android:color/transparent"/>
             <stroke
                 android:width="4dp"
-                android:color="#e4cb93"/>
+                android:color="#3f966c"/>
         </shape>
     </item>
     <item android:top="4dp" android:left="4dp" android:right="4dp" android:bottom="4dp">

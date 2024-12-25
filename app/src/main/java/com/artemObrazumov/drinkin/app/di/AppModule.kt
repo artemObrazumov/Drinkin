@@ -1,4 +1,4 @@
-package com.artemObrazumov.drinkin.di
+package com.artemObrazumov.drinkin.app.di
 
 import com.artemObrazumov.drinkin.address.data.CafeAddressMockDataSource
 import com.artemObrazumov.drinkin.address.domain.data_source.CafeAddressDataSource

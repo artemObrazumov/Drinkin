@@ -4,5 +4,6 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 data class MenuState(
-    val basketHasElements: Boolean = false
+    val basketHasElements: Boolean = false,
+    val address: String = ""
 )

@@ -1,7 +1,8 @@
-package com.artemObrazumov.drinkin
+package com.artemObrazumov.drinkin.app
 
 import android.app.Application
-import com.artemObrazumov.drinkin.di.appModule
+import com.artemObrazumov.drinkin.BuildConfig
+import com.artemObrazumov.drinkin.app.di.appModule
 import com.yandex.mapkit.MapKitFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

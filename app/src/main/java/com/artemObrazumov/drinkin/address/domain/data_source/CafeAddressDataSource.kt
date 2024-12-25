@@ -9,5 +9,6 @@ import kotlinx.coroutines.flow.SharedFlow
 
 interface CafeAddressDataSource {
     suspend fun getCafes(): Result<List<Cafe>, NetworkError>
+    suspend fun updateActiveAddress(address: Address)
     fun getAddressFlow(): SharedFlow<Address?>
 }

@@ -18,13 +18,12 @@ class CafeAddressMockDataSource: CafeAddressDataSource {
 
     private val addressScope = CoroutineScope(SupervisorJob())
 
-    private val activeAddress: Address? = null
     private val _activeAddressFlow = MutableSharedFlow<Address?>(
         replay = 1,
         extraBufferCapacity = 1
     ).also { flow ->
         addressScope.launch {
-            flow.emit(activeAddress)
+            flow.emit(null)
         }
     }
     private val activeAddressFlow = _activeAddressFlow.asSharedFlow()
@@ -32,6 +31,10 @@ class CafeAddressMockDataSource: CafeAddressDataSource {
     override suspend fun getCafes(): Result<List<Cafe>, NetworkError> {
         delay(1000)
         return Result.Success(CAFES)
+    }
+
+    override suspend fun updateActiveAddress(address: Address) {
+        _activeAddressFlow.emit(address)
     }
 
     override fun getAddressFlow(): SharedFlow<Address?> {

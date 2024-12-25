@@ -1,4 +1,4 @@
-package com.artemObrazumov.drinkin
+package com.artemObrazumov.drinkin.app
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -21,7 +21,7 @@ import com.artemObrazumov.drinkin.cart.presentation.navigation.cartGraph
 import com.artemObrazumov.drinkin.core.presentation.menu.MenuViewModel
 import com.artemObrazumov.drinkin.product.presentation.navigation.DashBoard
 import com.artemObrazumov.drinkin.product.presentation.navigation.dashboardGraph
-import com.artemObrazumov.drinkin.ui.theme.DrinkinTheme
+import com.artemObrazumov.drinkin.app.ui.theme.DrinkinTheme
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
@@ -53,8 +53,7 @@ class MainActivity : ComponentActivity() {
                                 navController = navController
                             )
                             addressGraph(
-                                navController = navController,
-                                cartDestination = { Cart },
+                                navController = navController
                             )
                         }
                     )
