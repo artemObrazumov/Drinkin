@@ -2,9 +2,11 @@ package com.artemObrazumov.drinkin.address.presentation.addressSelect
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.artemObrazumov.drinkin.address.domain.usecase.ChangeAddressUseCase
 import com.artemObrazumov.drinkin.address.domain.usecase.GetAddressFlowUseCase
 import com.artemObrazumov.drinkin.address.domain.usecase.GetCafesUseCase
 import com.artemObrazumov.drinkin.address.domain.usecase.GetCafesUseCaseResult
+import com.artemObrazumov.drinkin.address.presentation.models.CafeUi
 import com.artemObrazumov.drinkin.address.presentation.models.toCafeUi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +18,8 @@ import kotlinx.coroutines.launch
 
 class AddressSelectViewModel(
     private val getAddressFlowUseCase: GetAddressFlowUseCase,
-    private val getCafesUseCase: GetCafesUseCase
+    private val getCafesUseCase: GetCafesUseCase,
+    private val changeAddressUseCase: ChangeAddressUseCase
 ): ViewModel() {
 
     private val _state = MutableStateFlow<AddressSelectScreenState>(AddressSelectScreenState.Loading)
@@ -52,6 +55,18 @@ class AddressSelectViewModel(
         viewModelScope.launch {
             getAddressFlowUseCase.invoke().collect{ address ->
 
+            }
+        }
+    }
+
+    fun selectCafe(cafe: CafeUi) {
+        viewModelScope.launch {
+            val state = _state.value as AddressSelectScreenState.Content
+            _state.update {
+                state.copy(
+                    isCafeOpened = true,
+                    selectedCafe = cafe
+                )
             }
         }
     }

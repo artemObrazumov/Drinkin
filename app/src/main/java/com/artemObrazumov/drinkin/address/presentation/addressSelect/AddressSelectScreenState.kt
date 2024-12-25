@@ -9,7 +9,7 @@ sealed class AddressSelectScreenState {
     data object Loading : AddressSelectScreenState()
     data class Content(
         val cafes: List<CafeUi> = emptyList(),
-        val cafeSelected: Boolean = false,
+        val isCafeOpened: Boolean = false,
         val selectedCafe: CafeUi? = null
     ): AddressSelectScreenState()
     data class Failure(

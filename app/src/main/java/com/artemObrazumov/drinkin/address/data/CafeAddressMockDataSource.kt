@@ -46,7 +46,16 @@ internal val CAFES = listOf(
         workStartTime = LocalTime.of(12, 0),
         workEndTime = LocalTime.of(18, 0),
         contactNumber = "1234567890",
-        latitude = 24.0,
-        longitude = 28.9
+        latitude = 55.753544,
+        longitude = 37.621202
+    ),
+    Cafe(
+        id = 2,
+        address = "test address 2",
+        workStartTime = LocalTime.of(11, 0),
+        workEndTime = LocalTime.of(19, 30),
+        contactNumber = "1111111111",
+        latitude = 55.755544,
+        longitude = 37.625202
     )
 )

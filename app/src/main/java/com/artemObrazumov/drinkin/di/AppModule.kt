@@ -2,6 +2,7 @@ package com.artemObrazumov.drinkin.di
 
 import com.artemObrazumov.drinkin.address.data.CafeAddressMockDataSource
 import com.artemObrazumov.drinkin.address.domain.data_source.CafeAddressDataSource
+import com.artemObrazumov.drinkin.address.domain.usecase.ChangeAddressUseCase
 import com.artemObrazumov.drinkin.address.domain.usecase.GetAddressFlowUseCase
 import com.artemObrazumov.drinkin.address.domain.usecase.GetCafesUseCase
 import com.artemObrazumov.drinkin.address.presentation.addressSelect.AddressSelectViewModel
@@ -45,6 +46,7 @@ val appModule = module {
     singleOf(::CafeAddressMockDataSource).bind<CafeAddressDataSource>()
     singleOf(::GetAddressFlowUseCase)
     singleOf(::GetCafesUseCase)
+    singleOf(::ChangeAddressUseCase)
     viewModelOf(::AddressSelectViewModel)
 
     viewModelOf(::MenuViewModel)

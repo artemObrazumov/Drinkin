@@ -24,7 +24,7 @@ import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.addressGraph(
     navController: NavController,
-    cartDestination: () -> @Serializable Any,
+    cartDestination: () -> @Serializable Any
 ) {
     composable<AddressSelect>(
         enterTransition = { scaleIn(initialScale = 0.95f) + fadeIn() },
@@ -42,7 +42,8 @@ fun NavGraphBuilder.addressGraph(
                     onBackButtonClicked = { navController.navigateUp() },
                     onCartIconClicked = { navController.navigate(cartDestination()) }
                 )
-            }
+            },
+            onCafeClicked = viewModel::selectCafe
         )
     }
 }
