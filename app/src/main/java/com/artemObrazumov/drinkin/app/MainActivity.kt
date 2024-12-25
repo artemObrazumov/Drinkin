@@ -50,7 +50,8 @@ class MainActivity : ComponentActivity() {
                                 addressDestination = { AddressSelect }
                             )
                             cartGraph(
-                                navController = navController
+                                navController = navController,
+                                addressDestination = { AddressSelect }
                             )
                             addressGraph(
                                 navController = navController

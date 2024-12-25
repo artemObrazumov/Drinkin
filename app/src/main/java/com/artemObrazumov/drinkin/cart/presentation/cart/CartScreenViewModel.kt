@@ -2,6 +2,7 @@ package com.artemObrazumov.drinkin.cart.presentation.cart
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.artemObrazumov.drinkin.address.domain.usecase.GetAddressFlowUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.AddProductsToCartUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.DecrementProductInCartUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.GetProductsInCartFlowUseCase
@@ -18,8 +19,9 @@ class CartScreenViewModel(
     private val getProductsInCartFlowUseCase: GetProductsInCartFlowUseCase,
     private val incrementProductInCartUseCase: IncrementProductInCartUseCase,
     private val decrementProductInCartUseCase: DecrementProductInCartUseCase,
-    private val removeProductFromCartUseCase: RemoveProductFromCartUseCase
-): ViewModel() {
+    private val removeProductFromCartUseCase: RemoveProductFromCartUseCase,
+    private val getAddressFlowUseCase: GetAddressFlowUseCase
+) : ViewModel() {
 
     private val _state = MutableStateFlow(CartScreenState())
     val state = _state
@@ -39,6 +41,17 @@ class CartScreenViewModel(
                         products = productsInCart.toList()
                     )
                 }
+                subscribeToAddressUpdates()
+            }
+        }
+    }
+
+    private suspend fun subscribeToAddressUpdates() {
+        getAddressFlowUseCase.invoke().collect { address ->
+            _state.update {
+                _state.value.copy(
+                    address = address
+                )
             }
         }
     }

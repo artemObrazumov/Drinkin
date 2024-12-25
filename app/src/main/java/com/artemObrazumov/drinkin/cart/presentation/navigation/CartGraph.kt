@@ -12,10 +12,12 @@ import androidx.navigation.compose.composable
 import com.artemObrazumov.drinkin.core.presentation.components.menu.MenuWithProfile
 import com.artemObrazumov.drinkin.cart.presentation.cart.CartScreen
 import com.artemObrazumov.drinkin.cart.presentation.cart.CartScreenViewModel
+import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.cartGraph(
-    navController: NavController
+    navController: NavController,
+    addressDestination: () -> @Serializable Any
 ) {
     composable<Cart>(
         enterTransition = { scaleIn(initialScale = 0.95f) + fadeIn() },
@@ -32,6 +34,7 @@ fun NavGraphBuilder.cartGraph(
                     onProfileIconClicked = {  }
                 )
             },
+            onAddressClicked = { navController.navigate(addressDestination()) },
             onIncrementProduct = viewModel::incrementProduct,
             onDecrementProduct = viewModel::decrementProduct,
             onRemoveProduct = viewModel::removeProduct,

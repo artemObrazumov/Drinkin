@@ -40,9 +40,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.artemObrazumov.drinkin.R
-import com.artemObrazumov.drinkin.product.presentation.product_details.ButtonState
 import com.artemObrazumov.drinkin.app.ui.theme.DrinkinTheme
 import com.artemObrazumov.drinkin.app.ui.theme.darkTextColor
+import com.artemObrazumov.drinkin.product.presentation.product_details.ButtonState
 
 @Composable
 fun ProductOrderCard(
