@@ -3,11 +3,11 @@ package com.artemObrazumov.drinkin.cart.presentation.cart
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.artemObrazumov.drinkin.address.domain.usecase.GetAddressFlowUseCase
-import com.artemObrazumov.drinkin.cart.domain.usecase.AddProductsToCartUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.DecrementProductInCartUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.GetProductsInCartFlowUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.IncrementProductInCartUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.RemoveProductFromCartUseCase
+import com.artemObrazumov.drinkin.cart.presentation.models.toProductInCartUi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
@@ -25,20 +25,22 @@ class CartScreenViewModel(
 
     private val _state = MutableStateFlow(CartScreenState())
     val state = _state
-        .onStart { loadCart() }
+        .onStart { subscribeToCartUpdates() }
         .stateIn(
             viewModelScope,
             SharingStarted.Eagerly,
             CartScreenState()
         )
 
-    private fun loadCart() {
+    private fun subscribeToCartUpdates() {
         viewModelScope.launch {
             getProductsInCartFlowUseCase.invoke().collect { productsInCart ->
                 _state.update {
                     _state.value.copy(
                         isLoading = false,
-                        products = productsInCart.toList()
+                        products = productsInCart.toList().map {
+                            it.toProductInCartUi()
+                        }
                     )
                 }
                 subscribeToAddressUpdates()
@@ -46,12 +48,14 @@ class CartScreenViewModel(
         }
     }
 
-    private suspend fun subscribeToAddressUpdates() {
-        getAddressFlowUseCase.invoke().collect { address ->
-            _state.update {
-                _state.value.copy(
-                    address = address
-                )
+    private fun subscribeToAddressUpdates() {
+        viewModelScope.launch {
+            getAddressFlowUseCase.invoke().collect { address ->
+                _state.update {
+                    _state.value.copy(
+                        address = address
+                    )
+                }
             }
         }
     }

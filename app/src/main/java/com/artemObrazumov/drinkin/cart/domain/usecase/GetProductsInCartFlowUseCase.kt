@@ -9,7 +9,7 @@ class GetProductsInCartFlowUseCase(
     private val dataSource: CartDataSource
 ) {
 
-    operator fun invoke(): SharedFlow<List<ProductInCart>> {
+    operator fun invoke(): Flow<List<ProductInCart>> {
         return dataSource.getProductsInCartFlow()
     }
 }

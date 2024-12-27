@@ -46,10 +46,11 @@ import com.artemObrazumov.drinkin.R
 import com.artemObrazumov.drinkin.core.presentation.asFormattedPrice
 import com.artemObrazumov.drinkin.core.utils.Constants.PRICE_UNIT
 import com.artemObrazumov.drinkin.cart.domain.models.ProductInCart
+import com.artemObrazumov.drinkin.cart.presentation.models.ProductInCartUi
 
 @Composable
 fun ProductInCartItem(
-    product: ProductInCart,
+    product: ProductInCartUi,
     modifier: Modifier = Modifier,
     onIncrement: () -> Unit,
     onDecrement: () -> Unit,
@@ -209,7 +210,7 @@ fun ProductInCartItem(
                         .weight(1f)
                 )
                 Text(
-                    text = product.price.asFormattedPrice(PRICE_UNIT).formatted,
+                    text = product.price.formatted,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center,

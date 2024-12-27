@@ -12,6 +12,9 @@ import androidx.navigation.compose.composable
 import com.artemObrazumov.drinkin.core.presentation.components.menu.MenuWithProfile
 import com.artemObrazumov.drinkin.cart.presentation.cart.CartScreen
 import com.artemObrazumov.drinkin.cart.presentation.cart.CartScreenViewModel
+import com.artemObrazumov.drinkin.cart.presentation.new_order.NewOrderScreen
+import com.artemObrazumov.drinkin.cart.presentation.new_order.NewOrderViewModel
+import com.artemObrazumov.drinkin.core.presentation.components.menu.EmptyMenu
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
@@ -31,7 +34,7 @@ fun NavGraphBuilder.cartGraph(
                 MenuWithProfile(
                     title = "Cart",
                     onBackButtonClicked = { navController.navigateUp() },
-                    onProfileIconClicked = {  }
+                    onProfileIconClicked = { }
                 )
             },
             onAddressClicked = { navController.navigate(addressDestination()) },
@@ -39,7 +42,25 @@ fun NavGraphBuilder.cartGraph(
             onDecrementProduct = viewModel::decrementProduct,
             onRemoveProduct = viewModel::removeProduct,
             onViewProductDetails = viewModel::showProductDetails,
-            onHideDetails = viewModel::hideProductDetails
+            onHideDetails = viewModel::hideProductDetails,
+            onMakeOrder = { navController.navigate(NewOrder) }
+        )
+    }
+
+    composable<NewOrder>(
+        enterTransition = { scaleIn(initialScale = 0.95f) + fadeIn() },
+        exitTransition = { scaleOut(targetScale = 0.95f) + fadeOut() }
+    ) {
+        val viewModel: NewOrderViewModel = koinViewModel()
+        val state by viewModel.state.collectAsState()
+        NewOrderScreen(
+            state = state,
+            menu = {
+                EmptyMenu(
+                    title = "New order",
+                    onBackButtonClicked = { navController.navigateUp() }
+                )
+            }
         )
     }
 }

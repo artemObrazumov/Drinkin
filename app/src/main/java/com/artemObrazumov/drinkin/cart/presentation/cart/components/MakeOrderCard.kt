@@ -43,7 +43,6 @@ import com.artemObrazumov.drinkin.app.ui.theme.darkTextColor
 
 @Composable
 fun MakeOrderCard(
-    heightPadding: Dp,
     address: String,
     buttonEnabled: Boolean,
     onAddressSelectClicked: () -> Unit,
@@ -53,24 +52,13 @@ fun MakeOrderCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .background(
-                Brush.linearGradient(
-                    0f to Color.Transparent,
-                    0.4f to MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
-                    start = Offset.Zero,
-                    end = Offset(
-                        x = 0f,
-                        y = Float.POSITIVE_INFINITY
-                    )
-                )
-            )
-            .padding(top = 4.dp + heightPadding)
             .padding(bottom = 28.dp)
             .padding(horizontal = 16.dp),
         shape = RoundedCornerShape(36.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer
-        )
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 16.dp)
     ) {
         Column(
             modifier = Modifier

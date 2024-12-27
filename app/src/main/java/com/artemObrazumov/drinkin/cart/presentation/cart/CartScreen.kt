@@ -12,6 +12,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -42,6 +43,7 @@ import com.artemObrazumov.drinkin.cart.presentation.cart.components.EmptyCartMes
 import com.artemObrazumov.drinkin.cart.presentation.cart.components.MakeOrderCard
 import com.artemObrazumov.drinkin.cart.presentation.cart.components.ProductInCartDetailsScreen
 import com.artemObrazumov.drinkin.cart.presentation.cart.components.ProductInCartItem
+import com.artemObrazumov.drinkin.cart.presentation.models.ProductInCartUi
 import com.artemObrazumov.drinkin.product.presentation.product_details.components.ProductOrderCard
 
 @Composable
@@ -55,6 +57,7 @@ fun CartScreen(
     onRemoveProduct: (id: Int) -> Unit,
     onHideDetails: () -> Unit,
     onViewProductDetails: (parameters: Map<String, String>) -> Unit,
+    onMakeOrder: () -> Unit
 ) {
     BeansBackground()
     if (state.isLoading) {
@@ -72,6 +75,7 @@ fun CartScreen(
             onRemoveProduct = onRemoveProduct,
             onHideDetails = onHideDetails,
             onViewProductDetails = onViewProductDetails,
+            onMakeOrder = onMakeOrder
         )
     }
 
@@ -82,7 +86,7 @@ fun CartScreen(
 @Composable
 fun CartScreenContent(
     modifier: Modifier = Modifier,
-    products: List<ProductInCart>,
+    products: List<ProductInCartUi>,
     showProductDetails: Boolean,
     productDetails: List<String>,
     address: Address?,
@@ -92,11 +96,11 @@ fun CartScreenContent(
     onRemoveProduct: (id: Int) -> Unit,
     onHideDetails: () -> Unit,
     onViewProductDetails: (parameters: Map<String, String>) -> Unit,
+    onMakeOrder: () -> Unit
 ) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        val orderCardHeightPadding = 16.dp
         if (products.isEmpty()) {
             EmptyCartMessage()
         } else {
@@ -119,6 +123,11 @@ fun CartScreenContent(
                         onViewDetails = { onViewProductDetails(product.parameters) }
                     )
                 }
+                item {
+                    Spacer(
+                        modifier = Modifier.height(164.dp)
+                    )
+                }
             }
             if (showProductDetails) {
                 ModalBottomSheet(onDismissRequest = onHideDetails) {
@@ -135,11 +144,10 @@ fun CartScreenContent(
             exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
         ) {
             MakeOrderCard(
-                heightPadding = orderCardHeightPadding,
                 address = address?.address ?: "Address not selected",
                 buttonEnabled = address != null,
                 onAddressSelectClicked = onAddressClicked,
-                onMakeOrderClicked = {}
+                onMakeOrderClicked = onMakeOrder
             )
         }
     }
