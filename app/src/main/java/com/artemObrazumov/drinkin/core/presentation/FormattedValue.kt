@@ -18,3 +18,10 @@ fun Float.asFormattedPrice(unit: String): FormattedValue<Float> {
         formatted = "$unit${formatter.format(this)}"
     )
 }
+
+fun Int.asFormattedQuantity(): FormattedValue<Int> {
+    return FormattedValue(
+        value = this,
+        formatted = "x $this"
+    )
+}

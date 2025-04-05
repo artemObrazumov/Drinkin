@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Drinkin</string>
+    <string name="address">address</string>
+    <string name="go_to_payment">Go To Payment</string>
 </resources>

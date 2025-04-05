@@ -51,7 +51,8 @@ class MainActivity : ComponentActivity() {
                             )
                             cartGraph(
                                 navController = navController,
-                                addressDestination = { AddressSelect }
+                                addressDestination = { AddressSelect },
+                                orderScreenDestination = {}
                             )
                             addressGraph(
                                 navController = navController

@@ -6,8 +6,9 @@ import com.artemObrazumov.drinkin.core.presentation.asFormattedPrice
 import com.artemObrazumov.drinkin.core.utils.Constants.PRICE_UNIT
 
 data class OrderUi(
-    val id: Int? = null,
+    val id: Int,
     val products: List<ProductInOrderUi>,
+    val address: String,
     val totalPrice: FormattedValue<Float>
 )
 
@@ -17,6 +18,7 @@ fun Order.toOrderUi(): OrderUi {
         products = products.map {
             it.toProductInOrderUi()
         },
+        address = address,
         totalPrice = totalPrice.asFormattedPrice(PRICE_UNIT)
     )
 }

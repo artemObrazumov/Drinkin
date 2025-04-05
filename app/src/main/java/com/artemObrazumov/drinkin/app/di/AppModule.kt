@@ -14,6 +14,7 @@ import com.artemObrazumov.drinkin.core.presentation.menu.MenuViewModel
 import com.artemObrazumov.drinkin.product.data.data_source.ProductMockDataSource
 import com.artemObrazumov.drinkin.product.domain.data_source.ProductDataSource
 import com.artemObrazumov.drinkin.cart.domain.usecase.AddProductsToCartUseCase
+import com.artemObrazumov.drinkin.cart.domain.usecase.ClearCartUseCase
 import com.artemObrazumov.drinkin.product.domain.usecase.GetDashboardUseCase
 import com.artemObrazumov.drinkin.product.domain.usecase.GetProductDetailUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.DecrementProductInCartUseCase
@@ -21,6 +22,7 @@ import com.artemObrazumov.drinkin.cart.domain.usecase.GetOrderUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.GetProductsInCartFlowUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.GetProductsInCartUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.IncrementProductInCartUseCase
+import com.artemObrazumov.drinkin.cart.domain.usecase.OrderPaymentUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.RemoveProductFromCartUseCase
 import com.artemObrazumov.drinkin.cart.presentation.cart.CartScreenViewModel
 import com.artemObrazumov.drinkin.cart.presentation.new_order.NewOrderViewModel
@@ -47,6 +49,8 @@ val appModule = module {
     singleOf(::DecrementProductInCartUseCase)
     singleOf(::RemoveProductFromCartUseCase)
     singleOf(::GetOrderUseCase)
+    singleOf(::OrderPaymentUseCase)
+    singleOf(::ClearCartUseCase)
     viewModelOf(::CartScreenViewModel)
     viewModelOf(::NewOrderViewModel)
 

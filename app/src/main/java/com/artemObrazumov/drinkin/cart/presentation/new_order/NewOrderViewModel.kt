@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.artemObrazumov.drinkin.address.domain.usecase.GetAddressFlowUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.GetOrderUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.GetOrderUseCaseResult
+import com.artemObrazumov.drinkin.cart.domain.usecase.OrderPaymentResult
+import com.artemObrazumov.drinkin.cart.domain.usecase.OrderPaymentUseCase
 import com.artemObrazumov.drinkin.cart.domain.util.AddressError
 import com.artemObrazumov.drinkin.cart.presentation.models.toOrderUi
 import com.artemObrazumov.drinkin.core.domain.util.NetworkError
@@ -21,7 +23,8 @@ import kotlinx.coroutines.launch
 
 class NewOrderViewModel(
     private val getOrderUseCase: GetOrderUseCase,
-    private val getAddressFlowUseCase: GetAddressFlowUseCase
+    private val getAddressFlowUseCase: GetAddressFlowUseCase,
+    private val orderPaymentUseCase: OrderPaymentUseCase
 ): ViewModel() {
 
     private val _state: MutableStateFlow<NewOrderScreenState> =
@@ -33,6 +36,8 @@ class NewOrderViewModel(
             SharingStarted.Eagerly,
             NewOrderScreenState.Loading
         )
+
+    private var orderPaymentState = OrderPaymentState()
 
     private fun loadOrderAndAddress() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -57,12 +62,43 @@ class NewOrderViewModel(
                         _state.update {
                             NewOrderScreenState.Content(
                                 order = result.order.toOrderUi(),
-                                address = address
+                                address = address,
+                                orderPaymentState = orderPaymentState
                             )
                         }
                     }
                     is GetOrderUseCaseResult.Failure -> {
                         NewOrderScreenState.Failure(result.error)
+                    }
+                }
+            }
+        }
+    }
+
+    fun startPayment() {
+        if (state.value !is NewOrderScreenState.Content) return
+        viewModelScope.launch {
+            orderPaymentState = orderPaymentState.copy(
+                loading = true,
+                error = null
+            )
+            val contentState = state.value as NewOrderScreenState.Content
+            _state.update {
+                contentState.copy(
+                    orderPaymentState = orderPaymentState
+                )
+            }
+            val orderId = contentState.order.id
+            when(val result = orderPaymentUseCase.invoke(orderId)) {
+                is OrderPaymentResult.Failure -> {
+                    orderPaymentState = orderPaymentState.copy(error = result.error)
+                }
+
+                OrderPaymentResult.Success -> {
+                    _state.update {
+                        contentState.copy(
+                            paymentFinished = true
+                        )
                     }
                 }
             }

@@ -16,4 +16,5 @@ interface CartDataSource {
     suspend fun decrementProductInCart(productId: Int)
     suspend fun removeProductFromCart(productId: Int)
     fun getProductsInCartFlow(): SharedFlow<List<ProductInCart>>
+    suspend fun clearCart()
 }

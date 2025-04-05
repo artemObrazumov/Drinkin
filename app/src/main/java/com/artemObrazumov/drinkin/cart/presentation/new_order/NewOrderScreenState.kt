@@ -8,9 +8,16 @@ sealed class NewOrderScreenState {
     data object Loading: NewOrderScreenState()
     data class Content(
         val order: OrderUi,
-        val address: Address
+        val address: Address,
+        val orderPaymentState: OrderPaymentState,
+        val paymentFinished: Boolean = false,
     ): NewOrderScreenState()
     data class Failure(
         val error: Error
     ): NewOrderScreenState()
 }
+
+data class OrderPaymentState (
+    val loading: Boolean = false,
+    val error: Error? = null
+)

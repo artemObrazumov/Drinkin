@@ -92,4 +92,9 @@ class CartMockDataSource: CartDataSource {
     override fun getProductsInCartFlow(): SharedFlow<List<ProductInCart>> {
         return productsInCartFlow
     }
+
+    override suspend fun clearCart() {
+        productsInCart.clear()
+        _productsInCart.emit(productsInCart)
+    }
 }
