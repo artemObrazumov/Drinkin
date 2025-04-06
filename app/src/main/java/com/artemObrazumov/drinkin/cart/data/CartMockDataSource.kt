@@ -4,6 +4,7 @@ import com.artemObrazumov.drinkin.cart.domain.data_source.CartDataSource
 import com.artemObrazumov.drinkin.cart.domain.models.ProductInCart
 import com.artemObrazumov.drinkin.core.domain.util.NetworkError
 import com.artemObrazumov.drinkin.core.domain.util.Result
+import com.artemObrazumov.drinkin.product.data.data_source.PRODUCT_DETAILS
 import com.artemObrazumov.drinkin.product.domain.models.ProductDetails
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlin.random.Random
 
 class CartMockDataSource: CartDataSource {
@@ -27,6 +29,17 @@ class CartMockDataSource: CartDataSource {
         }
     }
     private val productsInCartFlow = _productsInCart.asSharedFlow()
+
+    // TODO: remove this script to add products to cart
+    init {
+        runBlocking {
+            addProductToCart(
+                PRODUCT_DETAILS.first(),
+                1,
+                selectedParameters = emptyMap()
+            )
+        }
+    }
 
     override suspend fun addProductToCart(
         productDetails: ProductDetails,

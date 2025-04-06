@@ -4,8 +4,10 @@
     <string name="go_to_payment">Go To Payment</string>
     <string name="order_confirmed">Order confirmed!</string>
     <string name="order_confirmed_subtitle">Your order will be ready in a couple minutes. You can track its status in your account.</string>
-    <string name="go_to_orders">Gp to orders</string>
+    <string name="go_to_orders">Go to orders</string>
     <string name="in_process">In process</string>
     <string name="finished">Finished</string>
     <string name="ready">Ready</string>
+    <string name="order_number">Order #%d</string>
+    <string name="no_orders">You do not have any orders yet. Perhaps it\'s time to make one?</string>
 </resources>

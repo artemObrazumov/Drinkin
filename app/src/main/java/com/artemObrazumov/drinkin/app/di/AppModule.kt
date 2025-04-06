@@ -25,7 +25,12 @@ import com.artemObrazumov.drinkin.cart.domain.usecase.IncrementProductInCartUseC
 import com.artemObrazumov.drinkin.order.domain.usecase.OrderPaymentUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.RemoveProductFromCartUseCase
 import com.artemObrazumov.drinkin.cart.presentation.cart.CartScreenViewModel
+import com.artemObrazumov.drinkin.order.domain.usecase.GetOrderItemsFlowUseCase
+import com.artemObrazumov.drinkin.order.domain.usecase.GetOrderUseCase
+import com.artemObrazumov.drinkin.order.domain.usecase.SaveOrderUseCase
+import com.artemObrazumov.drinkin.order.domain.usecase.UpdateOrderItemsListUseCase
 import com.artemObrazumov.drinkin.order.presentation.new_order.NewOrderScreenViewModel
+import com.artemObrazumov.drinkin.order.presentation.orders.OrdersScreenViewModel
 import com.artemObrazumov.drinkin.product.presentation.product_details.ProductDetailsViewModel
 import com.artemObrazumov.drinkin.product.presentation.products_list.ProductListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
@@ -56,7 +61,12 @@ val appModule = module {
     singleOf(::OrderMockDataSource).bind<OrderDataSource>()
     singleOf(::GetDraftOrderUseCase)
     singleOf(::OrderPaymentUseCase)
+    singleOf(::UpdateOrderItemsListUseCase)
+    singleOf(::GetOrderItemsFlowUseCase)
+    singleOf(::GetOrderUseCase)
+    singleOf(::SaveOrderUseCase)
     viewModelOf(::NewOrderScreenViewModel)
+    viewModelOf(::OrdersScreenViewModel)
 
     // address
     singleOf(::CafeAddressMockDataSource).bind<CafeAddressDataSource>()

@@ -4,6 +4,7 @@ import java.time.LocalDateTime
 
 data class Order(
     val id: Int,
+    val number: Int,
     val products: List<ProductInOrder>,
     val address: String,
     val totalPrice: Float,

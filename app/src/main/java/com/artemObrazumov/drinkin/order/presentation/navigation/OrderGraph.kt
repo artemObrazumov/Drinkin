@@ -15,6 +15,8 @@ import com.artemObrazumov.drinkin.order.presentation.new_order.NewOrderScreen
 import com.artemObrazumov.drinkin.order.presentation.new_order.NewOrderScreenViewModel
 import com.artemObrazumov.drinkin.order.presentation.order_success.OrderSuccessScreen
 import com.artemObrazumov.drinkin.core.presentation.components.menu.EmptyMenu
+import com.artemObrazumov.drinkin.order.presentation.orders.OrdersScreen
+import com.artemObrazumov.drinkin.order.presentation.orders.OrdersScreenViewModel
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
@@ -68,7 +70,18 @@ fun NavGraphBuilder.orderGraph(
     }
 
     composable<Orders> {
-        val viewModel: Orders
+        val viewModel: OrdersScreenViewModel = koinViewModel()
+        val state by viewModel.state.collectAsState()
+        OrdersScreen(
+            state = state,
+            menu = {
+                EmptyMenu(
+                    title = "Orders",
+                    color = Color.White,
+                    onBackButtonClicked = { navController.navigateUp() }
+                )
+            },
+        )
     }
 
     composable<OrderDetails> {

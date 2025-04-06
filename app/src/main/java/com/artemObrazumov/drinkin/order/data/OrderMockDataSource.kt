@@ -13,6 +13,7 @@ import com.artemObrazumov.drinkin.order.domain.models.toOrderItem
 import com.artemObrazumov.drinkin.order.domain.models.toProductInOrder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -56,10 +57,12 @@ class OrderMockDataSource(
     }
 
     override suspend fun payForOrder(orderId: Int): Result<Int, NetworkError> {
+        delay(500)
         val latestOrderId = orders.lastOrNull()?.id ?: 0
         draftOrder?.let {
             orders.add(Order(
                 id = latestOrderId + 1,
+                number = 123,
                 products = it.products,
                 address = it.address,
                 totalPrice = it.totalPrice,

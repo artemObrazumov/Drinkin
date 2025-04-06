@@ -9,25 +9,25 @@ class GetDraftOrderUseCase(
     private val orderDataSource: OrderDataSource
 ) {
 
-    suspend operator fun invoke(): GetOrderUseCaseResult {
+    suspend operator fun invoke(): GetDraftOrderResult {
         return when(val result = orderDataSource.getDraftOrderFromServer()) {
             is Result.Success -> {
-                GetOrderUseCaseResult.Success(result.data)
+                GetDraftOrderResult.Success(result.data)
             }
             is Result.Error -> {
-                GetOrderUseCaseResult.Failure(result.error)
+                GetDraftOrderResult.Failure(result.error)
             }
         }
     }
 }
 
-sealed class GetOrderUseCaseResult {
+sealed class GetDraftOrderResult {
 
     data class Failure(
         val error: Error
-    ): GetOrderUseCaseResult()
+    ): GetDraftOrderResult()
 
     data class Success(
         val draftOrder: DraftOrder
-    ): GetOrderUseCaseResult()
+    ): GetDraftOrderResult()
 }

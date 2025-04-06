@@ -3,6 +3,8 @@ package com.artemObrazumov.drinkin.address.data
 import com.artemObrazumov.drinkin.address.domain.data_source.CafeAddressDataSource
 import com.artemObrazumov.drinkin.address.domain.models.Address
 import com.artemObrazumov.drinkin.address.domain.models.Cafe
+import com.artemObrazumov.drinkin.address.domain.models.toAddress
+import com.artemObrazumov.drinkin.address.presentation.models.toCafeUi
 import com.artemObrazumov.drinkin.core.domain.util.NetworkError
 import com.artemObrazumov.drinkin.core.domain.util.Result
 import kotlinx.coroutines.CoroutineScope
@@ -12,6 +14,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.time.LocalTime
 
 class CafeAddressMockDataSource: CafeAddressDataSource {
@@ -27,6 +30,13 @@ class CafeAddressMockDataSource: CafeAddressDataSource {
         }
     }
     private val activeAddressFlow = _activeAddressFlow.asSharedFlow()
+
+    // TODO: remove this script to select address
+    init {
+        runBlocking {
+            updateActiveAddress(CAFES.first().toCafeUi().toAddress())
+        }
+    }
 
     override suspend fun getCafes(): Result<List<Cafe>, NetworkError> {
         delay(1000)

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.artemObrazumov.drinkin.address.domain.usecase.GetAddressFlowUseCase
 import com.artemObrazumov.drinkin.order.domain.usecase.GetDraftOrderUseCase
-import com.artemObrazumov.drinkin.order.domain.usecase.GetOrderUseCaseResult
+import com.artemObrazumov.drinkin.order.domain.usecase.GetDraftOrderResult
 import com.artemObrazumov.drinkin.order.domain.usecase.OrderPaymentResult
 import com.artemObrazumov.drinkin.order.domain.usecase.OrderPaymentUseCase
 import com.artemObrazumov.drinkin.cart.domain.util.AddressError
@@ -56,7 +56,7 @@ class NewOrderScreenViewModel(
                 }
 
                 when (result) {
-                    is GetOrderUseCaseResult.Success -> {
+                    is GetDraftOrderResult.Success -> {
                         _state.update {
                             NewOrderScreenState.Content(
                                 order = result.draftOrder.toDraftOrderUi(),
@@ -65,7 +65,7 @@ class NewOrderScreenViewModel(
                             )
                         }
                     }
-                    is GetOrderUseCaseResult.Failure -> {
+                    is GetDraftOrderResult.Failure -> {
                         NewOrderScreenState.Failure(result.error)
                     }
                 }
