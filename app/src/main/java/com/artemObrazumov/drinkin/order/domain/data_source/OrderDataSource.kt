@@ -1,6 +1,6 @@
-package com.artemObrazumov.drinkin.cart.domain.data_source
+package com.artemObrazumov.drinkin.order.domain.data_source
 
-import com.artemObrazumov.drinkin.cart.domain.models.Order
+import com.artemObrazumov.drinkin.order.domain.models.Order
 import com.artemObrazumov.drinkin.core.domain.util.Error
 import com.artemObrazumov.drinkin.core.domain.util.NetworkError
 import com.artemObrazumov.drinkin.core.domain.util.Result

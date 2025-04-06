@@ -1,6 +1,6 @@
-package com.artemObrazumov.drinkin.cart.presentation.models
+package com.artemObrazumov.drinkin.order.presentation.models
 
-import com.artemObrazumov.drinkin.cart.domain.models.Order
+import com.artemObrazumov.drinkin.order.domain.models.Order
 import com.artemObrazumov.drinkin.core.presentation.FormattedValue
 import com.artemObrazumov.drinkin.core.presentation.asFormattedPrice
 import com.artemObrazumov.drinkin.core.utils.Constants.PRICE_UNIT

@@ -1,7 +1,7 @@
-package com.artemObrazumov.drinkin.cart.presentation.new_order
+package com.artemObrazumov.drinkin.order.presentation.new_order
 
 import com.artemObrazumov.drinkin.address.domain.models.Address
-import com.artemObrazumov.drinkin.cart.presentation.models.OrderUi
+import com.artemObrazumov.drinkin.order.presentation.models.OrderUi
 import com.artemObrazumov.drinkin.core.domain.util.Error
 
 sealed class NewOrderScreenState {

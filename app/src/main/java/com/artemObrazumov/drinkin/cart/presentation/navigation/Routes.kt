@@ -4,9 +4,3 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data object Cart
-
-@Serializable
-data object NewOrder
-
-@Serializable
-data object OrderSuccess

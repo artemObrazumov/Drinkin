@@ -1,4 +1,4 @@
-package com.artemObrazumov.drinkin.cart.presentation.new_order
+package com.artemObrazumov.drinkin.order.presentation.new_order
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -37,11 +37,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.artemObrazumov.drinkin.R
 import com.artemObrazumov.drinkin.address.domain.models.Address
-import com.artemObrazumov.drinkin.cart.domain.models.Order
-import com.artemObrazumov.drinkin.cart.domain.models.ProductInOrder
-import com.artemObrazumov.drinkin.cart.presentation.models.OrderUi
-import com.artemObrazumov.drinkin.cart.presentation.models.toOrderUi
-import com.artemObrazumov.drinkin.cart.presentation.new_order.components.ProductInOrderItem
+import com.artemObrazumov.drinkin.order.domain.models.Order
+import com.artemObrazumov.drinkin.order.domain.models.ProductInOrder
+import com.artemObrazumov.drinkin.order.presentation.models.OrderUi
+import com.artemObrazumov.drinkin.order.presentation.models.toOrderUi
+import com.artemObrazumov.drinkin.order.presentation.new_order.components.ProductInOrderItem
 import com.artemObrazumov.drinkin.core.domain.util.NetworkError
 import com.artemObrazumov.drinkin.core.presentation.LoadingScreen
 import com.artemObrazumov.drinkin.core.presentation.components.BeansBackground

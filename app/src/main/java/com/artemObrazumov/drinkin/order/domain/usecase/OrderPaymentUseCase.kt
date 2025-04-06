@@ -1,6 +1,7 @@
-package com.artemObrazumov.drinkin.cart.domain.usecase
+package com.artemObrazumov.drinkin.order.domain.usecase
 
-import com.artemObrazumov.drinkin.cart.domain.data_source.OrderDataSource
+import com.artemObrazumov.drinkin.cart.domain.usecase.ClearCartUseCase
+import com.artemObrazumov.drinkin.order.domain.data_source.OrderDataSource
 import com.artemObrazumov.drinkin.core.domain.util.NetworkError
 import com.artemObrazumov.drinkin.core.domain.util.Result
 import kotlinx.coroutines.delay

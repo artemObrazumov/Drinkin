@@ -1,6 +1,6 @@
-package com.artemObrazumov.drinkin.cart.presentation.models
+package com.artemObrazumov.drinkin.order.presentation.models
 
-import com.artemObrazumov.drinkin.cart.domain.models.ProductInOrder
+import com.artemObrazumov.drinkin.order.domain.models.ProductInOrder
 import com.artemObrazumov.drinkin.core.presentation.FormattedValue
 import com.artemObrazumov.drinkin.core.presentation.asFormattedPrice
 import com.artemObrazumov.drinkin.core.presentation.asFormattedQuantity

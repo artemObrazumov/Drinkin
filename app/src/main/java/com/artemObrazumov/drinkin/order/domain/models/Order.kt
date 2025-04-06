@@ -1,4 +1,4 @@
-package com.artemObrazumov.drinkin.cart.domain.models
+package com.artemObrazumov.drinkin.order.domain.models
 
 data class Order(
     val id: Int,

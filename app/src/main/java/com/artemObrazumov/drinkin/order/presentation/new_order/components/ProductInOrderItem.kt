@@ -1,4 +1,4 @@
-package com.artemObrazumov.drinkin.cart.presentation.new_order.components
+package com.artemObrazumov.drinkin.order.presentation.new_order.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,7 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.artemObrazumov.drinkin.cart.presentation.models.ProductInOrderUi
+import com.artemObrazumov.drinkin.order.presentation.models.ProductInOrderUi
 
 @Composable
 fun ProductInOrderItem(

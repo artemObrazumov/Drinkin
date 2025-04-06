@@ -1,4 +1,4 @@
-package com.artemObrazumov.drinkin.cart.presentation.order_success
+package com.artemObrazumov.drinkin.order.presentation.order_success
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background

@@ -1,4 +1,6 @@
-package com.artemObrazumov.drinkin.cart.domain.models
+package com.artemObrazumov.drinkin.order.domain.models
+
+import com.artemObrazumov.drinkin.cart.domain.models.ProductInCart
 
 data class ProductInOrder(
     val id: Int,

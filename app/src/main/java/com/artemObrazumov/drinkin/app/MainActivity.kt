@@ -22,6 +22,8 @@ import com.artemObrazumov.drinkin.core.presentation.menu.MenuViewModel
 import com.artemObrazumov.drinkin.product.presentation.navigation.DashBoard
 import com.artemObrazumov.drinkin.product.presentation.navigation.dashboardGraph
 import com.artemObrazumov.drinkin.app.ui.theme.DrinkinTheme
+import com.artemObrazumov.drinkin.order.presentation.navigation.NewOrder
+import com.artemObrazumov.drinkin.order.presentation.navigation.orderGraph
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
@@ -52,6 +54,10 @@ class MainActivity : ComponentActivity() {
                             cartGraph(
                                 navController = navController,
                                 addressDestination = { AddressSelect },
+                                makeOrderDestination = { NewOrder }
+                            )
+                            orderGraph(
+                                navController = navController,
                                 orderScreenDestination = {}
                             )
                             addressGraph(

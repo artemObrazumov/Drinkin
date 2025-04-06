@@ -1,27 +1,25 @@
-package com.artemObrazumov.drinkin.cart.presentation.new_order
+package com.artemObrazumov.drinkin.order.presentation.new_order
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.artemObrazumov.drinkin.address.domain.usecase.GetAddressFlowUseCase
-import com.artemObrazumov.drinkin.cart.domain.usecase.GetOrderUseCase
-import com.artemObrazumov.drinkin.cart.domain.usecase.GetOrderUseCaseResult
-import com.artemObrazumov.drinkin.cart.domain.usecase.OrderPaymentResult
-import com.artemObrazumov.drinkin.cart.domain.usecase.OrderPaymentUseCase
+import com.artemObrazumov.drinkin.order.domain.usecase.GetOrderUseCase
+import com.artemObrazumov.drinkin.order.domain.usecase.GetOrderUseCaseResult
+import com.artemObrazumov.drinkin.order.domain.usecase.OrderPaymentResult
+import com.artemObrazumov.drinkin.order.domain.usecase.OrderPaymentUseCase
 import com.artemObrazumov.drinkin.cart.domain.util.AddressError
-import com.artemObrazumov.drinkin.cart.presentation.models.toOrderUi
-import com.artemObrazumov.drinkin.core.domain.util.NetworkError
+import com.artemObrazumov.drinkin.order.presentation.models.toOrderUi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class NewOrderViewModel(
+class NewOrderScreenViewModel(
     private val getOrderUseCase: GetOrderUseCase,
     private val getAddressFlowUseCase: GetAddressFlowUseCase,
     private val orderPaymentUseCase: OrderPaymentUseCase
