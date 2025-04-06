@@ -11,6 +11,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -19,6 +20,7 @@ import com.artemObrazumov.drinkin.cart.presentation.cart.CartScreen
 import com.artemObrazumov.drinkin.cart.presentation.cart.CartScreenViewModel
 import com.artemObrazumov.drinkin.cart.presentation.new_order.NewOrderScreen
 import com.artemObrazumov.drinkin.cart.presentation.new_order.NewOrderViewModel
+import com.artemObrazumov.drinkin.cart.presentation.order_success.OrderSuccessScreen
 import com.artemObrazumov.drinkin.core.presentation.components.menu.EmptyMenu
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
@@ -80,14 +82,19 @@ fun NavGraphBuilder.cartGraph(
         )
     }
 
-    composable<OrderSuccess> {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Text(
-                modifier = Modifier.align(Alignment.Center),
-                text = "Order success!"
-            )
-        }
+    composable<OrderSuccess>(
+        enterTransition = { scaleIn(initialScale = 0.95f) + fadeIn() },
+        exitTransition = { scaleOut(targetScale = 0.95f) + fadeOut() }
+    ) {
+        OrderSuccessScreen(
+            menu = {
+                EmptyMenu(
+                    title = "",
+                    color = Color.White,
+                    onBackButtonClicked = { navController.navigateUp() }
+                )
+            },
+            onOrdersClicked = {  }
+        )
     }
 }
