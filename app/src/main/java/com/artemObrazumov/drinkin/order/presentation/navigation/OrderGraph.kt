@@ -66,4 +66,12 @@ fun NavGraphBuilder.orderGraph(
             } }
         )
     }
+
+    composable<Orders> {
+        val viewModel: Orders
+    }
+
+    composable<OrderDetails> {
+
+    }
 }

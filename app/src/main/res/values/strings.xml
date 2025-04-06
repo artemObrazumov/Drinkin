@@ -5,4 +5,7 @@
     <string name="order_confirmed">Order confirmed!</string>
     <string name="order_confirmed_subtitle">Your order will be ready in a couple minutes. You can track its status in your account.</string>
     <string name="go_to_orders">Gp to orders</string>
+    <string name="in_process">In process</string>
+    <string name="finished">Finished</string>
+    <string name="ready">Ready</string>
 </resources>

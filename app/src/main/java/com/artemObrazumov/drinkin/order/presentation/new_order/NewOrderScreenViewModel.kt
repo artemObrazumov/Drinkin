@@ -3,12 +3,12 @@ package com.artemObrazumov.drinkin.order.presentation.new_order
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.artemObrazumov.drinkin.address.domain.usecase.GetAddressFlowUseCase
-import com.artemObrazumov.drinkin.order.domain.usecase.GetOrderUseCase
+import com.artemObrazumov.drinkin.order.domain.usecase.GetDraftOrderUseCase
 import com.artemObrazumov.drinkin.order.domain.usecase.GetOrderUseCaseResult
 import com.artemObrazumov.drinkin.order.domain.usecase.OrderPaymentResult
 import com.artemObrazumov.drinkin.order.domain.usecase.OrderPaymentUseCase
 import com.artemObrazumov.drinkin.cart.domain.util.AddressError
-import com.artemObrazumov.drinkin.order.presentation.models.toOrderUi
+import com.artemObrazumov.drinkin.order.presentation.models.toDraftOrderUi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class NewOrderScreenViewModel(
-    private val getOrderUseCase: GetOrderUseCase,
+    private val getDraftOrderUseCase: GetDraftOrderUseCase,
     private val getAddressFlowUseCase: GetAddressFlowUseCase,
     private val orderPaymentUseCase: OrderPaymentUseCase
 ): ViewModel() {
@@ -40,7 +40,7 @@ class NewOrderScreenViewModel(
     private fun loadOrderAndAddress() {
         viewModelScope.launch(Dispatchers.IO) {
             val getOrderResultFlow = flow {
-                emit(getOrderUseCase.invoke())
+                emit(getDraftOrderUseCase.invoke())
             }
             getOrderResultFlow.combine(
                 getAddressFlowUseCase.invoke(),
@@ -59,7 +59,7 @@ class NewOrderScreenViewModel(
                     is GetOrderUseCaseResult.Success -> {
                         _state.update {
                             NewOrderScreenState.Content(
-                                order = result.order.toOrderUi(),
+                                order = result.draftOrder.toDraftOrderUi(),
                                 address = address,
                                 orderPaymentState = orderPaymentState
                             )

@@ -2,11 +2,18 @@ package com.artemObrazumov.drinkin.order.domain.models
 
 import java.time.LocalDateTime
 
-data class Order(
+data class OrderItem(
     val id: Int,
-    val products: List<ProductInOrder>,
     val address: String,
-    val totalPrice: Float,
     val status: OrderStatus,
     val time: LocalDateTime
 )
+
+fun Order.toOrderItem(): OrderItem {
+    return OrderItem(
+        id = id,
+        address = address,
+        status = status,
+        time = time
+    )
+}

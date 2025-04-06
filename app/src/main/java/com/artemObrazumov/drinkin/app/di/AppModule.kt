@@ -18,7 +18,7 @@ import com.artemObrazumov.drinkin.cart.domain.usecase.ClearCartUseCase
 import com.artemObrazumov.drinkin.product.domain.usecase.GetDashboardUseCase
 import com.artemObrazumov.drinkin.product.domain.usecase.GetProductDetailUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.DecrementProductInCartUseCase
-import com.artemObrazumov.drinkin.order.domain.usecase.GetOrderUseCase
+import com.artemObrazumov.drinkin.order.domain.usecase.GetDraftOrderUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.GetProductsInCartFlowUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.GetProductsInCartUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.IncrementProductInCartUseCase
@@ -54,7 +54,7 @@ val appModule = module {
 
     // order
     singleOf(::OrderMockDataSource).bind<OrderDataSource>()
-    singleOf(::GetOrderUseCase)
+    singleOf(::GetDraftOrderUseCase)
     singleOf(::OrderPaymentUseCase)
     viewModelOf(::NewOrderScreenViewModel)
 

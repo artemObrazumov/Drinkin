@@ -1,4 +1,4 @@
-package com.artemObrazumov.drinkin.order.presentation.new_order.components
+package com.artemObrazumov.drinkin.order.presentation.componenets
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

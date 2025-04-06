@@ -37,11 +37,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.artemObrazumov.drinkin.R
 import com.artemObrazumov.drinkin.address.domain.models.Address
-import com.artemObrazumov.drinkin.order.domain.models.Order
+import com.artemObrazumov.drinkin.order.domain.models.DraftOrder
 import com.artemObrazumov.drinkin.order.domain.models.ProductInOrder
-import com.artemObrazumov.drinkin.order.presentation.models.OrderUi
-import com.artemObrazumov.drinkin.order.presentation.models.toOrderUi
-import com.artemObrazumov.drinkin.order.presentation.new_order.components.ProductInOrderItem
+import com.artemObrazumov.drinkin.order.presentation.models.DraftOrderUi
+import com.artemObrazumov.drinkin.order.presentation.models.toDraftOrderUi
+import com.artemObrazumov.drinkin.order.presentation.componenets.ProductInOrderItem
 import com.artemObrazumov.drinkin.core.domain.util.NetworkError
 import com.artemObrazumov.drinkin.core.presentation.LoadingScreen
 import com.artemObrazumov.drinkin.core.presentation.components.BeansBackground
@@ -89,7 +89,7 @@ fun NewOrderScreen(
 
 @Composable
 fun NewOrderScreenContent(
-    order: OrderUi,
+    order: DraftOrderUi,
     orderPaymentState: OrderPaymentState,
     modifier: Modifier = Modifier,
     onPaymentClicked: () -> Unit = {}
@@ -248,7 +248,7 @@ fun NewOrderScreenContent(
 fun NewOrderScreenPreview() {
     NewOrderScreen(
         state = NewOrderScreenState.Content(
-            order = ORDER,
+            order = DRAFT_ORDER,
             address = ADDRESS,
             orderPaymentState = OrderPaymentState()
         )
@@ -263,7 +263,7 @@ fun NewOrderScreenPreviewError() {
     )
 }
 
-internal val ORDER = Order(
+internal val DRAFT_ORDER = DraftOrder(
     id = 1,
     products = listOf(
         ProductInOrder(
@@ -307,7 +307,7 @@ internal val ORDER = Order(
         )
     ),
     address = "address, 2"
-).toOrderUi()
+).toDraftOrderUi()
 internal val ADDRESS = Address(
     cafeId = 1,
     latitude = 10.0,
