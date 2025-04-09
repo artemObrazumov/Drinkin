@@ -39,7 +39,8 @@ fun OrdersScreen(
         is OrdersScreenState.Content -> {
             OrdersScreenContent(
                 orders = state.orders,
-                modifier = modifier
+                modifier = modifier,
+                onOrderClicked = onOrderClicked
             )
         }
 
@@ -54,7 +55,8 @@ fun OrdersScreen(
 @Composable
 fun OrdersScreenContent(
     orders: List<OrderItemUi>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onOrderClicked: (orderId: Int) -> Unit = {}
 ) {
     if (orders.isEmpty()) {
         EmptyOrdersListMessage()
@@ -70,7 +72,8 @@ fun OrdersScreenContent(
                 key = { it.id }
             ) { order ->
                 OrderItem(
-                    order = order
+                    order = order,
+                    onOrderClicked = { onOrderClicked(order.id) }
                 )
             }
         }

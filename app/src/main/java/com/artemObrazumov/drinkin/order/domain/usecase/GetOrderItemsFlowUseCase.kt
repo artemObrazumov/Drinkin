@@ -1,6 +1,7 @@
 package com.artemObrazumov.drinkin.order.domain.usecase
 
 import com.artemObrazumov.drinkin.order.domain.data_source.OrderDataSource
+import com.artemObrazumov.drinkin.order.domain.models.Order
 import com.artemObrazumov.drinkin.order.domain.models.OrderItem
 import kotlinx.coroutines.flow.Flow
 
@@ -8,7 +9,7 @@ class GetOrderItemsFlowUseCase(
     private val orderDataSource: OrderDataSource
 ) {
 
-    operator fun invoke(): Flow<List<OrderItem>> {
+    operator fun invoke(): Flow<List<Order>> {
         return orderDataSource.getOrderItemsFlow()
     }
 }

@@ -27,8 +27,8 @@ class OrderMockDataSource(
 
     private val orderItemsScope = CoroutineScope(SupervisorJob())
 
-    private val orderItems: MutableList<OrderItem> = mutableListOf()
-    private val _orderItems = MutableSharedFlow<List<OrderItem>>(
+    private val orderItems: MutableList<Order> = mutableListOf()
+    private val _orderItems = MutableSharedFlow<List<Order>>(
         replay = 1,
         extraBufferCapacity = 1
     ).also { flow ->
@@ -88,7 +88,7 @@ class OrderMockDataSource(
     }
 
     override suspend fun saveOrderToOrderItems(order: Order) {
-        orderItems.add(order.toOrderItem())
+        orderItems.add(order)
         _orderItems.emit(orderItems)
     }
 
@@ -97,7 +97,7 @@ class OrderMockDataSource(
         return Result.Success(200)
     }
 
-    override fun getOrderItemsFlow(): SharedFlow<List<OrderItem>> {
+    override fun getOrderItemsFlow(): SharedFlow<List<Order>> {
         return orderItemsFlow
     }
 }

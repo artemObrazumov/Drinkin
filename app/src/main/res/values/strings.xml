@@ -10,4 +10,5 @@
     <string name="ready">Ready</string>
     <string name="order_number">Order #%d</string>
     <string name="no_orders">You do not have any orders yet. Perhaps it\'s time to make one?</string>
+    <string name="price">Price</string>
 </resources>

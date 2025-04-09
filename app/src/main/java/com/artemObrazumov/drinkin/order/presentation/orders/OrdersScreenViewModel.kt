@@ -2,6 +2,7 @@ package com.artemObrazumov.drinkin.order.presentation.orders
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.artemObrazumov.drinkin.order.domain.models.toOrderItem
 import com.artemObrazumov.drinkin.order.domain.usecase.GetOrderItemsFlowUseCase
 import com.artemObrazumov.drinkin.order.domain.usecase.UpdateOrderItemsListResult
 import com.artemObrazumov.drinkin.order.domain.usecase.UpdateOrderItemsListUseCase
@@ -50,7 +51,7 @@ class OrdersScreenViewModel(
         viewModelScope.launch {
             getOrderItemsFlowUseCase.invoke()
                 .map {
-                    it.map { orderItem -> orderItem.toOrderItemUi() }
+                    it.map { orderItem -> orderItem.toOrderItem().toOrderItemUi() }
                 }
                 .collect { orderItems ->
                     _state.update {

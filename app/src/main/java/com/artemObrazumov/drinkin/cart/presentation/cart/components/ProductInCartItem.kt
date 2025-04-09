@@ -47,6 +47,7 @@ import com.artemObrazumov.drinkin.core.presentation.asFormattedPrice
 import com.artemObrazumov.drinkin.core.utils.Constants.PRICE_UNIT
 import com.artemObrazumov.drinkin.cart.domain.models.ProductInCart
 import com.artemObrazumov.drinkin.cart.presentation.models.ProductInCartUi
+import com.artemObrazumov.drinkin.core.presentation.components.OutlinedBlock
 
 @Composable
 fun ProductInCartItem(
@@ -57,165 +58,163 @@ fun ProductInCartItem(
     onRemove: () -> Unit,
     onViewDetails: () -> Unit
 ) {
-    Row(
+    OutlinedBlock (
         modifier = modifier
             .height(IntrinsicSize.Max)
             .padding(horizontal = 16.dp)
             .fillMaxWidth()
-            .border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp))
-            .clip(RoundedCornerShape(8.dp))
-            .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp)
     ) {
-        val secondaryColor = MaterialTheme.colorScheme.secondary
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .clip(RoundedCornerShape(16.dp))
-                .background(MaterialTheme.colorScheme.primary)
-                .drawBehind {
-                    drawCircle(
-                        color = secondaryColor,
-                        radius = size.width,
-                        center = Offset(
-                            x = size.width,
-                            y = size.height
+        Row {
+            val secondaryColor = MaterialTheme.colorScheme.secondary
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(MaterialTheme.colorScheme.primary)
+                    .drawBehind {
+                        drawCircle(
+                            color = secondaryColor,
+                            radius = size.width,
+                            center = Offset(
+                                x = size.width,
+                                y = size.height
+                            )
                         )
+                    }
+                    .aspectRatio(3f / 4f, matchHeightConstraintsFirst = true)
+            ) {
+                Image(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp),
+                    painter = painterResource(id = product.imageRes),
+                    contentDescription = product.name
+                )
+            }
+            Spacer(
+                modifier = Modifier.width(16.dp)
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(2f)
+                    .padding(vertical = 8.dp),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Top
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .weight(1f),
+                        text = product.name,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp,
+                        letterSpacing = 1.sp,
+                        maxLines = 2,
+                        minLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Icon(
+                        Icons.Outlined.Delete,
+                        tint = MaterialTheme.colorScheme.tertiaryContainer,
+                        modifier = Modifier
+                            .size(40.dp)
+                            .padding(start = 8.dp)
+                            .padding(bottom = 8.dp)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ) {
+                                onRemove()
+                            },
+                        contentDescription = "Delete"
                     )
                 }
-                .aspectRatio(3f / 4f, matchHeightConstraintsFirst = true)
-        ) {
-            Image(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp),
-                painter = painterResource(id = product.imageRes),
-                contentDescription = product.name
-            )
-        }
-        Spacer(
-            modifier = Modifier.width(16.dp)
-        )
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .weight(2f)
-                .padding(vertical = 8.dp),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Top
-            ) {
                 Text(
                     modifier = Modifier
-                        .weight(1f),
-                    text = product.name,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp,
-                    letterSpacing = 1.sp,
-                    maxLines = 2,
-                    minLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Icon(
-                    Icons.Outlined.Delete,
-                    tint = MaterialTheme.colorScheme.tertiaryContainer,
-                    modifier = Modifier
-                        .size(40.dp)
-                        .padding(start = 8.dp)
-                        .padding(bottom = 8.dp)
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null
                         ) {
-                            onRemove()
+                            onViewDetails()
                         },
-                    contentDescription = "Delete"
-                )
-            }
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp)
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null
-                    ) {
-                        onViewDetails()
-                    },
-                text = "View details",
-                fontWeight = FontWeight.Medium,
-                fontSize = 18.sp
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                FilledIconButton(
-                    onClick = onDecrement,
-                    modifier = Modifier
-                        .shadow(
-                            elevation = 20.dp,
-                            spotColor = MaterialTheme.colorScheme.primary,
-                            ambientColor = MaterialTheme.colorScheme.primary,
-                            shape = CircleShape
-                        )
-                        .size(28.dp)
-                ) {
-                    Icon(
-                        painterResource(id = R.drawable.minus),
-                        modifier = Modifier
-                            .size(12.dp),
-                        contentDescription = "subtract"
-                    )
-                }
-                Spacer(
-                    modifier = Modifier
-                        .width(12.dp)
-                )
-                Text(
-                    modifier = Modifier
-                        .defaultMinSize(minWidth = 28.dp),
-                    text = product.quantity.toString(),
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold,
+                    text = "View details",
+                    fontWeight = FontWeight.Medium,
                     fontSize = 18.sp
                 )
-                Spacer(
+                Row(
                     modifier = Modifier
-                        .width(12.dp)
-                )
-                FilledIconButton(
-                    onClick = onIncrement,
-                    modifier = Modifier
-                        .shadow(
-                            elevation = 20.dp,
-                            spotColor = MaterialTheme.colorScheme.primary,
-                            ambientColor = MaterialTheme.colorScheme.primary,
-                            shape = CircleShape
-                        )
-                        .size(28.dp)
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        Icons.Default.Add,
+                    FilledIconButton(
+                        onClick = onDecrement,
                         modifier = Modifier
-                            .size(20.dp),
-                        contentDescription = "add"
+                            .shadow(
+                                elevation = 20.dp,
+                                spotColor = MaterialTheme.colorScheme.primary,
+                                ambientColor = MaterialTheme.colorScheme.primary,
+                                shape = CircleShape
+                            )
+                            .size(28.dp)
+                    ) {
+                        Icon(
+                            painterResource(id = R.drawable.minus),
+                            modifier = Modifier
+                                .size(12.dp),
+                            contentDescription = "subtract"
+                        )
+                    }
+                    Spacer(
+                        modifier = Modifier
+                            .width(12.dp)
+                    )
+                    Text(
+                        modifier = Modifier
+                            .defaultMinSize(minWidth = 28.dp),
+                        text = product.quantity.toString(),
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp
+                    )
+                    Spacer(
+                        modifier = Modifier
+                            .width(12.dp)
+                    )
+                    FilledIconButton(
+                        onClick = onIncrement,
+                        modifier = Modifier
+                            .shadow(
+                                elevation = 20.dp,
+                                spotColor = MaterialTheme.colorScheme.primary,
+                                ambientColor = MaterialTheme.colorScheme.primary,
+                                shape = CircleShape
+                            )
+                            .size(28.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.Add,
+                            modifier = Modifier
+                                .size(20.dp),
+                            contentDescription = "add"
+                        )
+                    }
+                    Spacer(
+                        modifier = Modifier
+                            .weight(1f)
+                    )
+                    Text(
+                        text = product.price.formatted,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                        letterSpacing = 1.sp
                     )
                 }
-                Spacer(
-                    modifier = Modifier
-                        .weight(1f)
-                )
-                Text(
-                    text = product.price.formatted,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center,
-                    letterSpacing = 1.sp
-                )
             }
         }
     }

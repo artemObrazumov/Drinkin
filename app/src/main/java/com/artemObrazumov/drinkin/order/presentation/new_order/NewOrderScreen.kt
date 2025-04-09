@@ -45,6 +45,7 @@ import com.artemObrazumov.drinkin.order.presentation.componenets.ProductInOrderI
 import com.artemObrazumov.drinkin.core.domain.util.NetworkError
 import com.artemObrazumov.drinkin.core.presentation.LoadingScreen
 import com.artemObrazumov.drinkin.core.presentation.components.BeansBackground
+import com.artemObrazumov.drinkin.core.presentation.components.OutlinedBlock
 
 @Composable
 fun NewOrderScreen(
@@ -100,40 +101,35 @@ fun NewOrderScreenContent(
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(32.dp)
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp))
-                .clip(RoundedCornerShape(8.dp))
-                .background(MaterialTheme.colorScheme.background)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            item {
-                Text(
-                    text = "Products",
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
+        OutlinedBlock {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                item {
+                    Text(
+                        text = "Products",
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp
+                        )
                     )
-                )
-            }
-            items(
-                items = order.products,
-                key = { it.id }
-            ) { product ->
-                ProductInOrderItem(
-                    product = product
-                )
+                }
+                items(
+                    items = order.products,
+                    key = { it.id }
+                ) { product ->
+                    ProductInOrderItem(
+                        product = product
+                    )
+                }
             }
         }
-        Column(
+
+        OutlinedBlock(
             modifier = Modifier
                 .fillMaxWidth()
-                .border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp))
-                .clip(RoundedCornerShape(8.dp))
-                .background(MaterialTheme.colorScheme.background)
-                .padding(16.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -168,20 +164,16 @@ fun NewOrderScreenContent(
             )
         }
 
-        Column(
+        OutlinedBlock(
             modifier = Modifier
                 .fillMaxWidth()
-                .border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp))
-                .clip(RoundedCornerShape(8.dp))
-                .background(MaterialTheme.colorScheme.background)
-                .padding(16.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
                     painterResource(R.drawable.dollar),
-                    contentDescription = stringResource(R.string.address),
+                    contentDescription = stringResource(R.string.price),
                     tint = MaterialTheme.colorScheme.tertiaryContainer
                 )
                 Spacer(

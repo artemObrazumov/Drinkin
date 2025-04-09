@@ -6,11 +6,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
@@ -26,7 +28,8 @@ fun BeansBackground(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .background(MaterialTheme.colorScheme.background)
+            .clipToBounds(),
         contentAlignment = Alignment.TopStart
     ) {
         Image(
@@ -34,9 +37,7 @@ fun BeansBackground(
                 .padding(top = 148.dp)
                 .fillMaxWidth(0.7f)
                 .aspectRatio(1f)
-                .graphicsLayer {
-                    translationX = -96.dp.toPx()
-                }
+                .offset(x = (-96).dp)
                 .rotate(135f),
             painter = painterResource(id = R.drawable.beans),
             contentDescription = null,
