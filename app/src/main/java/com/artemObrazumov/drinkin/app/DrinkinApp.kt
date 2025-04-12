@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Intent
 import com.artemObrazumov.drinkin.BuildConfig
 import com.artemObrazumov.drinkin.app.di.appModule
-import com.artemObrazumov.drinkin.order.presentation.service.OrderTrackingService
+import com.artemObrazumov.drinkin.order.presentation.order_tracking.OrderTrackingService
 import com.yandex.mapkit.MapKitFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -25,8 +25,5 @@ class DrinkinApp: Application() {
 
         // Yandex maps
         MapKitFactory.setApiKey(BuildConfig.MAPS_API_KEY)
-
-        // Services
-        startForegroundService(Intent(this, OrderTrackingService::class.java))
     }
 }

@@ -25,12 +25,17 @@ import com.artemObrazumov.drinkin.cart.domain.usecase.IncrementProductInCartUseC
 import com.artemObrazumov.drinkin.order.domain.usecase.OrderPaymentUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.RemoveProductFromCartUseCase
 import com.artemObrazumov.drinkin.cart.presentation.cart.CartScreenViewModel
+import com.artemObrazumov.drinkin.order.data.OrderTrackerMockDataSource
+import com.artemObrazumov.drinkin.order.domain.data_source.OrderTrackerDataSource
 import com.artemObrazumov.drinkin.order.domain.usecase.GetOrderItemsFlowUseCase
+import com.artemObrazumov.drinkin.order.domain.usecase.GetOrderStatusFlowUseCase
 import com.artemObrazumov.drinkin.order.domain.usecase.GetOrderUseCase
 import com.artemObrazumov.drinkin.order.domain.usecase.SaveOrderUseCase
 import com.artemObrazumov.drinkin.order.domain.usecase.UpdateOrderItemsListUseCase
+import com.artemObrazumov.drinkin.order.domain.utils.OrderTrackingServiceStarter
 import com.artemObrazumov.drinkin.order.presentation.new_order.NewOrderScreenViewModel
 import com.artemObrazumov.drinkin.order.presentation.order_details.OrderDetailsScreenViewModel
+import com.artemObrazumov.drinkin.order.presentation.order_tracking.OrderTrackingServiceStarterImpl
 import com.artemObrazumov.drinkin.order.presentation.orders.OrdersScreenViewModel
 import com.artemObrazumov.drinkin.product.presentation.product_details.ProductDetailsViewModel
 import com.artemObrazumov.drinkin.product.presentation.products_list.ProductListViewModel
@@ -60,12 +65,15 @@ val appModule = module {
 
     // order
     singleOf(::OrderMockDataSource).bind<OrderDataSource>()
+    singleOf(::OrderTrackerMockDataSource).bind<OrderTrackerDataSource>()
+    singleOf(::OrderTrackingServiceStarterImpl).bind<OrderTrackingServiceStarter>()
     singleOf(::GetDraftOrderUseCase)
     singleOf(::OrderPaymentUseCase)
     singleOf(::UpdateOrderItemsListUseCase)
     singleOf(::GetOrderItemsFlowUseCase)
     singleOf(::GetOrderUseCase)
     singleOf(::SaveOrderUseCase)
+    singleOf(::GetOrderStatusFlowUseCase)
     viewModelOf(::NewOrderScreenViewModel)
     viewModelOf(::OrdersScreenViewModel)
     viewModelOf(::OrderDetailsScreenViewModel)

@@ -12,4 +12,6 @@
     <string name="no_orders">You do not have any orders yet. Perhaps it\'s time to make one?</string>
     <string name="price">Price</string>
     <string name="order_is_making">Your order is being made!</string>
+    <string name="tracking_order">We are tracking your order status</string>
+    <string name="order_is_done">Your order is done!</string>
 </resources>

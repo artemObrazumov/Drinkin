@@ -11,6 +11,7 @@ import com.artemObrazumov.drinkin.order.domain.models.OrderItem
 import com.artemObrazumov.drinkin.order.domain.models.OrderStatus
 import com.artemObrazumov.drinkin.order.domain.models.toOrderItem
 import com.artemObrazumov.drinkin.order.domain.models.toProductInOrder
+import com.artemObrazumov.drinkin.order.domain.utils.OrderTrackingServiceStarter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
@@ -22,7 +23,8 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 class OrderMockDataSource(
-    private val getProductsInCartFlowUseCase: GetProductsInCartFlowUseCase
+    private val getProductsInCartFlowUseCase: GetProductsInCartFlowUseCase,
+    private val orderTrackingServiceStarter: OrderTrackingServiceStarter
 ) : OrderDataSource {
 
     private val orderItemsScope = CoroutineScope(SupervisorJob())
@@ -43,8 +45,9 @@ class OrderMockDataSource(
 
     override suspend fun getDraftOrderFromServer(): Result<DraftOrder, Error> {
         // Making order from products in cart
+        val latestOrderId = orders.lastOrNull()?.id ?: 0
         draftOrder = DraftOrder(
-            id = 1,
+            id = latestOrderId + 1,
             products = getProductsInCartFlowUseCase.invoke().first().map {
                 it.toProductInOrder()
             },
@@ -61,7 +64,7 @@ class OrderMockDataSource(
         val latestOrderId = orders.lastOrNull()?.id ?: 0
         draftOrder?.let {
             orders.add(Order(
-                id = latestOrderId + 1,
+                id = it.id,
                 number = 123,
                 products = it.products,
                 address = it.address,
@@ -69,6 +72,7 @@ class OrderMockDataSource(
                 status = OrderStatus.IN_PROCESS,
                 time = LocalDateTime.now()
             ))
+            orderTrackingServiceStarter.trackOrder(latestOrderId + 1)
         }
         draftOrder = null
         return Result.Success(200)
