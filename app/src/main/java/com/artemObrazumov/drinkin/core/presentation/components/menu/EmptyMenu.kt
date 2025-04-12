@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -29,6 +30,7 @@ fun EmptyMenu(
     title: String,
     modifier: Modifier = Modifier,
     bottomPadding: Dp = 14.dp,
+    color: Color = darkTextColor,
     onBackButtonClicked: () -> Unit,
 ) {
     Row(
@@ -51,7 +53,7 @@ fun EmptyMenu(
             Icon(
                 Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Back",
-                tint = darkTextColor
+                tint = color
             )
         }
         Text(
@@ -62,6 +64,7 @@ fun EmptyMenu(
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp
             ),
+            color = color,
             textAlign = TextAlign.Center
         )
         Spacer(

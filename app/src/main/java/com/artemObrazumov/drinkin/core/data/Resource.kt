@@ -1,6 +1,5 @@
 package com.artemObrazumov.drinkin.core.data
 
-import androidx.annotation.ColorInt
 import androidx.annotation.StringRes
 
 sealed interface Resource {
