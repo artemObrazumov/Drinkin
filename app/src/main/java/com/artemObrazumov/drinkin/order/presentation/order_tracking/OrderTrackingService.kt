@@ -1,13 +1,17 @@
 package com.artemObrazumov.drinkin.order.presentation.order_tracking
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import com.artemObrazumov.drinkin.R
 import com.artemObrazumov.drinkin.order.domain.usecase.GetOrderStatusFlowUseCase
 import kotlinx.coroutines.CoroutineScope
@@ -17,7 +21,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.getKoin
 
-class OrderTrackingService: Service() {
+class OrderTrackingService : Service() {
 
     private val getOrderStatusFlowUseCase: GetOrderStatusFlowUseCase = getKoin().get()
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -26,11 +30,32 @@ class OrderTrackingService: Service() {
         stopSelf()
     }
 
+    private var canPostNotifications = false
+
     override fun onCreate() {
         super.onCreate()
+        checkPostNotificationsPermission()
         notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         createNotificationChannel()
         startForeground(FOREGROUND_ID, createServiceNotification())
+    }
+
+    private fun checkPostNotificationsPermission() {
+        canPostNotifications = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            true
+        } else {
+            ContextCompat.checkSelfPermission(
+                this, android.Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun postNotification(id: Int, notification: Notification) {
+        if (canPostNotifications) {
+            NotificationManagerCompat.from(this)
+                .notify(id, notification)
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -46,7 +71,7 @@ class OrderTrackingService: Service() {
     }
 
     private fun startTrackingOrder(orderId: Int, orderNumber: Int) {
-        NotificationManagerCompat.from(this).notify(orderId, createOrderMakingNotification(orderNumber + orderId))
+        postNotification(orderId, createOrderMakingNotification(orderNumber + orderId))
         ordersList.addOrder(orderId)
         scope.launch {
             getOrderStatusFlowUseCase.invoke(orderId).collect {
@@ -56,8 +81,8 @@ class OrderTrackingService: Service() {
     }
 
     private fun stopTrackingOrder(orderId: Int, orderNumber: Int) {
-        NotificationManagerCompat.from(this@OrderTrackingService).cancel(orderId)
-        NotificationManagerCompat.from(this@OrderTrackingService).notify(orderId, createOrderDoneNotification(orderNumber + orderId))
+        NotificationManagerCompat.from(this).cancel(orderId)
+        postNotification(orderId, createOrderDoneNotification(orderNumber + orderId))
         ordersList.removeOrder(orderId)
     }
 

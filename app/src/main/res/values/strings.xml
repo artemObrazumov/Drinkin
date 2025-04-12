@@ -14,4 +14,7 @@
     <string name="order_is_making">Your order is being made!</string>
     <string name="tracking_order">We are tracking your order status</string>
     <string name="order_is_done">Your order is done!</string>
+    <string name="no_post_notifications_perm">You did not grant notification permission to the app</string>
+    <string name="notification_permission_advice">You should grant permission to post notifications to track your orders status</string>
+    <string name="request_permission">Request permission</string>
 </resources>

@@ -46,6 +46,7 @@ import com.artemObrazumov.drinkin.core.domain.util.NetworkError
 import com.artemObrazumov.drinkin.core.presentation.LoadingScreen
 import com.artemObrazumov.drinkin.core.presentation.components.BeansBackground
 import com.artemObrazumov.drinkin.core.presentation.components.OutlinedBlock
+import com.artemObrazumov.drinkin.order.presentation.new_order.component.NotificationPermissionReminder
 
 @Composable
 fun NewOrderScreen(
@@ -232,6 +233,8 @@ fun NewOrderScreenContent(
                 }
             }
         }
+
+        NotificationPermissionReminder()
     }
 }
 
