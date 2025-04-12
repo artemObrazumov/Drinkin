@@ -2,5 +2,5 @@ package com.artemObrazumov.drinkin.order.domain.utils
 
 interface OrderTrackingServiceStarter {
 
-    fun trackOrder(orderId: Int)
+    fun trackOrder(orderId: Int, orderNumber: Int)
 }

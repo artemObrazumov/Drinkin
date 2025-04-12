@@ -13,6 +13,7 @@ import com.artemObrazumov.drinkin.order.domain.models.toOrderItem
 import com.artemObrazumov.drinkin.order.domain.models.toProductInOrder
 import com.artemObrazumov.drinkin.order.domain.utils.OrderTrackingServiceStarter
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,6 +22,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import kotlin.random.Random
 
 class OrderMockDataSource(
     private val getProductsInCartFlowUseCase: GetProductsInCartFlowUseCase,
@@ -39,6 +41,8 @@ class OrderMockDataSource(
         }
     }
     private val orderItemsFlow = _orderItems.asSharedFlow()
+
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     private var draftOrder: DraftOrder? = null
     private val orders = mutableListOf<Order>()
@@ -63,19 +67,30 @@ class OrderMockDataSource(
         delay(500)
         val latestOrderId = orders.lastOrNull()?.id ?: 0
         draftOrder?.let {
+            val number = Random.nextInt(100, 999)
             orders.add(Order(
                 id = it.id,
-                number = 123,
+                number = number,
                 products = it.products,
                 address = it.address,
                 totalPrice = it.totalPrice,
                 status = OrderStatus.IN_PROCESS,
                 time = LocalDateTime.now()
             ))
-            orderTrackingServiceStarter.trackOrder(latestOrderId + 1)
+            orderTrackingServiceStarter.trackOrder(latestOrderId + 1, number)
         }
         draftOrder = null
         return Result.Success(200)
+    }
+
+    private suspend fun simulateStatusChange(orderId: Int) {
+        val orderIndex = orderItems.indexOfFirst { it.id == orderId }
+        delay(7000)
+        orderItems[orderIndex] = orderItems[orderIndex].copy(status = OrderStatus.READY)
+        _orderItems.emit(orderItems)
+        delay(7000)
+        orderItems[orderIndex] = orderItems[orderIndex].copy(status = OrderStatus.CLOSED)
+        _orderItems.emit(orderItems)
     }
 
     override suspend fun getOrder(orderId: Int): Result<Order, NetworkError> {
@@ -94,10 +109,19 @@ class OrderMockDataSource(
     override suspend fun saveOrderToOrderItems(order: Order) {
         orderItems.add(order)
         _orderItems.emit(orderItems)
+
+        scope.launch { simulateStatusChange(order.id) }
     }
 
     override suspend fun updateOrderItems(): Result<Int, Error> {
         // Updating order items list with server data
+        delay(500)
+        return Result.Success(200)
+    }
+
+    override suspend fun updateOrderItem(orderId: Int): Result<Int, Error> {
+        // Updating order item with server data by id
+        delay(500)
         return Result.Success(200)
     }
 

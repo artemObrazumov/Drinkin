@@ -66,6 +66,7 @@ class OrderTrackingService : Service() {
         val orderNumber = intent.getIntExtra(ORDER_NUMBER_EXTRAS, -1)
         if (orderNumber == -1)
             throw IllegalArgumentException("Order number provided incorrectly")
+
         startTrackingOrder(orderId, orderNumber)
         return START_STICKY
     }

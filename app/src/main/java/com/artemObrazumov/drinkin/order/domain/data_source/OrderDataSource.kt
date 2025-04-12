@@ -19,5 +19,6 @@ interface OrderDataSource {
     suspend fun getOrderItem(orderId: Int): Result<OrderItem, NetworkError>
     suspend fun saveOrderToOrderItems(order: Order)
     suspend fun updateOrderItems(): Result<Int, Error>
+    suspend fun updateOrderItem(orderId: Int): Result<Int, Error>
     fun getOrderItemsFlow(): SharedFlow<List<Order>>
 }

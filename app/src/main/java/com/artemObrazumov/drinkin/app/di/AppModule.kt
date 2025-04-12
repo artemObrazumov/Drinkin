@@ -31,6 +31,7 @@ import com.artemObrazumov.drinkin.order.domain.usecase.GetOrderItemsFlowUseCase
 import com.artemObrazumov.drinkin.order.domain.usecase.GetOrderStatusFlowUseCase
 import com.artemObrazumov.drinkin.order.domain.usecase.GetOrderUseCase
 import com.artemObrazumov.drinkin.order.domain.usecase.SaveOrderUseCase
+import com.artemObrazumov.drinkin.order.domain.usecase.UpdateOrderItemUseCase
 import com.artemObrazumov.drinkin.order.domain.usecase.UpdateOrderItemsListUseCase
 import com.artemObrazumov.drinkin.order.domain.utils.OrderTrackingServiceStarter
 import com.artemObrazumov.drinkin.order.presentation.new_order.NewOrderScreenViewModel
@@ -70,6 +71,7 @@ val appModule = module {
     singleOf(::GetDraftOrderUseCase)
     singleOf(::OrderPaymentUseCase)
     singleOf(::UpdateOrderItemsListUseCase)
+    singleOf(::UpdateOrderItemUseCase)
     singleOf(::GetOrderItemsFlowUseCase)
     singleOf(::GetOrderUseCase)
     singleOf(::SaveOrderUseCase)

@@ -8,10 +8,10 @@ class OrderTrackingServiceStarterImpl(
     private val context: Context
 ): OrderTrackingServiceStarter {
 
-    override fun trackOrder(orderId: Int) {
+    override fun trackOrder(orderId: Int, orderNumber: Int) {
         val intent = Intent(context, OrderTrackingService::class.java).apply {
             putExtra(OrderTrackingService.ORDER_ID_EXTRAS, orderId)
-            putExtra(OrderTrackingService.ORDER_NUMBER_EXTRAS, 228)
+            putExtra(OrderTrackingService.ORDER_NUMBER_EXTRAS, orderNumber)
         }
         context.startForegroundService(intent)
     }
