@@ -4,9 +4,12 @@ import com.artemObrazumov.drinkin.account.data.LoginMockDataSource
 import com.artemObrazumov.drinkin.account.domain.data_source.LoginDataSource
 import com.artemObrazumov.drinkin.account.domain.usecase.GetUserFlowUseCase
 import com.artemObrazumov.drinkin.account.domain.usecase.LoginUseCase
+import com.artemObrazumov.drinkin.account.domain.usecase.RegisterUseCase
 import com.artemObrazumov.drinkin.account.domain.usecase.SaveTokensUseCase
 import com.artemObrazumov.drinkin.account.domain.utls.LoginFormValidator
+import com.artemObrazumov.drinkin.account.domain.utls.RegistrationFormValidator
 import com.artemObrazumov.drinkin.account.presentation.login.LoginScreenViewModel
+import com.artemObrazumov.drinkin.account.presentation.registration.RegistrationScreenViewModel
 import com.artemObrazumov.drinkin.address.data.CafeAddressMockDataSource
 import com.artemObrazumov.drinkin.address.domain.data_source.CafeAddressDataSource
 import com.artemObrazumov.drinkin.address.domain.usecase.ChangeAddressUseCase
@@ -96,11 +99,14 @@ val appModule = module {
 
     // account
     singleOf(::LoginFormValidator)
+    singleOf(::RegistrationFormValidator)
     singleOf(::LoginMockDataSource).bind<LoginDataSource>()
     singleOf(::GetUserFlowUseCase)
     singleOf(::LoginUseCase)
+    singleOf(::RegisterUseCase)
     singleOf(::SaveTokensUseCase)
     viewModelOf(::LoginScreenViewModel)
+    viewModelOf(::RegistrationScreenViewModel)
 
     viewModelOf(::MenuViewModel)
 }

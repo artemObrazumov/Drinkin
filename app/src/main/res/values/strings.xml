@@ -28,4 +28,8 @@
     <string name="unknown_error">Unknown error!</string>
     <string name="password_too_short">Password is too short!</string>
     <string name="password_too_long">Password is too long!</string>
+    <string name="register">Register</string>
+    <string name="registration_subtitle">Create a new account to start\nmaking orders</string>
+    <string name="passwords_different">Passwords are different!</string>
+    <string name="password_repeat">Repeat password</string>
 </resources>
