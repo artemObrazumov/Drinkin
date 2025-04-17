@@ -11,6 +11,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -19,8 +20,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.artemObrazumov.drinkin.account.presentation.login.LoginScreen
+import com.artemObrazumov.drinkin.account.presentation.login.LoginScreenViewModel
 import com.artemObrazumov.drinkin.account.presentation.registration.RegistrationScreen
 import com.artemObrazumov.drinkin.core.presentation.components.Switch
+import org.koin.androidx.compose.koinViewModel
+import kotlin.math.log
 
 @Composable
 fun AuthorizationScreen(
@@ -43,7 +47,25 @@ fun AuthorizationScreen(
             userScrollEnabled = false
         ) { page ->
             when (page) {
-                0 -> LoginScreen()
+                0 -> {
+                    val viewModel: LoginScreenViewModel = koinViewModel()
+                    val state by viewModel.state.collectAsState()
+                    LoginScreen(
+                        state = state,
+                        onLoginChanged = { login ->
+                            viewModel.updateLogin(login)
+                        },
+                        onPasswordChanged = { password ->
+                            viewModel.updatePassword(password)
+                        },
+                        onPasswordToggled = {
+                            viewModel.togglePassword()
+                        },
+                        onLogin = {
+                            viewModel.doLogin()
+                        }
+                    )
+                }
                 1 -> RegistrationScreen()
             }
         }

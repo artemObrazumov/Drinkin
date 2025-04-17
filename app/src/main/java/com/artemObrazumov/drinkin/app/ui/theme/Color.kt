@@ -249,5 +249,5 @@ val customColor1ContainerDarkHighContrast = Color(0xFF94DAB2)
 val onCustomColor1ContainerDarkHighContrast = Color(0xFF000000)
 
 val darkTextColor = Color(0xFF161023)
-val blendTextColor = Color(0xFF65606E)
+val blendTextColor = Color(0xFF76727C)
 val beansBackgroundColor = Color(0xFFECE8DD)

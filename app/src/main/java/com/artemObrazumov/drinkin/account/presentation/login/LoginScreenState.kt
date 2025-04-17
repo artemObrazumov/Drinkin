@@ -1,7 +1,11 @@
 package com.artemObrazumov.drinkin.account.presentation.login
 
+import com.artemObrazumov.drinkin.core.data.Resource
+
 data class LoginScreenState(
-    val loading: Boolean = false,
+    val isLoading: Boolean = false,
     val login: String = "",
-    val password: String = ""
+    val password: String = "",
+    val isPasswordVisible: Boolean = false,
+    val error: Resource.StringResource? = null
 )

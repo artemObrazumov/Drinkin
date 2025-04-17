@@ -19,4 +19,13 @@
     <string name="request_permission">Request permission</string>
     <string name="login_title">Log into\nyour account</string>
     <string name="registration_title">Create new\naccount</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="login_subtitle">Enter your account to start\nmaking orders</string>
+    <string name="toggle_password">Toggle password</string>
+    <string name="login_too_long">Login is too long!</string>
+    <string name="login_too_short">Login is too short!</string>
+    <string name="unknown_error">Unknown error!</string>
+    <string name="password_too_short">Password is too short!</string>
+    <string name="password_too_long">Password is too long!</string>
 </resources>
