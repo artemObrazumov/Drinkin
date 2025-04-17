@@ -1,15 +1,18 @@
 package com.artemObrazumov.drinkin.account.presentation.authorization
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -18,6 +21,7 @@ import com.artemObrazumov.drinkin.account.presentation.login.LoginScreen
 import com.artemObrazumov.drinkin.account.presentation.login.LoginScreenViewModel
 import com.artemObrazumov.drinkin.account.presentation.registration.RegistrationScreen
 import com.artemObrazumov.drinkin.account.presentation.registration.RegistrationScreenViewModel
+import com.artemObrazumov.drinkin.app.ui.theme.blendTextColor
 import com.artemObrazumov.drinkin.core.presentation.components.Switch
 import org.koin.androidx.compose.koinViewModel
 
@@ -35,6 +39,8 @@ fun AuthorizationScreen(
     Column(
         modifier = modifier
     ) {
+        var canChangeTab by remember { mutableStateOf(true) }
+
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
@@ -45,6 +51,9 @@ fun AuthorizationScreen(
                 0 -> {
                     val viewModel: LoginScreenViewModel = koinViewModel()
                     val state by viewModel.state.collectAsState()
+                    LaunchedEffect(state.isLoading) {
+                        canChangeTab = !state.isLoading
+                    }
                     LoginScreen(
                         state = state,
                         onLoginChanged = { login ->
@@ -64,6 +73,9 @@ fun AuthorizationScreen(
                 1 -> {
                     val viewModel: RegistrationScreenViewModel = koinViewModel()
                     val state by viewModel.state.collectAsState()
+                    LaunchedEffect(state.isLoading) {
+                        canChangeTab = !state.isLoading
+                    }
                     RegistrationScreen(
                         state = state,
                         onLoginChanged = { login ->
@@ -86,12 +98,18 @@ fun AuthorizationScreen(
             }
         }
 
+        val switchIndicatorColor by animateColorAsState(
+            if (canChangeTab) MaterialTheme.colorScheme.primary else blendTextColor
+        )
         Switch(
             options = Pair("Login", "Registration"),
             currentOption = currentPage,
             onOptionClicked = {
-                currentPage = it
+                if (canChangeTab) {
+                    currentPage = it
+                }
             },
+            indicatorColor = switchIndicatorColor,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)

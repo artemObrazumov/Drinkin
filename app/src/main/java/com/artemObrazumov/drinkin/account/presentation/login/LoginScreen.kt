@@ -130,7 +130,11 @@ fun LoginScreen(
         Button(
             modifier = Modifier
                 .fillMaxWidth(),
-            onClick = onLogin
+            onClick = {
+                if (!state.isLoading) {
+                    onLogin()
+                }
+            }
         ) {
             if (state.isLoading) {
                 CircularProgressIndicator(

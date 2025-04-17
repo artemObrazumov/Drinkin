@@ -147,7 +147,11 @@ fun RegistrationScreen(
         Button(
             modifier = Modifier
                 .fillMaxWidth(),
-            onClick = onRegister
+            onClick = {
+                if (!state.isLoading) {
+                    onRegister()
+                }
+            }
         ) {
             if (state.isLoading) {
                 CircularProgressIndicator(
