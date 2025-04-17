@@ -17,4 +17,6 @@
     <string name="no_post_notifications_perm">You did not grant notification permission to the app</string>
     <string name="notification_permission_advice">You should grant permission to post notifications to track your orders status</string>
     <string name="request_permission">Request permission</string>
+    <string name="login_title">Log into\nyour account</string>
+    <string name="registration_title">Create new\naccount</string>
 </resources>
