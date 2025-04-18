@@ -22,12 +22,14 @@ import com.artemObrazumov.drinkin.account.presentation.login.LoginScreenViewMode
 import com.artemObrazumov.drinkin.account.presentation.registration.RegistrationScreen
 import com.artemObrazumov.drinkin.account.presentation.registration.RegistrationScreenViewModel
 import com.artemObrazumov.drinkin.app.ui.theme.blendTextColor
+import com.artemObrazumov.drinkin.core.presentation.components.BeansBackground
 import com.artemObrazumov.drinkin.core.presentation.components.Switch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AuthorizationScreen(
-    modifier: Modifier = Modifier
+    onAuthorization: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     var currentPage by remember { mutableIntStateOf(0) }
     val pagerState = rememberPagerState(pageCount = { 2 })
@@ -35,6 +37,8 @@ fun AuthorizationScreen(
     LaunchedEffect(currentPage) {
         pagerState.animateScrollToPage(currentPage)
     }
+
+    BeansBackground()
 
     Column(
         modifier = modifier
@@ -56,18 +60,11 @@ fun AuthorizationScreen(
                     }
                     LoginScreen(
                         state = state,
-                        onLoginChanged = { login ->
-                            viewModel.updateLogin(login)
-                        },
-                        onPasswordChanged = { password ->
-                            viewModel.updatePassword(password)
-                        },
-                        onPasswordToggled = {
-                            viewModel.togglePassword()
-                        },
-                        onLogin = {
-                            viewModel.doLogin()
-                        }
+                        onLoginChanged = { login -> viewModel.updateLogin(login) },
+                        onPasswordChanged = { password -> viewModel.updatePassword(password) },
+                        onPasswordToggled = { viewModel.togglePassword() },
+                        onLogin = { viewModel.doLogin() },
+                        onLoggedIn = onAuthorization
                     )
                 }
                 1 -> {
@@ -78,21 +75,13 @@ fun AuthorizationScreen(
                     }
                     RegistrationScreen(
                         state = state,
-                        onLoginChanged = { login ->
-                            viewModel.updateLogin(login)
-                        },
-                        onPasswordChanged = { password ->
-                            viewModel.updatePassword(password)
-                        },
+                        onLoginChanged = { login -> viewModel.updateLogin(login) },
+                        onPasswordChanged = { password -> viewModel.updatePassword(password) },
                         onPasswordRepeatChanged = { passwordRepeat ->
-                            viewModel.updatePasswordRepeat(passwordRepeat)
-                        },
-                        onPasswordToggled = {
-                            viewModel.togglePassword()
-                        },
-                        onRegister = {
-                            viewModel.doRegistration()
-                        }
+                            viewModel.updatePasswordRepeat(passwordRepeat) },
+                        onPasswordToggled = { viewModel.togglePassword() },
+                        onRegister = { viewModel.doRegistration() },
+                        onRegistered = onAuthorization
                     )
                 }
             }

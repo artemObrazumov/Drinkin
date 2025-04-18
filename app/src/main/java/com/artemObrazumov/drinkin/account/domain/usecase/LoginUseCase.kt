@@ -18,7 +18,7 @@ class LoginUseCase(
                 LoginUseCaseResult.Failure(result.error)
             }
             is Result.Success -> {
-                when (val saveTokensResult = saveTokensUseCase()) {
+                when (val saveTokensResult = saveTokensUseCase(result.data)) {
                     is SaveTokensUseCaseResult.Failure -> {
                         LoginUseCaseResult.Failure(saveTokensResult.error)
                     }

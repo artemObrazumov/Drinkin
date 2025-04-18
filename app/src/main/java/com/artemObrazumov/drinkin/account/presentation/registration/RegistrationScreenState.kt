@@ -8,5 +8,6 @@ data class RegistrationScreenState(
     val password: String = "",
     val passwordRepeat: String = "",
     val isPasswordVisible: Boolean = false,
-    val error: Resource.StringResource? = null
+    val error: Resource.StringResource? = null,
+    val finishedRegistration: Boolean = false
 )

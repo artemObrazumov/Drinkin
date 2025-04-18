@@ -7,5 +7,6 @@ data class LoginScreenState(
     val login: String = "",
     val password: String = "",
     val isPasswordVisible: Boolean = false,
-    val error: Resource.StringResource? = null
+    val error: Resource.StringResource? = null,
+    val finishedLogin: Boolean = false
 )

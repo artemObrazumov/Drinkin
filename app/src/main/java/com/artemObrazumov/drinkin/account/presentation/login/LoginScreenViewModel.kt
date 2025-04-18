@@ -58,7 +58,8 @@ class LoginScreenViewModel(
                 LoginUseCaseResult.Success -> {
                     _state.update {
                         _state.value.copy(
-                            isLoading = false
+                            isLoading = false,
+                            finishedLogin = true
                         )
                     }
                 }

@@ -17,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -45,10 +46,18 @@ fun RegistrationScreen(
     onPasswordChanged: (password: String) -> Unit = {},
     onPasswordRepeatChanged: (passwordRepeat: String) -> Unit = {},
     onPasswordToggled: () -> Unit = {},
-    onRegister: () -> Unit = {}
+    onRegister: () -> Unit = {},
+    onRegistered: () -> Unit = {}
 ) {
     val focusManager = LocalFocusManager.current
     val (passwordField, passwordRepeatField) = remember { FocusRequester.createRefs() }
+
+    LaunchedEffect(state.finishedRegistration) {
+        if (state.finishedRegistration) {
+            onRegistered()
+        }
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()

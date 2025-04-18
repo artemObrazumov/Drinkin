@@ -17,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -44,10 +45,18 @@ fun LoginScreen(
     onLoginChanged: (login: String) -> Unit = {},
     onPasswordChanged: (password: String) -> Unit = {},
     onPasswordToggled: () -> Unit = {},
-    onLogin: () -> Unit = {}
+    onLogin: () -> Unit = {},
+    onLoggedIn: () -> Unit = {},
 ) {
     val focusManager = LocalFocusManager.current
     val (passwordField) = remember { FocusRequester.createRefs() }
+
+    LaunchedEffect(state.finishedLogin) {
+        if (state.finishedLogin) {
+            onLoggedIn()
+        }
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()

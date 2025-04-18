@@ -18,7 +18,7 @@ class RegisterUseCase(
                 RegisterUseCaseResult.Failure(result.error)
             }
             is Result.Success -> {
-                when (val saveTokensResult = saveTokensUseCase()) {
+                when (val saveTokensResult = saveTokensUseCase(result.data)) {
                     is SaveTokensUseCaseResult.Failure -> {
                         RegisterUseCaseResult.Failure(saveTokensResult.error)
                     }

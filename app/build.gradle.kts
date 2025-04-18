@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.bundles.koin)
+    implementation(libs.datastore.preferences)
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     implementation("com.yandex.android:maps.mobile:4.8.0-lite")
     implementation("com.airbnb.android:lottie-compose:6.3.0")

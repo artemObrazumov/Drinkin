@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
 interface UserDataSource {
 
     fun getUserFlow(): Flow<User?>
-    suspend fun updateUser(): Result<Int, Error>
+    suspend fun authorizeUser(): Result<Int, Error>
 }

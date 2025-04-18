@@ -23,6 +23,8 @@ import com.artemObrazumov.drinkin.order.presentation.navigation.Orders
 import com.artemObrazumov.drinkin.order.presentation.navigation.orderGraph
 import com.artemObrazumov.drinkin.product.presentation.navigation.DashBoard
 import com.artemObrazumov.drinkin.product.presentation.navigation.dashboardGraph
+import com.artemObrazumov.drinkin.startup.presentation.navigation.StartupScreen
+import com.artemObrazumov.drinkin.startup.presentation.navigation.startupGraph
 import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -38,12 +40,19 @@ fun App(
     ) {
         NavHost(
             navController = navController,
-            startDestination = Authorization,
+            startDestination = StartupScreen,
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None },
             builder = {
+                startupGraph(
+                    navController = navController,
+                    onboardingScreenDestination = {},
+                    authorizationScreenDestination = { Authorization },
+                    dashboardScreenDestination = { DashBoard }
+                )
                 accountGraph(
-                    navController = navController
+                    navController = navController,
+                    startupScreenDestination = { StartupScreen }
                 )
                 dashboardGraph(
                     navController = navController,

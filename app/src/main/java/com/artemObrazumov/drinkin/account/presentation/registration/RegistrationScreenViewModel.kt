@@ -58,7 +58,8 @@ class RegistrationScreenViewModel(
                 RegisterUseCaseResult.Success -> {
                     _state.update {
                         _state.value.copy(
-                            isLoading = false
+                            isLoading = false,
+                            finishedRegistration = true
                         )
                     }
                 }

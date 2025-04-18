@@ -1,11 +1,16 @@
 package com.artemObrazumov.drinkin.account.domain.usecase
 
+import com.artemObrazumov.drinkin.account.domain.data_source.LoginDataSource
+import com.artemObrazumov.drinkin.account.domain.models.Tokens
 import com.artemObrazumov.drinkin.core.domain.util.Error
 
-class SaveTokensUseCase {
+class SaveTokensUseCase(
+    private val loginDataSource: LoginDataSource
+) {
 
-    operator fun invoke(): SaveTokensUseCaseResult {
-        TODO()
+    suspend operator fun invoke(tokens: Tokens): SaveTokensUseCaseResult {
+        loginDataSource.saveTokens(tokens)
+        return SaveTokensUseCaseResult.Success
     }
 }
 

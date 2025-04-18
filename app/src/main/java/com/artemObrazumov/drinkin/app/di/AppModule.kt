@@ -1,7 +1,13 @@
 package com.artemObrazumov.drinkin.app.di
 
 import com.artemObrazumov.drinkin.account.data.LoginMockDataSource
+import com.artemObrazumov.drinkin.account.data.TokenLocalMockDataSource
+import com.artemObrazumov.drinkin.account.data.UserMockDataSource
 import com.artemObrazumov.drinkin.account.domain.data_source.LoginDataSource
+import com.artemObrazumov.drinkin.account.domain.data_source.TokenLocalDataSource
+import com.artemObrazumov.drinkin.account.domain.data_source.UserDataSource
+import com.artemObrazumov.drinkin.account.domain.usecase.AuthorizeUserUseCase
+import com.artemObrazumov.drinkin.account.domain.usecase.GetTokenFlowUseCase
 import com.artemObrazumov.drinkin.account.domain.usecase.GetUserFlowUseCase
 import com.artemObrazumov.drinkin.account.domain.usecase.LoginUseCase
 import com.artemObrazumov.drinkin.account.domain.usecase.RegisterUseCase
@@ -50,12 +56,17 @@ import com.artemObrazumov.drinkin.order.presentation.order_tracking.OrderTrackin
 import com.artemObrazumov.drinkin.order.presentation.orders.OrdersScreenViewModel
 import com.artemObrazumov.drinkin.product.presentation.product_details.ProductDetailsViewModel
 import com.artemObrazumov.drinkin.product.presentation.products_list.ProductListViewModel
+import com.artemObrazumov.drinkin.startup.presentation.StartupScreenViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val appModule = module {
+
+    // startup
+    viewModelOf(::StartupScreenViewModel)
+
     // product
     singleOf(::ProductMockDataSource).bind<ProductDataSource>()
     singleOf(::GetDashboardUseCase)
@@ -100,11 +111,15 @@ val appModule = module {
     // account
     singleOf(::LoginFormValidator)
     singleOf(::RegistrationFormValidator)
+    singleOf(::TokenLocalMockDataSource).bind<TokenLocalDataSource>()
     singleOf(::LoginMockDataSource).bind<LoginDataSource>()
+    singleOf(::UserMockDataSource).bind<UserDataSource>()
     singleOf(::GetUserFlowUseCase)
     singleOf(::LoginUseCase)
     singleOf(::RegisterUseCase)
     singleOf(::SaveTokensUseCase)
+    singleOf(::GetTokenFlowUseCase)
+    singleOf(::AuthorizeUserUseCase)
     viewModelOf(::LoginScreenViewModel)
     viewModelOf(::RegistrationScreenViewModel)
 
