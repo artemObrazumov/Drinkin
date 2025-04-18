@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.artemObrazumov.drinkin.account.presentation.navigation.Account
 import com.artemObrazumov.drinkin.account.presentation.navigation.Authorization
 import com.artemObrazumov.drinkin.account.presentation.navigation.accountGraph
 import com.artemObrazumov.drinkin.address.presentation.navigation.AddressSelect
@@ -52,18 +53,21 @@ fun App(
                 )
                 accountGraph(
                     navController = navController,
-                    startupScreenDestination = { StartupScreen }
+                    startupScreenDestination = { StartupScreen },
+                    ordersScreenDestination = { Orders }
                 )
                 dashboardGraph(
                     navController = navController,
                     menuState = { menuState },
                     cartDestination = { Cart },
-                    addressDestination = { AddressSelect }
+                    addressDestination = { AddressSelect },
+                    accountDestination = { Account }
                 )
                 cartGraph(
                     navController = navController,
                     addressDestination = { AddressSelect },
-                    makeOrderDestination = { NewOrder }
+                    makeOrderDestination = { NewOrder },
+                    accountDestination = { Account }
                 )
                 orderGraph(
                     navController = navController,

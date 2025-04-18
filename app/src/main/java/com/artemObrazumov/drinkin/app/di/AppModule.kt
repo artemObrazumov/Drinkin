@@ -14,6 +14,7 @@ import com.artemObrazumov.drinkin.account.domain.usecase.RegisterUseCase
 import com.artemObrazumov.drinkin.account.domain.usecase.SaveTokensUseCase
 import com.artemObrazumov.drinkin.account.domain.utls.LoginFormValidator
 import com.artemObrazumov.drinkin.account.domain.utls.RegistrationFormValidator
+import com.artemObrazumov.drinkin.account.presentation.account.AccountScreenViewModel
 import com.artemObrazumov.drinkin.account.presentation.login.LoginScreenViewModel
 import com.artemObrazumov.drinkin.account.presentation.registration.RegistrationScreenViewModel
 import com.artemObrazumov.drinkin.address.data.CafeAddressMockDataSource
@@ -122,6 +123,7 @@ val appModule = module {
     singleOf(::AuthorizeUserUseCase)
     viewModelOf(::LoginScreenViewModel)
     viewModelOf(::RegistrationScreenViewModel)
+    viewModelOf(::AccountScreenViewModel)
 
     viewModelOf(::MenuViewModel)
 }

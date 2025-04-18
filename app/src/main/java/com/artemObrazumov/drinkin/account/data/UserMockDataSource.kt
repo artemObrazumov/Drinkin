@@ -18,6 +18,7 @@ class UserMockDataSource: UserDataSource {
 
     override suspend fun authorizeUser(): Result<Int, Error> {
         delay(2000)
+        userFlow.emit(User("test user"))
         return Result.Success(200)
     }
 }

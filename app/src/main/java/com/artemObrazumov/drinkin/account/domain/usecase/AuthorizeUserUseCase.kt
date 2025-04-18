@@ -15,7 +15,10 @@ class AuthorizeUserUseCase(
                     error = result.error
                 )
             }
-            is Result.Success -> AuthorizeUserUseCaseResult.Success
+            is Result.Success -> {
+                userDataSource.authorizeUser()
+                AuthorizeUserUseCaseResult.Success
+            }
         }
     }
 }

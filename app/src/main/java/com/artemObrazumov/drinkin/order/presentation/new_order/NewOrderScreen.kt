@@ -160,7 +160,7 @@ fun NewOrderScreenContent(
                 text = order.address,
                 style = TextStyle(
                     fontWeight = FontWeight.Medium,
-                    fontSize = 14.sp
+                    fontSize = 16.sp
                 )
             )
         }
@@ -197,7 +197,7 @@ fun NewOrderScreenContent(
                 text = order.totalPrice.formatted,
                 style = TextStyle(
                     fontWeight = FontWeight.Medium,
-                    fontSize = 14.sp
+                    fontSize = 16.sp
                 )
             )
         }
