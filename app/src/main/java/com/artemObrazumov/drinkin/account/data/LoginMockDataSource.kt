@@ -4,6 +4,7 @@ import com.artemObrazumov.drinkin.account.domain.data_source.LoginDataSource
 import com.artemObrazumov.drinkin.account.domain.models.Tokens
 import com.artemObrazumov.drinkin.core.domain.util.AuthorizationError
 import com.artemObrazumov.drinkin.core.domain.util.Error
+import com.artemObrazumov.drinkin.core.domain.util.NetworkError
 import com.artemObrazumov.drinkin.core.domain.util.Result
 import kotlinx.coroutines.flow.Flow
 
@@ -27,6 +28,6 @@ class LoginMockDataSource(
     }
 
     override suspend fun register(login: String, password: String): Result<Tokens, Error> {
-        TODO("Not yet implemented")
+        return Result.Success(Tokens("1111", "2222"))
     }
 }
