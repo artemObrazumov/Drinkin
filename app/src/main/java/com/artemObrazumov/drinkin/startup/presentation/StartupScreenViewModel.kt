@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.artemObrazumov.drinkin.account.domain.usecase.AuthorizeUserUseCase
 import com.artemObrazumov.drinkin.account.domain.usecase.AuthorizeUserUseCaseResult
 import com.artemObrazumov.drinkin.account.domain.usecase.GetTokenFlowUseCase
+import com.artemObrazumov.drinkin.onboarding.domain.usecase.CheckIfOnboardingSeenUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 
 class StartupScreenViewModel(
+    private val checkIfOnboardingSeenUseCase: CheckIfOnboardingSeenUseCase,
     private val getTokenFlowUseCase: GetTokenFlowUseCase,
     private val authorizeUserUseCase: AuthorizeUserUseCase
 ): ViewModel() {
@@ -27,13 +29,16 @@ class StartupScreenViewModel(
 
     private fun checkOnboardingAndAuthorizationStatus() {
         viewModelScope.launch {
-            // TODO: onboarding check
+            if (!checkIfOnboardingSeenUseCase()) {
+                _intents.emit(StartupScreenIntent.Onboarding)
+                return@launch
+            }
 
             val tokens = getTokenFlowUseCase().first()
             if (tokens == null) {
                 _intents.emit(StartupScreenIntent.Authorization)
             } else {
-                when(authorizeUserUseCase.invoke()) {
+                when(authorizeUserUseCase()) {
                     is AuthorizeUserUseCaseResult.Failure -> {
                         _intents.emit(StartupScreenIntent.Authorization)
                     }
