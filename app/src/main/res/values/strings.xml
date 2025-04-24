@@ -17,4 +17,24 @@
     <string name="no_post_notifications_perm">You did not grant notification permission to the app</string>
     <string name="notification_permission_advice">You should grant permission to post notifications to track your orders status</string>
     <string name="request_permission">Request permission</string>
+    <string name="login_title">Log into\nyour account</string>
+    <string name="registration_title">Create new\naccount</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="login_subtitle">Enter your account to start\nmaking orders</string>
+    <string name="toggle_password">Toggle password</string>
+    <string name="login_too_long">Login is too long!</string>
+    <string name="login_too_short">Login is too short!</string>
+    <string name="unknown_error">Unknown error!</string>
+    <string name="password_too_short">Password is too short!</string>
+    <string name="password_too_long">Password is too long!</string>
+    <string name="register">Register</string>
+    <string name="registration_subtitle">Create a new account to start\nmaking orders</string>
+    <string name="passwords_different">Passwords are different!</string>
+    <string name="password_repeat">Repeat password</string>
+    <string name="name">Name</string>
+    <string name="logout_title">Log out</string>
+    <string name="logout_subtitle">Are you sure want to logout?</string>
+    <string name="cancel">Cancel</string>
+    <string name="logout">Logout</string>
 </resources>

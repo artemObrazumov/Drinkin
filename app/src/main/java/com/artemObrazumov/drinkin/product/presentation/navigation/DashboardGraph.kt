@@ -22,7 +22,8 @@ fun NavGraphBuilder.dashboardGraph(
     navController: NavController,
     menuState: () -> MenuState,
     cartDestination: () -> @Serializable Any,
-    addressDestination: () -> @Serializable Any
+    addressDestination: () -> @Serializable Any,
+    accountDestination: () -> @Serializable Any
 ) {
     composable<DashBoard> {
         val viewModel: ProductListViewModel = koinViewModel()
@@ -43,7 +44,7 @@ fun NavGraphBuilder.dashboardGraph(
                     address = menuState().address,
                     basketHasElements = menuState().basketHasElements,
                     onAddressIconClicked = { navController.navigate(addressDestination()) },
-                    onProfileIconClicked = {},
+                    onProfileIconClicked = { navController.navigate(accountDestination()) },
                     onCartIconClicked = { navController.navigate(cartDestination()) }
                 )
             }

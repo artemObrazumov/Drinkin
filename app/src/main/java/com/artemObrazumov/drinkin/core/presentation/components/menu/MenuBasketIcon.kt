@@ -55,5 +55,6 @@ fun MenuBasketIcon(
                     .background(MaterialTheme.colorScheme.primary, CircleShape)
                     .border(2.dp, Color.White, CircleShape)
             )
-        }    }
+        }
+    }
 }

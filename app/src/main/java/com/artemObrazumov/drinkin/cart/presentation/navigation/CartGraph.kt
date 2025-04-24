@@ -18,7 +18,8 @@ import org.koin.androidx.compose.koinViewModel
 fun NavGraphBuilder.cartGraph(
     navController: NavController,
     addressDestination: () -> @Serializable Any,
-    makeOrderDestination : () -> @Serializable Any
+    makeOrderDestination : () -> @Serializable Any,
+    accountDestination : () -> @Serializable Any
 ) {
     composable<Cart>(
         enterTransition = { scaleIn(initialScale = 0.95f) + fadeIn() },
@@ -32,7 +33,7 @@ fun NavGraphBuilder.cartGraph(
                 MenuWithProfile(
                     title = "Cart",
                     onBackButtonClicked = { navController.navigateUp() },
-                    onProfileIconClicked = { }
+                    onProfileIconClicked = { navController.navigate(accountDestination()) }
                 )
             },
             onAddressClicked = { navController.navigate(addressDestination()) },

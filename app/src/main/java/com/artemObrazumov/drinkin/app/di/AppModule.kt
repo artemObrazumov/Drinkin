@@ -1,5 +1,23 @@
 package com.artemObrazumov.drinkin.app.di
 
+import com.artemObrazumov.drinkin.account.data.LoginMockDataSource
+import com.artemObrazumov.drinkin.account.data.TokenLocalMockDataSource
+import com.artemObrazumov.drinkin.account.data.UserMockDataSource
+import com.artemObrazumov.drinkin.account.domain.data_source.LoginDataSource
+import com.artemObrazumov.drinkin.account.domain.data_source.TokenLocalDataSource
+import com.artemObrazumov.drinkin.account.domain.data_source.UserDataSource
+import com.artemObrazumov.drinkin.account.domain.usecase.AuthorizeUserUseCase
+import com.artemObrazumov.drinkin.account.domain.usecase.GetTokenFlowUseCase
+import com.artemObrazumov.drinkin.account.domain.usecase.GetUserFlowUseCase
+import com.artemObrazumov.drinkin.account.domain.usecase.LoginUseCase
+import com.artemObrazumov.drinkin.account.domain.usecase.LogoutUseCase
+import com.artemObrazumov.drinkin.account.domain.usecase.RegisterUseCase
+import com.artemObrazumov.drinkin.account.domain.usecase.SaveTokensUseCase
+import com.artemObrazumov.drinkin.account.domain.utls.LoginFormValidator
+import com.artemObrazumov.drinkin.account.domain.utls.RegistrationFormValidator
+import com.artemObrazumov.drinkin.account.presentation.account.AccountScreenViewModel
+import com.artemObrazumov.drinkin.account.presentation.login.LoginScreenViewModel
+import com.artemObrazumov.drinkin.account.presentation.registration.RegistrationScreenViewModel
 import com.artemObrazumov.drinkin.address.data.CafeAddressMockDataSource
 import com.artemObrazumov.drinkin.address.domain.data_source.CafeAddressDataSource
 import com.artemObrazumov.drinkin.address.domain.usecase.ChangeAddressUseCase
@@ -25,6 +43,7 @@ import com.artemObrazumov.drinkin.cart.domain.usecase.IncrementProductInCartUseC
 import com.artemObrazumov.drinkin.order.domain.usecase.OrderPaymentUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.RemoveProductFromCartUseCase
 import com.artemObrazumov.drinkin.cart.presentation.cart.CartScreenViewModel
+import com.artemObrazumov.drinkin.core.presentation.account.AccountViewModel
 import com.artemObrazumov.drinkin.order.data.OrderTrackerMockDataSource
 import com.artemObrazumov.drinkin.order.domain.data_source.OrderTrackerDataSource
 import com.artemObrazumov.drinkin.order.domain.usecase.GetOrderItemsFlowUseCase
@@ -40,12 +59,17 @@ import com.artemObrazumov.drinkin.order.presentation.order_tracking.OrderTrackin
 import com.artemObrazumov.drinkin.order.presentation.orders.OrdersScreenViewModel
 import com.artemObrazumov.drinkin.product.presentation.product_details.ProductDetailsViewModel
 import com.artemObrazumov.drinkin.product.presentation.products_list.ProductListViewModel
+import com.artemObrazumov.drinkin.startup.presentation.StartupScreenViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val appModule = module {
+
+    // startup
+    viewModelOf(::StartupScreenViewModel)
+
     // product
     singleOf(::ProductMockDataSource).bind<ProductDataSource>()
     singleOf(::GetDashboardUseCase)
@@ -87,5 +111,23 @@ val appModule = module {
     singleOf(::ChangeAddressUseCase)
     viewModelOf(::AddressSelectViewModel)
 
+    // account
+    singleOf(::LoginFormValidator)
+    singleOf(::RegistrationFormValidator)
+    singleOf(::TokenLocalMockDataSource).bind<TokenLocalDataSource>()
+    singleOf(::LoginMockDataSource).bind<LoginDataSource>()
+    singleOf(::UserMockDataSource).bind<UserDataSource>()
+    singleOf(::GetUserFlowUseCase)
+    singleOf(::LoginUseCase)
+    singleOf(::RegisterUseCase)
+    singleOf(::SaveTokensUseCase)
+    singleOf(::GetTokenFlowUseCase)
+    singleOf(::AuthorizeUserUseCase)
+    singleOf(::LogoutUseCase)
+    viewModelOf(::LoginScreenViewModel)
+    viewModelOf(::RegistrationScreenViewModel)
+    viewModelOf(::AccountScreenViewModel)
+
     viewModelOf(::MenuViewModel)
+    viewModelOf(::AccountViewModel)
 }
