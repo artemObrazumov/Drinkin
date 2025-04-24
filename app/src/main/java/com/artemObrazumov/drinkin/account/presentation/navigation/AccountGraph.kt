@@ -15,7 +15,7 @@ import androidx.navigation.compose.composable
 import com.artemObrazumov.drinkin.account.presentation.account.AccountScreen
 import com.artemObrazumov.drinkin.account.presentation.account.AccountScreenViewModel
 import com.artemObrazumov.drinkin.account.presentation.authorization.AuthorizationScreen
-import com.artemObrazumov.drinkin.core.presentation.components.menu.EmptyMenu
+import com.artemObrazumov.drinkin.core.presentation.components.menu.MenuWithLogout
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
@@ -25,7 +25,10 @@ fun NavGraphBuilder.accountGraph(
     ordersScreenDestination: () -> @Serializable Any
 ) {
 
-    composable<Authorization> {
+    composable<Authorization>(
+        enterTransition = { scaleIn(initialScale = 0.95f) + fadeIn() },
+        exitTransition = { scaleOut(targetScale = 0.95f) + fadeOut() }
+    ) {
         AuthorizationScreen(
             onAuthorization = {
                 navController.navigate(startupScreenDestination()) {
@@ -46,14 +49,17 @@ fun NavGraphBuilder.accountGraph(
         AccountScreen(
             state = state,
             menu = {
-                EmptyMenu(
+                MenuWithLogout (
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.background),
                     title = "Account",
-                    onBackButtonClicked = { navController.navigateUp() }
+                    onBackButtonClicked = { navController.navigateUp() },
+                    onLogoutIconClicked = { viewModel.openLogoutDialog() },
                 )
             },
-            onGoToOrders = { navController.navigate(ordersScreenDestination()) }
+            onGoToOrders = { navController.navigate(ordersScreenDestination()) },
+            onLogoutDialogCancelled = { viewModel.closeLogoutDialog() },
+            onLogout = { viewModel.doLogout() }
         )
     }
 }

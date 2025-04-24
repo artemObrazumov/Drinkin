@@ -10,6 +10,7 @@ import com.artemObrazumov.drinkin.account.domain.usecase.AuthorizeUserUseCase
 import com.artemObrazumov.drinkin.account.domain.usecase.GetTokenFlowUseCase
 import com.artemObrazumov.drinkin.account.domain.usecase.GetUserFlowUseCase
 import com.artemObrazumov.drinkin.account.domain.usecase.LoginUseCase
+import com.artemObrazumov.drinkin.account.domain.usecase.LogoutUseCase
 import com.artemObrazumov.drinkin.account.domain.usecase.RegisterUseCase
 import com.artemObrazumov.drinkin.account.domain.usecase.SaveTokensUseCase
 import com.artemObrazumov.drinkin.account.domain.utls.LoginFormValidator
@@ -42,6 +43,7 @@ import com.artemObrazumov.drinkin.cart.domain.usecase.IncrementProductInCartUseC
 import com.artemObrazumov.drinkin.order.domain.usecase.OrderPaymentUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.RemoveProductFromCartUseCase
 import com.artemObrazumov.drinkin.cart.presentation.cart.CartScreenViewModel
+import com.artemObrazumov.drinkin.core.presentation.account.AccountViewModel
 import com.artemObrazumov.drinkin.order.data.OrderTrackerMockDataSource
 import com.artemObrazumov.drinkin.order.domain.data_source.OrderTrackerDataSource
 import com.artemObrazumov.drinkin.order.domain.usecase.GetOrderItemsFlowUseCase
@@ -121,9 +123,11 @@ val appModule = module {
     singleOf(::SaveTokensUseCase)
     singleOf(::GetTokenFlowUseCase)
     singleOf(::AuthorizeUserUseCase)
+    singleOf(::LogoutUseCase)
     viewModelOf(::LoginScreenViewModel)
     viewModelOf(::RegistrationScreenViewModel)
     viewModelOf(::AccountScreenViewModel)
 
     viewModelOf(::MenuViewModel)
+    viewModelOf(::AccountViewModel)
 }

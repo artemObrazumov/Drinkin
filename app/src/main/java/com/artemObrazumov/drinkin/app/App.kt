@@ -6,6 +6,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -18,6 +19,8 @@ import com.artemObrazumov.drinkin.address.presentation.navigation.AddressSelect
 import com.artemObrazumov.drinkin.address.presentation.navigation.addressGraph
 import com.artemObrazumov.drinkin.cart.presentation.navigation.Cart
 import com.artemObrazumov.drinkin.cart.presentation.navigation.cartGraph
+import com.artemObrazumov.drinkin.core.presentation.account.AccountState
+import com.artemObrazumov.drinkin.core.presentation.account.AccountViewModel
 import com.artemObrazumov.drinkin.core.presentation.menu.MenuViewModel
 import com.artemObrazumov.drinkin.order.presentation.navigation.NewOrder
 import com.artemObrazumov.drinkin.order.presentation.navigation.Orders
@@ -34,8 +37,22 @@ fun App(
     modifier: Modifier = Modifier
 ) {
     val navController = rememberNavController()
+
     val menuViewModel: MenuViewModel = koinViewModel()
     val menuState by menuViewModel.state.collectAsState()
+
+    val accountViewModel: AccountViewModel = koinViewModel()
+    val accountState by accountViewModel.state.collectAsState()
+
+    LaunchedEffect(accountState) {
+        if (accountState is AccountState.Content &&
+            (accountState as AccountState.Content).user == null) {
+            navController.navigate(StartupScreen) {
+                popUpTo(0)
+            }
+        }
+    }
+
     Scaffold(
         modifier = modifier.fillMaxSize()
     ) {

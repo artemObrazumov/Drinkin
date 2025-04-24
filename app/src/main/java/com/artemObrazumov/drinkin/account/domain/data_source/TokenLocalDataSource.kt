@@ -7,4 +7,5 @@ interface TokenLocalDataSource {
 
     fun getTokensFlow(): Flow<Tokens?>
     suspend fun saveTokens(tokens: Tokens)
+    suspend fun removeTokens()
 }

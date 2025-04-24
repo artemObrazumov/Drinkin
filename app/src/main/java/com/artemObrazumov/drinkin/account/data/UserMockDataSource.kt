@@ -21,4 +21,8 @@ class UserMockDataSource: UserDataSource {
         userFlow.emit(User("test user"))
         return Result.Success(200)
     }
+
+    override suspend fun logoutUser() {
+        userFlow.emit(null)
+    }
 }

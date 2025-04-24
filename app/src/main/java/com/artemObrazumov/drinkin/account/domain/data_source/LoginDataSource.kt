@@ -11,4 +11,5 @@ interface LoginDataSource {
     suspend fun saveTokens(tokens: Tokens)
     suspend fun login(login: String, password: String): Result<Tokens, Error>
     suspend fun register(login: String, password: String): Result<Tokens, Error>
+    suspend fun logout()
 }

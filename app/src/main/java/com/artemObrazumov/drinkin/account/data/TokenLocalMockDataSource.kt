@@ -32,4 +32,11 @@ class TokenLocalMockDataSource(
             preferences[REFRESH_TOKEN] = tokens.refreshToken
         }
     }
+
+    override suspend fun removeTokens() {
+        context.tokenDataStore.edit { preferences ->
+            preferences.remove(ACCESS_TOKEN)
+            preferences.remove(REFRESH_TOKEN)
+        }
+    }
 }

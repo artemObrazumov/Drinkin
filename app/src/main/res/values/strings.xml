@@ -33,4 +33,8 @@
     <string name="passwords_different">Passwords are different!</string>
     <string name="password_repeat">Repeat password</string>
     <string name="name">Name</string>
+    <string name="logout_title">Log out</string>
+    <string name="logout_subtitle">Are you sure want to logout?</string>
+    <string name="cancel">Cancel</string>
+    <string name="logout">Logout</string>
 </resources>

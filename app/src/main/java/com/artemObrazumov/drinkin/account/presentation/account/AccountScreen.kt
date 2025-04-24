@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.artemObrazumov.drinkin.R
 import com.artemObrazumov.drinkin.account.domain.models.User
+import com.artemObrazumov.drinkin.account.presentation.account.components.LogoutDialog
 import com.artemObrazumov.drinkin.app.ui.theme.DrinkinTheme
 import com.artemObrazumov.drinkin.core.presentation.LoadingScreen
 import com.artemObrazumov.drinkin.core.presentation.components.BeansBackground
@@ -31,23 +32,34 @@ fun AccountScreen(
     state: AccountScreenState,
     modifier: Modifier = Modifier,
     menu: @Composable () -> Unit = {},
-    onGoToOrders: () -> Unit = {}
+    onGoToOrders: () -> Unit = {},
+    onLogoutDialogCancelled: () -> Unit = {},
+    onLogout: () -> Unit = {}
 ) {
     BeansBackground()
-    when (state) {
-        is AccountScreenState.Content -> {
+    when (state.userState) {
+        is UserState.Content -> {
             AccountScreenContent(
-                user = state.user,
+                user = state.userState.user,
                 modifier = modifier,
                 onGoToOrders = onGoToOrders
             )
         }
-        AccountScreenState.Loading -> {
+
+        UserState.Loading -> {
             LoadingScreen(modifier = modifier)
         }
-        is AccountScreenState.Failure -> {
+
+        is UserState.Failure -> {
 
         }
+    }
+
+    if (state.isLogoutDialogOpened) {
+        LogoutDialog(
+            onDismiss = onLogoutDialogCancelled,
+            onConfirm = onLogout
+        )
     }
 
     menu()
@@ -119,8 +131,10 @@ fun AccountScreenContent(
 fun AccountScreenPreview() {
     DrinkinTheme {
         AccountScreen(
-            state = AccountScreenState.Content(
-                user = USER
+            state = AccountScreenState(
+                userState = UserState.Content(
+                    user = USER
+                )
             )
         )
     }

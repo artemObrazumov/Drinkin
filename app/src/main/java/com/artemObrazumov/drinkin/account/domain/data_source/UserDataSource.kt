@@ -9,4 +9,5 @@ interface UserDataSource {
 
     fun getUserFlow(): Flow<User?>
     suspend fun authorizeUser(): Result<Int, Error>
+    suspend fun logoutUser()
 }
