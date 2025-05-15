@@ -1,7 +1,7 @@
 package com.artemObrazumov.drinkin.app.di
 
 import com.artemObrazumov.drinkin.account.data.LoginMockDataSource
-import com.artemObrazumov.drinkin.account.data.TokenLocalMockDataSource
+import com.artemObrazumov.drinkin.account.data.TokenLocalDataSourceImpl
 import com.artemObrazumov.drinkin.account.data.UserMockDataSource
 import com.artemObrazumov.drinkin.account.domain.data_source.LoginDataSource
 import com.artemObrazumov.drinkin.account.domain.data_source.TokenLocalDataSource
@@ -44,6 +44,11 @@ import com.artemObrazumov.drinkin.order.domain.usecase.OrderPaymentUseCase
 import com.artemObrazumov.drinkin.cart.domain.usecase.RemoveProductFromCartUseCase
 import com.artemObrazumov.drinkin.cart.presentation.cart.CartScreenViewModel
 import com.artemObrazumov.drinkin.core.presentation.account.AccountViewModel
+import com.artemObrazumov.drinkin.onboarding.data.OnboardingLocalDataSourceImpl
+import com.artemObrazumov.drinkin.onboarding.domain.data_source.OnboardingLocalDataSource
+import com.artemObrazumov.drinkin.onboarding.domain.usecase.CheckIfOnboardingSeenUseCase
+import com.artemObrazumov.drinkin.onboarding.domain.usecase.SetOnboardingAsSeenUseCase
+import com.artemObrazumov.drinkin.onboarding.presentation.OnboardingScreenViewModel
 import com.artemObrazumov.drinkin.order.data.OrderTrackerMockDataSource
 import com.artemObrazumov.drinkin.order.domain.data_source.OrderTrackerDataSource
 import com.artemObrazumov.drinkin.order.domain.usecase.GetOrderItemsFlowUseCase
@@ -69,6 +74,12 @@ val appModule = module {
 
     // startup
     viewModelOf(::StartupScreenViewModel)
+
+    // onboarding
+    singleOf(::OnboardingLocalDataSourceImpl).bind<OnboardingLocalDataSource>()
+    singleOf(::CheckIfOnboardingSeenUseCase)
+    singleOf(::SetOnboardingAsSeenUseCase)
+    viewModelOf(::OnboardingScreenViewModel)
 
     // product
     singleOf(::ProductMockDataSource).bind<ProductDataSource>()
@@ -114,7 +125,7 @@ val appModule = module {
     // account
     singleOf(::LoginFormValidator)
     singleOf(::RegistrationFormValidator)
-    singleOf(::TokenLocalMockDataSource).bind<TokenLocalDataSource>()
+    singleOf(::TokenLocalDataSourceImpl).bind<TokenLocalDataSource>()
     singleOf(::LoginMockDataSource).bind<LoginDataSource>()
     singleOf(::UserMockDataSource).bind<UserDataSource>()
     singleOf(::GetUserFlowUseCase)

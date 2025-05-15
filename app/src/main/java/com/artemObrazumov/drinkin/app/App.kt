@@ -22,6 +22,8 @@ import com.artemObrazumov.drinkin.cart.presentation.navigation.cartGraph
 import com.artemObrazumov.drinkin.core.presentation.account.AccountState
 import com.artemObrazumov.drinkin.core.presentation.account.AccountViewModel
 import com.artemObrazumov.drinkin.core.presentation.menu.MenuViewModel
+import com.artemObrazumov.drinkin.onboarding.presentation.navigation.Onboarding
+import com.artemObrazumov.drinkin.onboarding.presentation.navigation.onboardingGraph
 import com.artemObrazumov.drinkin.order.presentation.navigation.NewOrder
 import com.artemObrazumov.drinkin.order.presentation.navigation.Orders
 import com.artemObrazumov.drinkin.order.presentation.navigation.orderGraph
@@ -64,9 +66,13 @@ fun App(
             builder = {
                 startupGraph(
                     navController = navController,
-                    onboardingScreenDestination = {},
+                    onboardingScreenDestination = { Onboarding },
                     authorizationScreenDestination = { Authorization },
                     dashboardScreenDestination = { DashBoard }
+                )
+                onboardingGraph(
+                    navController = navController,
+                    authorizationScreenDestination = { Authorization }
                 )
                 accountGraph(
                     navController = navController,
