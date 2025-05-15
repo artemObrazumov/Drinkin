@@ -197,7 +197,7 @@ fun ProductListScreenContent(
                         salePrice = currentDrink.salePrice
                     )
                     Spacer(
-                        modifier = Modifier.height(28.dp)
+                        modifier = Modifier.height(8.dp)
                     )
                     PagerIndicatorWithOutline(
                         totalItems = products.size,
@@ -206,7 +206,7 @@ fun ProductListScreenContent(
                             .fillMaxWidth(0.65f)
                     )
                     Spacer(
-                        modifier = Modifier.height(36.dp)
+                        modifier = Modifier.height(8.dp)
                     )
                 }
             }
