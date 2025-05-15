@@ -21,8 +21,10 @@ fun NavGraphBuilder.onboardingGraph(
 
         OnboardingScreen(
             state = state,
-            onOnboardingFinished = { navController.navigate(authorizationScreenDestination()) },
-            onSkipped = { viewModel.finishOnboarding() }
+            onOnboardingFinished = { navController.navigate(authorizationScreenDestination()) {
+                popUpTo(0)
+            } },
+            onFinished = { viewModel.finishOnboarding() }
         )
     }
 }

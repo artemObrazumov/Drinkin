@@ -38,7 +38,7 @@ import com.artemObrazumov.drinkin.product.presentation.models.ProductUi
 import com.artemObrazumov.drinkin.product.presentation.models.toProductUi
 import com.artemObrazumov.drinkin.product.presentation.products_list.components.CategoriesList
 import com.artemObrazumov.drinkin.product.presentation.products_list.components.ProductContent
-import com.artemObrazumov.drinkin.product.presentation.products_list.components.ProductIndicator
+import com.artemObrazumov.drinkin.core.presentation.components.PagerIndicatorWithOutline
 import com.artemObrazumov.drinkin.product.presentation.products_list.components.ProductsPager
 import com.artemObrazumov.drinkin.product.presentation.products_list.components.TransitionCircle
 import com.artemObrazumov.drinkin.product.presentation.products_list.components.TransitionImage
@@ -199,7 +199,7 @@ fun ProductListScreenContent(
                     Spacer(
                         modifier = Modifier.height(28.dp)
                     )
-                    ProductIndicator(
+                    PagerIndicatorWithOutline(
                         totalItems = products.size,
                         currentItem = pagerState.currentPage,
                         modifier = Modifier

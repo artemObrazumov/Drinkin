@@ -1,9 +1,10 @@
-package com.artemObrazumov.drinkin.product.presentation.products_list.components
+package com.artemObrazumov.drinkin.core.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
@@ -16,16 +17,16 @@ import com.artemObrazumov.drinkin.app.ui.theme.DrinkinTheme
 import kotlin.math.max
 import kotlin.math.min
 
-// indicator with 5 items visible at once
+// indicator with 5 items visible at once and circle outline on active item
 @Composable
-fun ProductIndicator(
+fun PagerIndicatorWithOutline(
     totalItems: Int,
     currentItem: Int,
     modifier: Modifier = Modifier,
     indicatorRadius: Float = 8f,
+    indicatorColor: Color = Color.White,
     indicatorOutlineRadius: Float = indicatorRadius * 5,
     indicatorOutlineStroke: Float = 8f,
-    indicatorColor: Color = Color.White,
     indicatorOutlineColor: Color = MaterialTheme.colorScheme.tertiary,
 ) {
     val startIndex = if (totalItems - 1 - currentItem >= 2) {
@@ -41,9 +42,11 @@ fun ProductIndicator(
     )
     println(indices)
     Canvas(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
+            .defaultMinSize(minHeight = (max(indicatorRadius, indicatorOutlineRadius)).dp)
     ) {
-        val start = 0f + indicatorOutlineRadius
+        val start = indicatorRadius + indicatorOutlineRadius
         val end = size.width - (indicatorRadius + indicatorOutlineRadius)
         val widthPerIndicator = (end - start) / 4
         indices.forEach { index ->
@@ -80,12 +83,44 @@ fun ProductIndicator(
 
 @PreviewLightDark
 @Composable
-fun ProductsIndicatorPreview() {
+fun PagerIndicatorWithOutline3ElementsPreview() {
     DrinkinTheme {
-        ProductIndicator(
+        PagerIndicatorWithOutline(
             totalItems = 3, currentItem = 2, modifier = Modifier
                 .width(100.dp)
-                .height(50.dp)
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+fun PagerIndicatorWithOutline5ElementsPreview() {
+    DrinkinTheme {
+        PagerIndicatorWithOutline(
+            totalItems = 5, currentItem = 0, modifier = Modifier
+                .width(100.dp)
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+fun PagerIndicatorWithOutline7ElementsPreview() {
+    DrinkinTheme {
+        PagerIndicatorWithOutline(
+            totalItems = 7, currentItem = 0, modifier = Modifier
+                .width(100.dp)
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+fun PagerIndicatorWithOutline9ElementsPreview() {
+    DrinkinTheme {
+        PagerIndicatorWithOutline(
+            totalItems = 9, currentItem = 8, modifier = Modifier
+                .width(100.dp)
         )
     }
 }

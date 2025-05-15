@@ -37,4 +37,13 @@
     <string name="logout_subtitle">Are you sure want to logout?</string>
     <string name="cancel">Cancel</string>
     <string name="logout">Logout</string>
+    <string name="onboarding_perfect_coffee_title">Welcome to Coffee Bliss!</string>
+    <string name="onboarding_perfect_coffee_subtitle">Your Perfect Cup Awaits</string>
+    <string name="onboarding_explore_menu_title">Explore Our Menu</string>
+    <string name="onboarding_explore_menu_subtitle">Discover a Variety of Brews</string>
+    <string name="onboarding_easy_ordering_title">Easy Ordering at Your Fingertips</string>
+    <string name="onboarding_easy_ordering_subtitle">Get Your Coffee in Just a Few Taps</string>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="start">Start</string>
 </resources>
